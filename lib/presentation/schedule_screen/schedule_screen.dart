@@ -223,7 +223,7 @@ class ScheduleScreen extends GetWidget<ScheduleController> {
                                                                             // "nnn"
 
                                                                             meetingName:
-                                                                                controller.data[index]["name"].toString().replaceAll('%20', ' '),
+                                                                                controller.data[index]["name"].toString().replaceAll('%20', ' ').replaceAll('%27', '\''),
                                                                             //"hh",
                                                                           ),
                                                                         );
@@ -412,7 +412,7 @@ class ScheduleScreen extends GetWidget<ScheduleController> {
                                                                             // "nnn"
 
                                                                             meetingName:
-                                                                                controller.data[index]["name"].toString().replaceAll('%20', ' '),
+                                                                                controller.data[index]["name"].toString().replaceAll('%20', ' ').replaceAll('%27', '\''),
                                                                             //"hh",
                                                                           ),
                                                                         );

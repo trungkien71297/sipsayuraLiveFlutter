@@ -29,7 +29,7 @@ class ScheduleMeetingFormController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var name = prefs.getString("last_name");
 
-    userName = '${name} Meeting';
+    userName = '${name}\'s Meeting';
     final password = generatePassword();
     isMeetingIDState = true;
     topictxtController.text = userName.toString();
@@ -202,7 +202,9 @@ class ScheduleMeetingFormController extends GetxController {
         "Access-Control-Allow-Credentials": "true",
         "authorization": "Bearer ${token}",
       }, body: {
-        'name': topictxtController.text.replaceAll(' ', '%20'),
+        'name': topictxtController.text
+            .replaceAll(' ', '%20')
+            .replaceAll('\'', '%27'),
         'attend_pw': passcodeController.text,
         // 'max_participant':
         //     selectedPartcipantCount.value.replaceAll(RegExp("[]"), ""),

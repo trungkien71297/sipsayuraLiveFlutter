@@ -131,7 +131,8 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                   child: Text(
                                     controller.apiResponse["name"]
                                         .toString()
-                                        .replaceAll('%20', ' '),
+                                        .replaceAll('%20', ' ')
+                                        .replaceAll('%27', '\''),
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.right,
                                     style: AppStyle.textstylenunitosemibold10
@@ -647,7 +648,7 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
 
     var name = prefs.getString("last_name");
     await Share.share(
-        "${name} is inviting you to a scheduled LetMO meeting.\n\nTopic: ${controller.apiResponse["name"].toString().replaceAll('%20', ' ')}\nTime: ${controller.apiResponse["scheduled_at_Date"].toString()}  ${controller.apiResponse["scheduled_at_Time"].toString()}\n\nJoin LetMO Meeting\n${meetingLink}\n\n Meeting ID: ${controller.apiResponse["meeting_id"].toString()}\nPasscode: ${controller.apiResponse["password"].toString()}");
+        "${name} is inviting you to a scheduled LetMO meeting.\n\nTopic: ${controller.apiResponse["name"].toString().replaceAll('%20', ' ').replaceAll('%27', '\'')}\nTime: ${controller.apiResponse["scheduled_at_Date"].toString()}  ${controller.apiResponse["scheduled_at_Time"].toString()}\n\nJoin LetMO Meeting\n${meetingLink}\n\n Meeting ID: ${controller.apiResponse["meeting_id"].toString()}\nPasscode: ${controller.apiResponse["password"].toString()}");
   }
 
   onTapBtnDelete(context) async {
