@@ -1,0 +1,1 @@
+class Signup04Model {}
