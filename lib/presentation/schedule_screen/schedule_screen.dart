@@ -469,6 +469,7 @@ class ScheduleScreen extends GetWidget<ScheduleController> {
                   onTap: navRoute,
                 ),
               ),
+
             ),
           ),
         ));

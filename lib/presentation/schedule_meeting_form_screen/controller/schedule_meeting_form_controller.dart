@@ -231,7 +231,7 @@ class ScheduleMeetingFormController extends GetxController {
           final responseMsg = Response.fromJson(parsedJson);
           responseText.value = (responseMsg.status);
           getRefreshMeetings();
-          apiResponse.value = "Success";
+          apiResponse.value = "Meeting Created Successfully!";
           isResponseSuccess.value = true;
           Fluttertoast.showToast(
               msg: "Meeting Created Successfully!",

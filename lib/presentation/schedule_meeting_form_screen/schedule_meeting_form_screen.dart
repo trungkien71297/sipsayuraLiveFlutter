@@ -1208,7 +1208,49 @@ class ScheduleMeetingFormScreen
                                                 onPressed: controller
                                                         .isLoading.value
                                                     ? null
-                                                    : () {
+                                                    : () async {
+                                                        showDialog(barrierDismissible:
+                                                                !(controller.isLoading.value),
+                                                            context: context,
+                                                            builder: (_) {
+                                                              return Obx(() => Dialog(
+                                                                // The background color
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                      vertical:
+                                                                          20),
+                                                                  child: Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .min,
+
+                                                                    children: [
+                                                                      // The loading indicator
+                                                                      controller
+                                                                          .isLoading.value
+                                                                          ?Column(
+                                                                        children: [
+                                                                          CircularProgressIndicator(),
+                                                                          SizedBox(
+                                                                            height:
+                                                                            15,
+                                                                          ),
+                                                                          // Some text
+                                                                          Text(
+                                                                              'Loading...')
+                                                                        ],
+                                                                      ):Center(
+                                                                        child: Text(controller.apiResponse.value.toString()),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ));
+                                                            });
                                                         onTapBtnSave(context);
                                                       },
                                                 child: controller
@@ -1431,6 +1473,7 @@ class ScheduleMeetingFormScreen
       }
     }
   }
+
 
   // Widget loaderPopup(context) {
   //   throw showDialog(
