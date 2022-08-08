@@ -234,61 +234,134 @@ class ScheduleMeetingFormScreen
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  padding: EdgeInsets.only(
-                                    left: MediaQuery.of(context).size.width / 8,
+                                // Container(
+                                //   padding: EdgeInsets.only(
+                                //     left: MediaQuery.of(context).size.width / 8,
+                                //   ),
+                                //   height: getVerticalSize(
+                                //     30.00,
+                                //   ),
+                                //   width:
+                                //       MediaQuery.of(context).size.width * 3 / 8,
+                                //   child: TextFormField(
+                                //     keyboardType: TextInputType.number,
+                                //     // onFieldSubmitted: (value) {
+                                //     //   onTapBtnSave(context);
+                                //     // },
+                                //     textInputAction: TextInputAction.next,
+                                //     focusNode: FocusNode(),
+                                //     validator: (value) {
+                                //       if (value == null || value.isEmpty) {
+                                //         return 'Please enter some text';
+                                //       } else if (int.parse(value) >
+                                //           controller.maxParticipantLimit) {
+                                //         return 'Participant count exited try lower.';
+                                //       }
+                                //       return null;
+                                //     },
+                                //     controller:
+                                //         controller.participantstxtController,
+                                //     decoration: InputDecoration(
+                                //       suffixIcon: IconButton(
+                                //         icon: controller
+                                //                 .participantstxtController
+                                //                 .text
+                                //                 .isEmpty
+                                //             ? SizedBox()
+                                //             : Icon(Icons.clear),
+                                //         onPressed: () => controller
+                                //             .participantstxtController
+                                //             .clear(),
+                                //       ),
+                                //       labelText: "Participants",
+                                //       labelStyle: TextStyle(
+                                //         fontSize: 18,
+                                //         color: Colors.black,
+                                //       ),
+                                //       enabledBorder: UnderlineInputBorder(
+                                //         borderSide: BorderSide(
+                                //             color: Colors.lightBlueAccent),
+                                //       ),
+                                //       focusedBorder: UnderlineInputBorder(
+                                //         borderSide: BorderSide(
+                                //             color: Colors.lightBlueAccent),
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Container(
+                                        width: getHorizontalSize(
+                                          60.00,
+                                        ),
+                                        child: TextFormField(
+                                          keyboardType: TextInputType.number,
+                                          // onFieldSubmitted: (value) {
+                                          //   onTapBtnSave(context);
+                                          // },
+                                          textInputAction: TextInputAction.next,
+                                          focusNode: FocusNode(),
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'Please enter some text';
+                                            } else if (int.parse(value) >
+                                                controller
+                                                    .maxParticipantLimit) {
+                                              return 'Participant count exited try lower.';
+                                            }
+                                            return null;
+                                          },
+                                          controller: controller
+                                              .participantstxtController,
+                                          decoration: InputDecoration(
+                                            suffixIcon: IconButton(
+                                              icon: controller
+                                                      .participantstxtController
+                                                      .text
+                                                      .isEmpty
+                                                  ? SizedBox()
+                                                  : Icon(Icons.clear),
+                                              onPressed: () => controller
+                                                  .participantstxtController
+                                                  .clear(),
+                                            ),
+                                            labelText: "Participants",
+                                            labelStyle: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.black,
+                                            ),
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color:
+                                                      Colors.lightBlueAccent),
+                                            ),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color:
+                                                      Colors.lightBlueAccent),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  height: getVerticalSize(
-                                    30.00,
-                                  ),
-                                  width:
-                                      MediaQuery.of(context).size.width * 3 / 8,
-                                  child: TextFormField(
-                                    keyboardType: TextInputType.number,
-                                    // onFieldSubmitted: (value) {
-                                    //   onTapBtnSave(context);
-                                    // },
-                                    textInputAction: TextInputAction.next,
-                                    focusNode: FocusNode(),
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter some text';
-                                      } else if (int.parse(value) >
-                                          controller.maxParticipantLimit) {
-                                        return 'Participant count exited try lower.';
-                                      }
-                                      return null;
-                                    },
-                                    controller:
-                                        controller.participantstxtController,
-                                    decoration: InputDecoration(
-                                      suffixIcon: IconButton(
-                                        icon: controller
-                                                .participantstxtController
-                                                .text
-                                                .isEmpty
-                                            ? SizedBox()
-                                            : Icon(Icons.clear),
-                                        onPressed: () => controller
-                                            .participantstxtController
-                                            .clear(),
-                                      ),
-                                      labelText: "Participants",
-                                      labelStyle: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.black,
-                                      ),
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.lightBlueAccent),
-                                      ),
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.lightBlueAccent),
-                                      ),
-                                    ),
-                                  ),
-                                )
+                                  // child: Text(
+                                  //   "msg_personal_meetin".tr,
+                                  //   textAlign: TextAlign.left,
+                                  //   style: AppStyle
+                                  //       .textstylemontserratromanregular92
+                                  //       .copyWith(
+                                  //     fontSize: getFontSize(
+                                  //       9,
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                ),
                               ],
                             ),
                           ),
