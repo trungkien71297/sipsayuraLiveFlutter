@@ -1209,47 +1209,45 @@ class ScheduleMeetingFormScreen
                                                         .isLoading.value
                                                     ? null
                                                     : () async {
-                                                        showDialog(barrierDismissible:
-                                                                !(controller.isLoading.value),
+                                                        showDialog(
+                                                            barrierDismissible:
+                                                                !(controller
+                                                                    .isLoading
+                                                                    .value),
                                                             context: context,
                                                             builder: (_) {
-                                                              return Obx(() => Dialog(
-                                                                // The background color
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .white,
-                                                                child: Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .symmetric(
-                                                                      vertical:
-                                                                          20),
-                                                                  child: Column(
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .min,
-
-                                                                    children: [
-                                                                      // The loading indicator
-                                                                      controller
-                                                                          .isLoading.value
-                                                                          ?Column(
-                                                                        children: [
-                                                                          CircularProgressIndicator(),
-                                                                          SizedBox(
-                                                                            height:
-                                                                            15,
+                                                              return Obx(
+                                                                  () => Dialog(
+                                                                        // backgroundColor:
+                                                                        //     Colors.white,
+                                                                        child:
+                                                                            Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.symmetric(vertical: 20),
+                                                                          child:
+                                                                              Column(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.min,
+                                                                            children: [
+                                                                              // The loading indicator
+                                                                              controller.isLoading.value
+                                                                                  ? Column(
+                                                                                      children: [
+                                                                                        CircularProgressIndicator(),
+                                                                                        SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+                                                                                        Text('Loading...')
+                                                                                      ],
+                                                                                    )
+                                                                                  : Center(
+                                                                                      child: Text(controller.apiResponse.value.toString()),
+                                                                                    ),
+                                                                            ],
                                                                           ),
-                                                                          // Some text
-                                                                          Text(
-                                                                              'Loading...')
-                                                                        ],
-                                                                      ):Center(
-                                                                        child: Text(controller.apiResponse.value.toString()),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ));
+                                                                        ),
+                                                                      ));
+                                                                      
                                                             });
                                                         onTapBtnSave(context);
                                                       },
@@ -1295,77 +1293,6 @@ class ScheduleMeetingFormScreen
                                                             side: const BorderSide(color: Colors.lightBlueAccent)))),
                                               ),
                                             )),
-                                        //       Obx(
-                                        //         () => Padding(
-                                        //           padding: EdgeInsets.only(right: 0),
-                                        //           child: GestureDetector(
-                                        //             onTap: () {
-                                        //               onTapBtnSave(context);
-                                        //               // controller.isLoading.value?
-                                        //               // loaderPopup(context):getMeetingResponses(context);
-                                        //             },
-                                        //             child: Container(
-                                        //               alignment: Alignment.center,
-                                        //               height: getVerticalSize(
-                                        //                 23.08,
-                                        //               ),
-                                        //               width: MediaQuery.of(context)
-                                        //                       .size
-                                        //                       .width *
-                                        //                   3 /
-                                        //                   8,
-                                        //               decoration: AppDecoration
-                                        //                   .textstylenunitosemibold92,
-                                        //               child: controller
-                                        //                       .isLoading.value
-                                        //                   ? Row(
-                                        //                       mainAxisAlignment:
-                                        //                           MainAxisAlignment
-                                        //                               .spaceEvenly,
-                                        //                       children: [
-                                        //                         SizedBox(
-                                        //                           height: 9.0,
-                                        //                           width: 9.0,
-                                        //                           child:
-                                        //                               CircularProgressIndicator(
-                                        //                             color:
-                                        //                                 Colors.blue,
-                                        //                           ),
-                                        //                         ),
-                                        //                         Text(
-                                        //                           "Please wait",
-                                        //                           textAlign: TextAlign
-                                        //                               .center,
-                                        //                           style: AppStyle
-                                        //                               .textstylenunitosemibold92
-                                        //                               .copyWith(
-                                        //                             fontSize:
-                                        //                                 getFontSize(
-                                        //                               9,
-                                        //                             ),
-                                        //                           ),
-                                        //                         )
-                                        //                       ],
-                                        //                     )
-                                        //                   : Text(
-                                        //                       "lbl_save".tr,
-                                        //                       textAlign:
-                                        //                           TextAlign.center,
-                                        //                       style: AppStyle
-                                        //                           .textstylenunitosemibold92
-                                        //                           .copyWith(
-                                        //                         fontSize: getFontSize(
-                                        //                           9,
-                                        //                         ),
-                                        //                       ),
-                                        //                     ),
-                                        //             ),
-                                        //           ),
-                                        //         ),
-                                        //       ),
-                                        //     ],
-                                        //   ),
-                                        // ),
                                       ],
                                     ),
                                   ),
@@ -1435,10 +1362,6 @@ class ScheduleMeetingFormScreen
     Get.toNamed(AppRoutes.settingsScreen);
   }
 
-  // sheduleMeetingScreen() {
-  //   Get.toNamed(AppRoutes.scheduleScreen);
-  // }
-
   onTapBtnCancel(BuildContext context) {
     Navigator.pop(context); // Get.back();
   }
@@ -1465,81 +1388,7 @@ class ScheduleMeetingFormScreen
         ).show();
       } else {
         controller.apiConnect();
-        // getRefreshMeetings();
-
-        // sheduleMeetingScreen();
-        // resetForm();
-        // getMeetingResponses(context);
       }
     }
   }
-
-
-  // Widget loaderPopup(context) {
-  //   throw showDialog(
-  //       // The user CANNOT close this dialog  by pressing outsite it
-  //       barrierDismissible: false,
-  //       context: context,
-  //       builder: (_) {
-  //         return Dialog(
-  //           // The background color
-  //           backgroundColor: Colors.white,
-  //           child: Padding(
-  //             padding: const EdgeInsets.symmetric(vertical: 20),
-  //             child: Column(
-  //               mainAxisSize: MainAxisSize.min,
-  //               children: const [
-  //                 // The loading indicator
-  //                 CircularProgressIndicator(),
-  //                 SizedBox(
-  //                   height: 15,
-  //                 ),
-  //                 Text('Loading...')
-  //               ],
-  //             ),
-  //           ),
-  //         );
-  //       });
-  // }
-
-  // getMeetingResponses(context) async {
-  //   controller.isResponseSuccess.value
-  //       ? AwesomeDialog(
-  //           context: context,
-  //           animType: AnimType.LEFTSLIDE,
-  //           headerAnimationLoop: false,
-  //           dialogType: DialogType.SUCCES,
-  //           showCloseIcon: false,
-  //           title: 'Meeting created Successfully!',
-  //           desc: "Success",
-  //           btnOkOnPress: () {
-  //             Navigator.pop(context);
-  //             // getRefreshMeetings();
-  //             sheduleMeetingScreen();
-  //           },
-  //           btnOkIcon: Icons.check_circle,
-  //           onDissmissCallback: (type) {
-  //             debugPrint('Dialog Dismiss from callback $type');
-  //           },
-  //         ).show()
-  //       : AwesomeDialog(
-  //           context: context,
-  //           animType: AnimType.LEFTSLIDE,
-  //           headerAnimationLoop: false,
-  //           dialogType: DialogType.ERROR,
-  //           showCloseIcon: false,
-  //           title: 'Failed to create meeting',
-  //           desc: controller.apiResponse.value.toString(),
-  //           btnOkOnPress: () {
-  //             Navigator.pop(context);
-  //             // getRefreshMeetings();
-  //             sheduleMeetingScreen();
-  //           },
-  //           btnOkIcon: Icons.check_circle,
-  //           onDissmissCallback: (type) {
-  //             debugPrint('Dialog Dismiss from callback $type');
-  //           },
-  //         ).show();
-  // }
-
 }

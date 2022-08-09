@@ -183,9 +183,23 @@ class ScheduleScreen extends GetWidget<ScheduleController> {
                                                                           .data
                                                                           .length ==
                                                                       0
-                                                                  ? Center(
-                                                                      child: Text(
-                                                                          "No meetings to show"))
+                                                                  ? Container(
+                                                                    height: 200,
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .center,
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        children: [
+                                                                          Text(
+                                                                              "No meetings to show"),
+                                                                          TextButton(
+                                                                              onPressed: () => refreshListview(context),
+                                                                              child: Text(controller.isLoading.value ? "Please wait Refreshing List" : "Refresh"))
+                                                                        ],
+                                                                      ))
                                                                   : ListView
                                                                       .builder(
                                                                       physics:
@@ -373,9 +387,23 @@ class ScheduleScreen extends GetWidget<ScheduleController> {
                                                                           .data
                                                                           .length ==
                                                                       0
-                                                                  ? Center(
-                                                                      child: Text(
-                                                                          "No meetings to show"))
+                                                                  ? Container(
+                                                                    height: 200,
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .center,
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        children: [
+                                                                          Text(
+                                                                              "No meetings to show"),
+                                                                          TextButton(
+                                                                              onPressed: () => refreshListview(context),
+                                                                              child: Text(controller.isLoading.value ? "Please wait Refreshing List" : "Refresh"))
+                                                                        ],
+                                                                      ))
                                                                   : ListView
                                                                       .builder(
                                                                       physics:
@@ -469,7 +497,6 @@ class ScheduleScreen extends GetWidget<ScheduleController> {
                   onTap: navRoute,
                 ),
               ),
-
             ),
           ),
         ));
