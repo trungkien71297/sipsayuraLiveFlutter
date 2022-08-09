@@ -17,14 +17,21 @@ class ScheduleItemWidget extends StatelessWidget {
 
   var controller = Get.find<ScheduleController>();
 
-   ScheduleItemWidget({Key? key, required this.meetingName, required this.meetingID, required this.duration, required this.time, required this.date}) : super(key: key);
+  ScheduleItemWidget(
+      {Key? key,
+      required this.meetingName,
+      required this.meetingID,
+      required this.duration,
+      required this.time,
+      required this.date})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.center,
       child: Container(
-        width: MediaQuery.of(context).size.width*5/6,
+        width: MediaQuery.of(context).size.width * 5 / 6,
         margin: EdgeInsets.only(
           top: getVerticalSize(
             10.00,
@@ -47,23 +54,17 @@ class ScheduleItemWidget extends StatelessWidget {
         child: Card(
           child: ListTile(
             // contentPadding: EdgeInsets.symmetric(horizontal: 50.0),
-            leading: Text(time+'\n'+ date),
+            leading: Text(time + '\n' + date),
             title: Text(meetingName),
-            subtitle: Text(
-                'Meeting ID: '+meetingID
-            ),
+            subtitle: Text('Meeting ID: ' + meetingID),
             trailing: ElevatedButton(
-              onPressed: () => {
-                onTapBtnjoin()
-              },
+              onPressed: () => {onTapBtnjoin()},
               child: const Text(
                 'Start',
                 style: TextStyle(fontSize: 18.0),
               ),
               style: ElevatedButton.styleFrom(
-                  primary: Colors.lightBlueAccent,
-                  shape: StadiumBorder()
-              ),
+                  primary: Colors.lightBlueAccent, shape: StadiumBorder()),
             ),
             isThreeLine: true,
           ),
@@ -71,6 +72,7 @@ class ScheduleItemWidget extends StatelessWidget {
       ),
     );
   }
+
   onTapBtnjoin() {
     Get.toNamed(AppRoutes.joinMeetingScreen);
   }

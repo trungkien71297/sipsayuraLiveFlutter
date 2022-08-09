@@ -106,7 +106,7 @@ class ScheduleMeetingFormController extends GetxController {
     TimeOfDay? pickedTime = await showTimePicker(
       context: Get.context!,
       initialTime: TimeOfDay.now(),
-      helpText: 'Select a time for meeting',
+      helpText: 'Select a start time for meeting',
     );
     if (pickedTime != null && pickedTime != selectedStartTime.value) {
       selectedStartTime.value = pickedTime;
@@ -118,9 +118,14 @@ class ScheduleMeetingFormController extends GetxController {
     TimeOfDay? pickedTime = await showTimePicker(
       context: Get.context!,
       // initialTime: selectedEndTime.value,
-      initialTime:
-          TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 30))),
-      helpText: 'Select a time for meeting',
+      initialTime: TimeOfDay.fromDateTime(DateTime(
+              selectedDate.value.year,
+              selectedDate.value.month,
+              selectedDate.value.day,
+              selectedStartTime.value.hour,
+              selectedStartTime.value.minute)
+          .add(Duration(minutes: 30))),
+      helpText: 'Select a end time for meeting',
     );
     if (pickedTime != null && pickedTime != selectedEndTime.value) {
       if (("${pickedTime.hour}:${pickedTime.minute}").compareTo(
@@ -134,7 +139,13 @@ class ScheduleMeetingFormController extends GetxController {
             backgroundColor: Colors.red,
             textColor: Colors.white,
             fontSize: 16.0);
-        selectedEndTime.value = selectedStartTime.value;
+        selectedEndTime.value = TimeOfDay.fromDateTime(DateTime(
+                selectedDate.value.year,
+                selectedDate.value.month,
+                selectedDate.value.day,
+                selectedStartTime.value.hour,
+                selectedStartTime.value.minute)
+            .add(Duration(minutes: 30)));
       } else {
         selectedEndTime.value = pickedTime;
         update();

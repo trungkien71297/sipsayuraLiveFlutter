@@ -184,7 +184,8 @@ class ScheduleScreen extends GetWidget<ScheduleController> {
                                                                           .length ==
                                                                       0
                                                                   ? Container(
-                                                                    height: 200,
+                                                                      height:
+                                                                          200,
                                                                       alignment:
                                                                           Alignment
                                                                               .center,
@@ -388,7 +389,8 @@ class ScheduleScreen extends GetWidget<ScheduleController> {
                                                                           .length ==
                                                                       0
                                                                   ? Container(
-                                                                    height: 200,
+                                                                      height:
+                                                                          200,
                                                                       alignment:
                                                                           Alignment
                                                                               .center,

@@ -1,4 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../nav_drawer_draweritem/controller/nav_drawer_controller.dart';
@@ -510,9 +511,14 @@ class ScheduleMeetingFormScreen
                                                                                   7.00,
                                                                                 ),
                                                                               ),
-                                                                              child: Text(
-                                                                                "${controller.selectedStartTime.value.hour}:${controller.selectedStartTime.value.minute}",
+                                                                              child: Obx(
+                                                                                () => Text(
+                                                                                  DateFormat('HH:mm').format(DateTime(controller.selectedDate.value.year, controller.selectedDate.value.month, controller.selectedDate.value.day, controller.selectedStartTime.value.hour, controller.selectedStartTime.value.minute)).toString(),
+                                                                                ),
                                                                               ),
+                                                                              // child: Text(
+                                                                              //   "${controller.selectedStartTime.value.hour}:${controller.selectedStartTime.value.minute}",
+                                                                              // ),
                                                                             ),
                                                                           ),
                                                                         ),
@@ -636,9 +642,14 @@ class ScheduleMeetingFormScreen
                                                                                   7.00,
                                                                                 ),
                                                                               ),
-                                                                              child: Text(
-                                                                                "${controller.selectedEndTime.value.hour}:${controller.selectedEndTime.value.minute}",
+                                                                              child: Obx(
+                                                                                () => Text(
+                                                                                  DateFormat('HH:mm').format(DateTime(controller.selectedDate.value.year, controller.selectedDate.value.month, controller.selectedDate.value.day, controller.selectedEndTime.value.hour, controller.selectedEndTime.value.minute)).toString(),
+                                                                                ),
                                                                               ),
+                                                                              // child: Text(
+                                                                              //   "${controller.selectedEndTime.value.hour}:${controller.selectedEndTime.value.minute}",
+                                                                              // ),
                                                                             ),
                                                                           ),
                                                                         ),
@@ -1329,25 +1340,61 @@ class ScheduleMeetingFormScreen
   onTapBtnSave(context) async {
     result = await Connectivity().checkConnectivity();
     if (_formKey.currentState!.validate()) {
-      if (result == ConnectivityResult.none) {
-        AwesomeDialog(
-          context: context,
-          animType: AnimType.LEFTSLIDE,
-          headerAnimationLoop: false,
-          dialogType: DialogType.ERROR,
-          showCloseIcon: false,
-          title: "Oops!",
-          desc: 'No Internet Connection found Check your connection',
-          btnOkOnPress: () {
-            // Navigator.pop(context);
-          },
-          btnOkIcon: Icons.check_circle,
-          onDissmissCallback: (type) {
-            debugPrint('Dialog Dismiss from callback $type');
-          },
-        ).show();
+      if (DateTime(
+                      controller.selectedDate.value.year,
+                      controller.selectedDate.value.month,
+                      controller.selectedDate.value.day,
+                      controller.selectedStartTime.value.hour,
+                      controller.selectedStartTime.value.minute)
+                  .compareTo(DateTime(
+                      controller.selectedDate.value.year,
+                      controller.selectedDate.value.month,
+                      controller.selectedDate.value.day,
+                      controller.selectedEndTime.value.hour,
+                      controller.selectedEndTime.value.minute)) ==
+              1 ||
+          DateTime(
+                      controller.selectedDate.value.year,
+                      controller.selectedDate.value.month,
+                      controller.selectedDate.value.day,
+                      controller.selectedStartTime.value.hour,
+                      controller.selectedStartTime.value.minute)
+                  .compareTo(DateTime(
+                      controller.selectedDate.value.year,
+                      controller.selectedDate.value.month,
+                      controller.selectedDate.value.day,
+                      controller.selectedEndTime.value.hour,
+                      controller.selectedEndTime.value.minute)) ==
+              0) {
+        Fluttertoast.showToast(
+            msg: "End Time cannot be same or before Start Time.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
       } else {
-        controller.apiConnect();
+        if (result == ConnectivityResult.none) {
+          AwesomeDialog(
+            context: context,
+            animType: AnimType.LEFTSLIDE,
+            headerAnimationLoop: false,
+            dialogType: DialogType.ERROR,
+            showCloseIcon: false,
+            title: "Oops!",
+            desc: 'No Internet Connection found Check your connection',
+            btnOkOnPress: () {
+              // Navigator.pop(context);
+            },
+            btnOkIcon: Icons.check_circle,
+            onDissmissCallback: (type) {
+              debugPrint('Dialog Dismiss from callback $type');
+            },
+          ).show();
+        } else {
+          controller.apiConnect();
+        }
       }
     }
   }
