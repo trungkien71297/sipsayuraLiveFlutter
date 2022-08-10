@@ -126,7 +126,7 @@ class BBBApp extends StatelessWidget {
         translations: AppLocalization(),
         locale: Get.deviceLocale, //for setting localization strings
         fallbackLocale: Locale('en', 'US'),
-        title: "sipsayura_live",
+        title: "LETMO",
         initialBinding: InitialBindings(),
         initialRoute: AppRoutes.initialRoute,
         getPages: AppRoutes.pages,
