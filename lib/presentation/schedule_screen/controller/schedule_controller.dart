@@ -64,7 +64,7 @@ class ScheduleController extends GetxController with StateMixin<dynamic> {
         var convertDataToJson = jsonDecode(response.body) as List;
         data = convertDataToJson;
         for (var index = 0; index < data.length; index++) {
-          if (new DateTime.now().isAfter(DateFormat("yyy-MM-dd hh:mm").parse(
+          if (new DateTime.now().isAfter(DateFormat("yyyy-MM-dd hh:mm").parse(
               '${data[index]["scheduled_at_Date"].toString()} ${data[index]["end_Time"].toString()} '))) {
             if (!pastMeetings.contains(data[index]["meeting_id"])) {
               pastMeetings.add(data[index]);

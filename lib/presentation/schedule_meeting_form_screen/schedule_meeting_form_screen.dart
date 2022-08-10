@@ -1341,33 +1341,54 @@ class ScheduleMeetingFormScreen
     result = await Connectivity().checkConnectivity();
     if (_formKey.currentState!.validate()) {
       if (DateTime(
-                      controller.selectedDate.value.year,
-                      controller.selectedDate.value.month,
-                      controller.selectedDate.value.day,
-                      controller.selectedStartTime.value.hour,
-                      controller.selectedStartTime.value.minute)
-                  .compareTo(DateTime(
-                      controller.selectedDate.value.year,
-                      controller.selectedDate.value.month,
-                      controller.selectedDate.value.day,
-                      controller.selectedEndTime.value.hour,
-                      controller.selectedEndTime.value.minute)) ==
-              1 ||
-          DateTime(
-                      controller.selectedDate.value.year,
-                      controller.selectedDate.value.month,
-                      controller.selectedDate.value.day,
-                      controller.selectedStartTime.value.hour,
-                      controller.selectedStartTime.value.minute)
-                  .compareTo(DateTime(
-                      controller.selectedDate.value.year,
-                      controller.selectedDate.value.month,
-                      controller.selectedDate.value.day,
-                      controller.selectedEndTime.value.hour,
-                      controller.selectedEndTime.value.minute)) ==
-              0) {
+              controller.selectedDate.value.year,
+              controller.selectedDate.value.month,
+              controller.selectedDate.value.day,
+              controller.selectedStartTime.value.hour,
+              controller.selectedStartTime.value.minute)
+          .isAfter(DateTime(
+              controller.selectedDate.value.year,
+              controller.selectedDate.value.month,
+              controller.selectedDate.value.day,
+              controller.selectedEndTime.value.hour,
+              controller.selectedEndTime.value.minute))) {
         Fluttertoast.showToast(
-            msg: "End Time cannot be same or before Start Time.",
+            msg: "Invalid End Time.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else if (DateTime(
+              controller.selectedDate.value.year,
+              controller.selectedDate.value.month,
+              controller.selectedDate.value.day,
+              controller.selectedStartTime.value.hour,
+              controller.selectedStartTime.value.minute)
+          .isAtSameMomentAs(DateTime(
+              controller.selectedDate.value.year,
+              controller.selectedDate.value.month,
+              controller.selectedDate.value.day,
+              controller.selectedEndTime.value.hour,
+              controller.selectedEndTime.value.minute))) {
+        Fluttertoast.showToast(
+            msg: "End Time cannot be same as Start Time.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else if (DateTime(
+              controller.selectedDate.value.year,
+              controller.selectedDate.value.month,
+              controller.selectedDate.value.day,
+              controller.selectedStartTime.value.hour,
+              controller.selectedStartTime.value.minute)
+          .isBefore(new DateTime.now())) {
+        Fluttertoast.showToast(
+            msg: "Can't create a meeting in past.",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,

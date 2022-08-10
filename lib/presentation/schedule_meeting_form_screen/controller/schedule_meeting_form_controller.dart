@@ -128,9 +128,14 @@ class ScheduleMeetingFormController extends GetxController {
       helpText: 'Select a end time for meeting',
     );
     if (pickedTime != null && pickedTime != selectedEndTime.value) {
-      if (("${pickedTime.hour}:${pickedTime.minute}").compareTo(
-              "${selectedStartTime.value.hour}:${selectedStartTime.value.minute}") <
-          1) {
+      // if (("${pickedTime.hour}:${pickedTime.minute}").compareTo(
+      //         "${selectedStartTime.value.hour}:${selectedStartTime.value.minute}") <
+      //     1) {
+      if (DateFormat("yyyy-MM-dd hh:mm")
+          .parse(
+              '${selectedDate.value.toString()} ${selectedEndTime.value.toString()} ')
+          .isBefore(DateFormat("yyyy-MM-dd hh:mm").parse(
+              '${selectedDate.value.toString()} ${selectedStartTime.value.toString()} '))) {
         Fluttertoast.showToast(
             msg: "Invalid end time selected",
             toastLength: Toast.LENGTH_SHORT,
