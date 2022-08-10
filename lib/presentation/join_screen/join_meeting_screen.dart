@@ -1,5 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/utils/color_constant.dart';
@@ -694,6 +695,8 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
 
   getRefreshMeetings() {
     final controller = Get.put(ScheduleController());
+    controller.futureMeetings = [];
+    controller.pastMeetings = [];
     controller.getJsonData();
   }
 

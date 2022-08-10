@@ -21,7 +21,15 @@ class JoinMeetingController extends GetxController {
 
   getMeetingId() {
     final controller = Get.put(ScheduleController());
-    var meeting_id = controller.data[controller.clickedIndex]["meeting_id"];
+    var meeting_id;
+    if (controller.isUpcomingMeetingListClicked) {
+      meeting_id =
+          controller.futureMeetings[controller.clickedIndex]["meeting_id"];
+    } else {
+      meeting_id =
+          controller.pastMeetings[controller.clickedIndex]["meeting_id"];
+    }
+
     return meeting_id;
   }
 

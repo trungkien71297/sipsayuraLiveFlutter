@@ -1,4 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:intl/intl.dart';
 
 import '../nav_drawer_draweritem/controller/nav_drawer_controller.dart';
 import '../nav_drawer_draweritem/nav_drawer_draweritem.dart';
@@ -180,7 +181,7 @@ class ScheduleScreen extends GetWidget<ScheduleController> {
                                                                       getHorizontalSize(
                                                                           0.61)),
                                                               child: controller
-                                                                          .data
+                                                                          .futureMeetings
                                                                           .length ==
                                                                       0
                                                                   ? Container(
@@ -211,7 +212,7 @@ class ScheduleScreen extends GetWidget<ScheduleController> {
                                                                       shrinkWrap:
                                                                           true,
                                                                       itemCount: controller
-                                                                          .data
+                                                                          .futureMeetings
                                                                           .length,
                                                                       itemBuilder:
                                                                           (context,
@@ -221,25 +222,21 @@ class ScheduleScreen extends GetWidget<ScheduleController> {
                                                                         return GestureDetector(
                                                                           onTap:
                                                                               () {
-                                                                            controller.isListClicked(index);
+                                                                            controller.isUpcomingListClicked(index);
                                                                             onTapBtnjoin(context);
                                                                           },
                                                                           child:
                                                                               ScheduleItemWidget(
                                                                             duration:
-                                                                                controller.data[index]["max_duration"].toString(),
+                                                                                controller.futureMeetings[index]["max_duration"].toString(),
                                                                             date:
-                                                                                controller.data[index]["scheduled_at_Date"].toString(),
-
+                                                                                controller.futureMeetings[index]["scheduled_at_Date"].toString(),
                                                                             time:
-                                                                                controller.data[index]["scheduled_at_Time"].toString(), //"hi",
+                                                                                controller.futureMeetings[index]["scheduled_at_Time"].toString(),
                                                                             meetingID:
-                                                                                controller.data[index]["meeting_id"].toString(),
-                                                                            // "nnn"
-
+                                                                                controller.futureMeetings[index]["meeting_id"].toString(),
                                                                             meetingName:
-                                                                                controller.data[index]["name"].toString().replaceAll('%20', ' ').replaceAll('%27', '\''),
-                                                                            //"hh",
+                                                                                controller.futureMeetings[index]["name"].toString().replaceAll('%20', ' ').replaceAll('%27', '\''),
                                                                           ),
                                                                         );
                                                                       },
@@ -385,7 +382,7 @@ class ScheduleScreen extends GetWidget<ScheduleController> {
                                                                       getHorizontalSize(
                                                                           0.61)),
                                                               child: controller
-                                                                          .data
+                                                                          .pastMeetings
                                                                           .length ==
                                                                       0
                                                                   ? Container(
@@ -415,35 +412,29 @@ class ScheduleScreen extends GetWidget<ScheduleController> {
                                                                       shrinkWrap:
                                                                           true,
                                                                       itemCount: controller
-                                                                          .data
+                                                                          .pastMeetings
                                                                           .length,
                                                                       itemBuilder:
                                                                           (context,
                                                                               index) {
-                                                                        // controller
-                                                                        //     .data[index]["meetingName"].toString();
                                                                         return GestureDetector(
                                                                           onTap:
                                                                               () {
-                                                                            controller.isListClicked(index);
+                                                                            controller.isPastListClicked(index);
                                                                             onTapBtnjoin(context);
                                                                           },
                                                                           child:
                                                                               ScheduleItemWidget(
                                                                             duration:
-                                                                                controller.data[index]["max_duration"].toString(),
+                                                                                controller.pastMeetings[index]["max_duration"].toString(),
                                                                             date:
-                                                                                controller.data[index]["scheduled_at_Date"].toString(),
-
+                                                                                controller.pastMeetings[index]["scheduled_at_Date"].toString(),
                                                                             time:
-                                                                                controller.data[index]["scheduled_at_Time"].toString(), //"hi",
+                                                                                controller.pastMeetings[index]["scheduled_at_Time"].toString(),
                                                                             meetingID:
-                                                                                controller.data[index]["meeting_id"].toString(),
-                                                                            // "nnn"
-
+                                                                                controller.pastMeetings[index]["meeting_id"].toString(),
                                                                             meetingName:
-                                                                                controller.data[index]["name"].toString().replaceAll('%20', ' ').replaceAll('%27', '\''),
-                                                                            //"hh",
+                                                                                controller.pastMeetings[index]["name"].toString().replaceAll('%20', ' ').replaceAll('%27', '\''),
                                                                           ),
                                                                         );
                                                                       },
@@ -538,6 +529,8 @@ class ScheduleScreen extends GetWidget<ScheduleController> {
         },
       ).show();
     } else {
+      controller.futureMeetings = [];
+      controller.pastMeetings = [];
       controller.getJsonData();
     }
   }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/schedule_item_model.dart';
 import '/core/app_export.dart';
@@ -11,10 +12,19 @@ class ScheduleController extends GetxController with StateMixin<dynamic> {
   ConnectivityResult result = ConnectivityResult.none;
 
   var isInternetOn = false.obs;
+  late bool isUpcomingMeetingListClicked;
 
   var clickedIndex = 0;
 
-  void isListClicked(int? value) {
+  void isUpcomingListClicked(int? value) {
+    isUpcomingMeetingListClicked = true;
+    clickedIndex = value!;
+    print(clickedIndex);
+    update();
+  }
+
+  void isPastListClicked(int? value) {
+    isUpcomingMeetingListClicked = false;
     clickedIndex = value!;
     print(clickedIndex);
     update();
@@ -22,6 +32,8 @@ class ScheduleController extends GetxController with StateMixin<dynamic> {
 
   var meetings = <ScheduleItemModel>[].obs;
   var data = [];
+  var pastMeetings = [];
+  var futureMeetings = [];
   var isLoading = false.obs;
 
   @override
@@ -51,7 +63,19 @@ class ScheduleController extends GetxController with StateMixin<dynamic> {
         }, body: {});
         var convertDataToJson = jsonDecode(response.body) as List;
         data = convertDataToJson;
-        print(response.body);
+        for (var index = 0; index < data.length; index++) {
+          if (new DateTime.now().isAfter(DateFormat("yyy-MM-dd hh:mm").parse(
+              '${data[index]["scheduled_at_Date"].toString()} ${data[index]["end_Time"].toString()} '))) {
+            if (!pastMeetings.contains(data[index]["meeting_id"])) {
+              pastMeetings.add(data[index]);
+            }
+          } else {
+            if (!futureMeetings.contains(data[index]["meeting_id"])) {
+              futureMeetings.add(data[index]);
+            }
+          }
+        }
+
         isLoading.value = false;
         update();
       } catch (er) {

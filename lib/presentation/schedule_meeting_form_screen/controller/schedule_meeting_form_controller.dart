@@ -333,6 +333,8 @@ class ScheduleMeetingFormController extends GetxController {
 
   getRefreshMeetings() {
     final controller = Get.put(ScheduleController());
+    controller.futureMeetings = [];
+    controller.pastMeetings = [];
     controller.getJsonData();
   }
 

@@ -144,6 +144,8 @@ logout() async {
 setEmptyForMeetingList() {
   final controller = Get.put(ScheduleController());
   controller.data = [];
+  controller.futureMeetings = [];
+  controller.pastMeetings = [];
 }
 
 myMeetingScreen() {
