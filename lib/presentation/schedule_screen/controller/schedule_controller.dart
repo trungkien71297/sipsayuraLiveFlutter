@@ -84,6 +84,17 @@ class ScheduleController extends GetxController with StateMixin<dynamic> {
         update();
       }
       print("done");
+      pastMeetings.sort((a, b) => DateFormat("yyyy-MM-dd hh:mm")
+          .parse(
+              '${b["scheduled_at_Date"].toString()} ${b["end_Time"].toString()} ')
+          .compareTo(DateFormat("yyyy-MM-dd hh:mm").parse(
+              '${a["scheduled_at_Date"].toString()} ${a["end_Time"].toString()} ')));
+
+      futureMeetings.sort((a, b) => DateFormat("yyyy-MM-dd hh:mm")
+          .parse(
+              '${a["scheduled_at_Date"].toString()} ${a["end_Time"].toString()} ')
+          .compareTo(DateFormat("yyyy-MM-dd hh:mm").parse(
+              '${b["scheduled_at_Date"].toString()} ${b["end_Time"].toString()} ')));
       isLoading.value = false;
       update();
     }
