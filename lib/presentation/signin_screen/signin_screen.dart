@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:bbb_app/core/app_export.dart';
 import 'package:bbb_app/presentation/signin_screen/controller/signin_controller.dart';
@@ -6,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../schedule_screen/controller/schedule_controller.dart';
@@ -335,12 +338,20 @@ class SignInScreen extends GetWidget<Signup02Controller> {
    */
   void postDataLogin() async {
     controller.isLoading.value = true;
+
     try {
       final response = await post(Uri.parse(url), body: {
         "email": emailController.text,
         "password": passwordController.text
-      });
+      }).timeout(
+        const Duration(seconds: 5),
+        onTimeout: () => http.Response(
+          'timeout',
+          408,
+        ),
+      );
 
+      print(response.statusCode);
       switch (response.statusCode) {
         case 200:
           var parsedJson = json.decode(response.body);
@@ -387,7 +398,7 @@ class SignInScreen extends GetWidget<Signup02Controller> {
           break;
         case 400:
           Fluttertoast.showToast(
-              msg: "Bad Request.",
+              msg: "Email or Password is Incorrect!",
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
@@ -419,22 +430,59 @@ class SignInScreen extends GetWidget<Signup02Controller> {
           controller.isLoading.value = false;
           break;
         default:
-          controller.isLoading.value = false;
           toastunsuccessful();
+
+          controller.isLoading.value = false;
+
+          break;
       }
-
-      //print(response.body);
-
+    } on TimeoutException catch (err) {
+      Fluttertoast.showToast(
+          msg: "Request Timeout.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      controller.isLoading.value = false;
+      print(err);
+    } on HttpException catch (err) {
+      Fluttertoast.showToast(
+          msg: "Http error",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      controller.isLoading.value = false;
+      print(err);
+    } on SocketException catch (err) {
+      print(err);
+      Fluttertoast.showToast(
+          msg: "Error: Socket Exception.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      controller.isLoading.value = false;
     } catch (err) {
       print(err);
+      Fluttertoast.showToast(
+          msg: "Something went wrong please try again.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
       controller.isLoading.value = false;
     }
   }
 
-  /**
-   * toast message login
-   *
-   */
   void toastsuccessful() => Fluttertoast.showToast(
       msg: "Successfully Login!",
       toastLength: Toast.LENGTH_SHORT,
@@ -492,6 +540,17 @@ class SignInScreen extends GetWidget<Signup02Controller> {
   //   logindata.setString("paw", passwordController.text.toString());
   //   return saveToShared_Preferences();
   // }
+  onTimeout() {
+    Fluttertoast.showToast(
+        msg: "Request Timeout.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
+    controller.isLoading.value = false;
+  }
 
   getRefreshMeetings() {
     final controller = Get.put(ScheduleController());
@@ -503,6 +562,7 @@ class SignInScreen extends GetWidget<Signup02Controller> {
 
     //var save = logindata.getString("email").toString();
     //logindata.getString('email', email);
+    // ignore: deprecated_member_use
     return prefs.commit();
   }
 // saveToShared_Preferences()async {

@@ -1,4 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,7 +42,6 @@ class ScheduleController extends GetxController with StateMixin<dynamic> {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     getJsonData();
   }
@@ -60,26 +63,156 @@ class ScheduleController extends GetxController with StateMixin<dynamic> {
           "Access-Control-Allow-Methods": "GET, HEAD",
           "Access-Control-Allow-Credentials": "true",
           "authorization": "Bearer ${token}",
-        }, body: {});
+        }, body: {}).timeout(
+          const Duration(seconds: 10),
+          onTimeout: () => http.Response(
+            '[{"statusCode":"408"}]',
+            408,
+          ),
+          // throw TimeoutException('Connectiion timed out.');
+        );
         var convertDataToJson = jsonDecode(response.body) as List;
         data = convertDataToJson;
-        for (var index = 0; index < data.length; index++) {
-          if (new DateTime.now().isAfter(DateFormat("yyyy-MM-dd hh:mm").parse(
-              '${data[index]["scheduled_at_Date"].toString()} ${data[index]["end_Time"].toString()} '))) {
-            if (!pastMeetings.contains(data[index]["meeting_id"])) {
-              pastMeetings.add(data[index]);
+        switch (response.statusCode) {
+          case 200:
+            futureMeetings = [];
+            pastMeetings = [];
+            for (var index = 0; index < data.length; index++) {
+              if (new DateTime.now().isAfter(DateFormat("yyyy-MM-dd hh:mm").parse(
+                  '${data[index]["scheduled_at_Date"].toString()} ${data[index]["end_Time"].toString()} '))) {
+                if (!(pastMeetings.contains(data[index]["meeting_id"]))) {
+                  pastMeetings.add(data[index]);
+                }
+              } else {
+                if (!(futureMeetings.contains(data[index]["meeting_id"]))) {
+                  futureMeetings.add(data[index]);
+                }
+              }
             }
-          } else {
-            if (!futureMeetings.contains(data[index]["meeting_id"])) {
-              futureMeetings.add(data[index]);
-            }
-          }
+            break;
+          case 500:
+            Fluttertoast.showToast(
+                msg: "Internal Server Error.",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0);
+            isLoading.value = false;
+            break;
+          case 503:
+            Fluttertoast.showToast(
+                msg: "Service Unavailable.",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0);
+            isLoading.value = false;
+
+            break;
+          case 400:
+            Fluttertoast.showToast(
+                msg: "Email or Password is Incorrect!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0);
+            isLoading.value = false;
+            break;
+          case 404:
+            Fluttertoast.showToast(
+                msg: "The server can not find the requested resource.",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0);
+            isLoading.value = false;
+            break;
+          case 408:
+            Fluttertoast.showToast(
+                msg: "Request Timeout.",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0);
+            isLoading.value = false;
+            break;
+          default:
+            Fluttertoast.showToast(
+                msg: "Something went wrong",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0);
+            isLoading.value = false;
+            break;
         }
 
         isLoading.value = false;
         update();
-      } catch (er) {
-        print(er.toString());
+      }
+      // on OSError catch (err) {
+      //   print(err);
+      // } on TimeoutException catch (err) {
+      //   Fluttertoast.showToast(
+      //       msg: "Request Timeout.",
+      //       toastLength: Toast.LENGTH_SHORT,
+      //       gravity: ToastGravity.BOTTOM,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: Colors.red,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+      //   isLoading.value = false;
+      //   print(err);
+      // }
+      // on SocketException catch (err) {
+      //   print(err);
+      //   Fluttertoast.showToast(
+      //       msg: "Error: Socket Exception.",
+      //       toastLength: Toast.LENGTH_SHORT,
+      //       gravity: ToastGravity.BOTTOM,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: Colors.red,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+      //   isLoading.value = false;
+      // } on HttpException {
+      //   print("Couldn't find the related data");
+      // } on FormatException {
+      //   print("Bad response format");
+      // }
+      catch (err) {
+        if (err.toString().contains('SocketException')) {
+          Fluttertoast.showToast(
+              msg: "Error: Socket Exception.",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0);
+        } else if (err.toString().contains('TimeoutException')) {
+          Fluttertoast.showToast(
+              msg: "Error: Connection Time out.",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0);
+        }
+        print(err.toString());
         isLoading.value = false;
         update();
       }
