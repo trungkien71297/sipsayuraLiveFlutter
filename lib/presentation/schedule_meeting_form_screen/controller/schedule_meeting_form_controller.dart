@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -97,7 +98,7 @@ class ScheduleMeetingFormController extends GetxController {
         helpText: 'Select a Date for meeting',
         initialDate: selectedDate.value,
         firstDate: DateTime.now(),
-        lastDate: DateTime(2025));
+        lastDate: DateTime.now().add(Duration(days: 365)));
     if (pickedDate != null && pickedDate != selectedDate.value) {
       selectedDate.value = pickedDate;
       update();

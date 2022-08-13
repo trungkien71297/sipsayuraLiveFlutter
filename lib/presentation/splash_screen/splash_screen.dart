@@ -30,7 +30,7 @@ class Splashscreen extends GetWidget<SplashController> {
                   width: 180.0,
                 ),
                 Text(
-                  "Lets Meet Online",
+                  "Let\'s Meet Online",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
