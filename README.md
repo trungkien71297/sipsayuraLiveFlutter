@@ -3,11 +3,8 @@
 </p>
 
 <p align="center">
-    Now available as early access version on <a href="https://play.google.com/store/apps/details?id=edu.hm.cs.tape.bbb_app">Google Play</a>.
+    Let's Meet Online.</a>.
 </p>
-
-# LETMO APP
-Let's Meet Online.
 
 <!-- <p align="center">
     Now available as early access version on <a href="https://play.google.com/store/apps/details?id=edu.hm.cs.tape.bbb_app">Google Play</a>.
