@@ -344,11 +344,13 @@ class SignInScreen extends GetWidget<Signup02Controller> {
         "email": emailController.text,
         "password": passwordController.text
       }).timeout(
-        const Duration(seconds: 5),
+        Duration(seconds: 10),
         onTimeout: () => http.Response(
-          'timeout',
+          '[{"statusCode":"408"}]',
           408,
         ),
+        // throw TimeoutException('Connectiion time out.');
+        // throw ExceptionHandlers().getExceptionString(e);
       );
 
       print(response.statusCode);

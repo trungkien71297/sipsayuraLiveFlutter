@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:bbb_app/core/app_export.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
@@ -11,6 +12,8 @@ import 'controller/email_verify_controller.dart';
 class EmailveryScreen extends GetWidget<EmailveryController> {
   final TextEditingController _Sendotp = TextEditingController();
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+
+  ConnectivityResult result = ConnectivityResult.none;
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +120,7 @@ class EmailveryScreen extends GetWidget<EmailveryController> {
                             width: 150,
                             child: Obx(()=>ElevatedButton(
                               onPressed: () {
-                                postVerifyData();
+                                postVerifyData(context);
                               },
                               child: controller.isLoading.value
                                   ? Row(
@@ -190,7 +193,26 @@ class EmailveryScreen extends GetWidget<EmailveryController> {
   /**
    * verify email function
    */
-  void postVerifyData() async {
+  void postVerifyData(context) async {
+    result = await Connectivity().checkConnectivity();
+    if (result == ConnectivityResult.none) {
+      AwesomeDialog(
+        context: context,
+        animType: AnimType.LEFTSLIDE,
+        headerAnimationLoop: false,
+        dialogType: DialogType.ERROR,
+        showCloseIcon: false,
+        title: "Oops!",
+        desc: 'No Internet Connection found Check your connection',
+        btnOkOnPress: () {
+          // Navigator.pop(context);
+        },
+        btnOkIcon: Icons.check_circle,
+        onDissmissCallback: (type) {
+          debugPrint('Dialog Dismiss from callback $type');
+        },
+      ).show();
+    } else {
     controller.isLoading.value=true;
     await Future.delayed(const Duration(seconds: 2), (){});
     try {
@@ -201,7 +223,7 @@ class EmailveryScreen extends GetWidget<EmailveryController> {
       controller.isLoading.value=false;
       toastsuccessful();
       onTapBtnSignin();
-    } catch (err) {}
+    } catch (err) {}}
   }
 
   void toastsuccessful() => Fluttertoast.showToast(
