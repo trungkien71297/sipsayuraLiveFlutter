@@ -171,57 +171,62 @@ class ScheduleController extends GetxController with StateMixin<dynamic> {
 
         isLoading.value = false;
         update();
-      }
-      // on OSError catch (err) {
-      //   print(err);
-      // } on TimeoutException catch (err) {
-      //   Fluttertoast.showToast(
-      //       msg: "Request Timeout.",
-      //       toastLength: Toast.LENGTH_SHORT,
-      //       gravity: ToastGravity.BOTTOM,
-      //       timeInSecForIosWeb: 1,
-      //       backgroundColor: Colors.red,
-      //       textColor: Colors.white,
-      //       fontSize: 16.0);
-      //   isLoading.value = false;
-      //   print(err);
-      // }
-      // on SocketException catch (err) {
-      //   print(err);
-      //   Fluttertoast.showToast(
-      //       msg: "Error: Socket Exception.",
-      //       toastLength: Toast.LENGTH_SHORT,
-      //       gravity: ToastGravity.BOTTOM,
-      //       timeInSecForIosWeb: 1,
-      //       backgroundColor: Colors.red,
-      //       textColor: Colors.white,
-      //       fontSize: 16.0);
-      //   isLoading.value = false;
-      // } on HttpException {
-      //   print("Couldn't find the related data");
-      // } on FormatException {
-      //   print("Bad response format");
-      // }
-      catch (err) {
-        if (err.toString().contains('SocketException')) {
-          Fluttertoast.showToast(
-              msg: "Error: Socket Exception.",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16.0);
-        } else if (err.toString().contains('TimeoutException')) {
-          Fluttertoast.showToast(
-              msg: "Error: Connection Time out.",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16.0);
-        }
+      } on OSError catch (err) {
+        print(err);
+      } on TimeoutException catch (err) {
+        Fluttertoast.showToast(
+            msg: "Request Timeout.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        isLoading.value = false;
+        print(err);
+      } on SocketException catch (err) {
+        print(err);
+        Fluttertoast.showToast(
+            msg: "Error: Socket Exception.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        isLoading.value = false;
+      } on HttpException {
+        print("Couldn't find the related data");
+      } on FormatException {
+        print("Bad response format");
+      } catch (err) {
+        // if (err.toString().contains('SocketException')) {
+        //   Fluttertoast.showToast(
+        //       msg: "Error: Socket Exception.",
+        //       toastLength: Toast.LENGTH_SHORT,
+        //       gravity: ToastGravity.BOTTOM,
+        //       timeInSecForIosWeb: 1,
+        //       backgroundColor: Colors.red,
+        //       textColor: Colors.white,
+        //       fontSize: 16.0);
+        // } else if (err.toString().contains('TimeoutException')) {
+        //   Fluttertoast.showToast(
+        //       msg: "Error: Connection Time out.",
+        //       toastLength: Toast.LENGTH_SHORT,
+        //       gravity: ToastGravity.BOTTOM,
+        //       timeInSecForIosWeb: 1,
+        //       backgroundColor: Colors.red,
+        //       textColor: Colors.white,
+        //       fontSize: 16.0);
+        // }
+        Fluttertoast.showToast(
+            msg: "Error: Something went wrong.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
         print(err.toString());
         isLoading.value = false;
         update();

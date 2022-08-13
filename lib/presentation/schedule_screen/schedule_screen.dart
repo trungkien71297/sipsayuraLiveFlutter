@@ -1,4 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:bbb_app/presentation/schedule_screen/widgets/schedule_past_item_widget.dart';
 import 'package:intl/intl.dart';
 
 import '../nav_drawer_draweritem/controller/nav_drawer_controller.dart';
@@ -417,12 +418,13 @@ class ScheduleScreen extends GetWidget<ScheduleController> {
                                                                                 index) {
                                                                           return GestureDetector(
                                                                             onTap:
-                                                                                () {
-                                                                              controller.isPastListClicked(index);
-                                                                              onTapBtnjoin(context);
-                                                                            },
+                                                                                null,
+                                                                            //     () {
+                                                                            //   controller.isPastListClicked(index);
+                                                                            //   onTapBtnjoin(context);
+                                                                            // },
                                                                             child:
-                                                                                ScheduleItemWidget(
+                                                                                SchedulePastItemWidget(
                                                                               duration: controller.pastMeetings[index]["max_duration"].toString(),
                                                                               date: controller.pastMeetings[index]["scheduled_at_Date"].toString(),
                                                                               time: controller.pastMeetings[index]["scheduled_at_Time"].toString(),
