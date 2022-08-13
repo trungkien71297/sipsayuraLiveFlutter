@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../exceptions_handlers.dart';
 import '../models/schedule_item_model.dart';
 import '/core/app_export.dart';
 import 'package:bbb_app/presentation/schedule_screen/models/schedule_model.dart';
@@ -58,19 +61,25 @@ class ScheduleController extends GetxController with StateMixin<dynamic> {
       try {
         Uri url =
             Uri.parse("http://192.168.8.205:4000/meetings/getMeetingByUserID");
-        final response = await http.post(url, headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET, HEAD",
-          "Access-Control-Allow-Credentials": "true",
-          "authorization": "Bearer ${token}",
-        }, body: {}).timeout(
-          const Duration(seconds: 10),
-          onTimeout: () => http.Response(
-            '[{"statusCode":"408"}]',
-            408,
-          ),
-          // throw TimeoutException('Connectiion timed out.');
-        );
+        final response = await http
+            .post(url, headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "GET, HEAD",
+              "Access-Control-Allow-Credentials": "true",
+              "authorization": "Bearer ${token}",
+            }, body: {})
+            .timeout(
+              Duration(seconds: 10),
+              onTimeout: () => http.Response(
+                '[{"statusCode":"408"}]',
+                408,
+              ),
+              // throw TimeoutException('Connectiion time out.');
+              // throw ExceptionHandlers().getExceptionString(e);
+            )
+            .catchError((onError) {
+              print(onError);
+            });
         var convertDataToJson = jsonDecode(response.body) as List;
         data = convertDataToJson;
         switch (response.statusCode) {
@@ -145,6 +154,7 @@ class ScheduleController extends GetxController with StateMixin<dynamic> {
                 textColor: Colors.white,
                 fontSize: 16.0);
             isLoading.value = false;
+
             break;
           default:
             Fluttertoast.showToast(

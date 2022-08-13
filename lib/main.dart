@@ -18,22 +18,12 @@ Future main() async {
   /// Logging settings
   Log.allowVerbose = false;
   Log.allowDebug = true;
-
   runApp(
     ChangeNotifierProvider<AppStateNotifier>(
       create: (context) => AppStateNotifier(),
       child: MyApp(),
     ),
   );
-}
-
-bool isLoggedIn = false;
-
-void autoLogIn() async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  final String? email = prefs.getString('email');
-
-  print(email);
 }
 
 class MyApp extends StatelessWidget {
@@ -45,73 +35,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SplashScreen(),
-    );
-  }
-}
-
-class SplashScreen extends StatefulWidget {
-  @override
-  _SplashScreenState createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Timer(
-        Duration(seconds: 5),
-        () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => BBBApp())));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          // gradient: LinearGradient(
-          //   begin: Alignment.topRight,
-          //   end: Alignment.bottomLeft,
-          //   colo
-          // ),
-          color: Colors.lightBlueAccent,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Column(
-              children: [
-                Image.asset(
-                  "assets/images/letmo.png",
-                  height: 180.0,
-                  width: 180.0,
-                ),
-                Text(
-                  "Lets Meet Online",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18.0,
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                SpinKitThreeBounce(
-                  color: Colors.white,
-                  size: 30.0,
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+      home: BBBApp(),
     );
   }
 }
@@ -126,9 +50,9 @@ class BBBApp extends StatelessWidget {
         translations: AppLocalization(),
         locale: Get.deviceLocale, //for setting localization strings
         fallbackLocale: Locale('en', 'US'),
-        title: "LETMO",
+        title: "sipsayura_live",
         initialBinding: InitialBindings(),
-        initialRoute: AppRoutes.initialRoute,
+        initialRoute: AppRoutes.splashscreen,
         getPages: AppRoutes.pages,
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark().copyWith(
@@ -146,4 +70,8 @@ class BBBApp extends StatelessWidget {
       ),
     );
   }
+}
+
+onTapgodashboard() {
+  Get.toNamed(AppRoutes.dashboardScreen);
 }

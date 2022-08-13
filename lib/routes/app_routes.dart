@@ -28,34 +28,35 @@ import '../presentation/settings_screen/settings_screen.dart';
 import '../presentation/signin_screen/binding/signin_binding.dart';
 import '../presentation/signin_screen/signin_screen.dart';
 import '../presentation/signup_screen/binding/signup_binding.dart';
+import '../presentation/splash_screen/binding/splash_binding.dart';
+import '../presentation/splash_screen/splash_screen.dart';
 import '../src/view/join/binding/join_binding.dart';
 import '../src/view/join/join_view.dart';
 import '../src/view/start/binding/start_binding.dart';
 import '../src/view/start/start_view.dart';
 
-
 class AppRoutes {
   // static String joinMeetingScreen = '/join_meeting_screen';
 
-    static String signinScreen = '/signin_screen';
+  static String signinScreen = '/signin_screen';
 
-    static String profileScreen = '/profile_screen';
+  static String profileScreen = '/profile_screen';
 
-   static String signupScreen = '/signup_screen';
+  static String signupScreen = '/signup_screen';
 
-   static String scheduleScreen = '/schedule_screen';
+  static String scheduleScreen = '/schedule_screen';
 
-   static String passwordResetCodeScreen = '/password_reset_code_screen';
+  static String passwordResetCodeScreen = '/password_reset_code_screen';
 
-   static String emailVerifyScreen = '/email_verify_Screen';
+  static String emailVerifyScreen = '/email_verify_Screen';
 
-   static String dashboardScreen = '/dashboard_screen';
+  static String dashboardScreen = '/dashboard_screen';
 
-   static String newMeetingScreen = '/new_meeting_screen';
+  static String newMeetingScreen = '/new_meeting_screen';
 
-   static String joinScreen = '/join_screen';
+  static String joinScreen = '/join_screen';
 
-   static String joinMeetingScreen = '/join_meeting_screen';
+  static String joinMeetingScreen = '/join_meeting_screen';
   static String settingsScreen = '/settings_screen';
 
   static String scheduleMeetingForm = '/schedule_meeting_form_screen';
@@ -70,6 +71,8 @@ class AppRoutes {
 
   static String initialRoute = '/initialRoute';
 
+  static String splashscreen = '/splashscreen';
+
   static List<GetPage> pages = [
     // GetPage(
     //   name: joinMeetingScreen,
@@ -77,14 +80,14 @@ class AppRoutes {
     //   bindings: [
     //     JoinMeetingBinding(),
     //   ],
-   // ),
-     GetPage(
+    // ),
+    GetPage(
       name: signinScreen,
       page: () => SignInScreen(),
       bindings: [
         SignInBinding(),
-       ],
-     ),
+      ],
+    ),
     GetPage(
       name: signupScreen,
       page: () => SignUpScreen(),
@@ -93,7 +96,6 @@ class AppRoutes {
       ],
     ),
 
-
     GetPage(
       name: passwordResetCodeScreen,
       page: () => PasswordResetcodeScreen(),
@@ -101,8 +103,6 @@ class AppRoutes {
         PasswordResetcodeBinding(),
       ],
     ),
-
-
 
     GetPage(
       name: scheduleMeetingForm,
@@ -205,6 +205,14 @@ class AppRoutes {
       page: () => OnboardingScreen(),
       bindings: [
         OnboardingBinding(),
+      ],
+    ),
+
+    GetPage(
+      name: splashscreen,
+      page: () => Splashscreen(),
+      bindings: [
+        splashBinding(),
       ],
     ),
 
