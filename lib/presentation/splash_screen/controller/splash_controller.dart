@@ -27,12 +27,22 @@ class SplashController extends GetxController with StateMixin<dynamic> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? currentemail = prefs.getString('user_email');
 
-    Timer(Duration(seconds: 5),
-        () => Get.to((currentemail == null ? login() : dashboard())));
+    Timer(Duration(seconds: 5), () => checkPreferences(currentemail));
+    //Get.to((currentemail == null ? login() : dashboard())));
+
     //   if (currentemail != null) {
-    //     Dashboard();
+    //     dashboard();
     //   } else {
-    //     login();     }
+    //     login();
+    // }
+  }
+}
+
+checkPreferences(currentemail) {
+  if (currentemail != null) {
+    dashboard();
+  } else {
+    login();
   }
 }
 
