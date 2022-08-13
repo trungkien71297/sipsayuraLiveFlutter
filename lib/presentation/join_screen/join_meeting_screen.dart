@@ -617,7 +617,7 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
         title: "Oops!",
         desc: 'No Internet Connection found Check your connection',
         btnOkOnPress: () {
-          Navigator.pop(context);
+          // Navigator.pop(context);
         },
         btnOkIcon: Icons.check_circle,
         onDissmissCallback: (type) {
