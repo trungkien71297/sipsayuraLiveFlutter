@@ -109,18 +109,14 @@ class ScheduleMeetingFormScreen
                                     },
                                     controller: controller.topictxtController,
                                     decoration: InputDecoration(
-                                      suffixIcon: Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 15.0),
-                                        child: IconButton(
-                                          icon: controller.topictxtController
-                                                  .text.isEmpty
-                                              ? SizedBox()
-                                              : Icon(Icons.clear),
-                                          onPressed: () => controller
-                                              .topictxtController
-                                              .clear(),
-                                        ),
+                                      suffixIcon: IconButton(
+                                        icon: controller
+                                                .topictxtController.text.isEmpty
+                                            ? SizedBox()
+                                            : Icon(Icons.clear),
+                                        onPressed: () => controller
+                                            .topictxtController
+                                            .clear(),
                                       ),
                                       labelText: "Topic",
                                       // hintText: controller.userName,
@@ -224,13 +220,12 @@ class ScheduleMeetingFormScreen
                                                       7.00,
                                                     ),
                                                   ),
-                                                  child: Obx(() => Text(
-                                                        DateFormat("dd-MM-yyyy")
-                                                            .format(controller
-                                                                .selectedDate
-                                                                .value)
-                                                            .toString(),
-                                                      )),
+                                                  child: Text(
+                                                    DateFormat("dd-MM-yyyy")
+                                                        .format(controller
+                                                            .selectedDate.value)
+                                                        .toString(),
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -325,20 +320,16 @@ class ScheduleMeetingFormScreen
                                           controller: controller
                                               .participantstxtController,
                                           decoration: InputDecoration(
-                                            suffixIcon: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 15.0),
-                                              child: IconButton(
-                                                icon: controller
-                                                        .participantstxtController
-                                                        .text
-                                                        .isEmpty
-                                                    ? SizedBox()
-                                                    : Icon(Icons.clear),
-                                                onPressed: () => controller
-                                                    .participantstxtController
-                                                    .clear(),
-                                              ),
+                                            suffixIcon: IconButton(
+                                              icon: controller
+                                                      .participantstxtController
+                                                      .text
+                                                      .isEmpty
+                                                  ? SizedBox()
+                                                  : Icon(Icons.clear),
+                                              onPressed: () => controller
+                                                  .participantstxtController
+                                                  .clear(),
                                             ),
                                             labelText: "Participants",
                                             labelStyle: TextStyle(
@@ -1395,7 +1386,7 @@ class ScheduleMeetingFormScreen
               controller.selectedDate.value.day,
               controller.selectedStartTime.value.hour,
               controller.selectedStartTime.value.minute)
-          .isBefore(new DateTime.now().subtract(Duration(minutes: 1)))) {
+          .isBefore(new DateTime.now())) {
         Fluttertoast.showToast(
             msg: "Can't create a meeting in past.",
             toastLength: Toast.LENGTH_SHORT,
