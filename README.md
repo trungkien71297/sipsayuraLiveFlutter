@@ -1,8 +1,15 @@
 <p align="center">
-    <img src="assets/icon/android/icon.png" width="200">
+    <img src="assets/logo.png" width="200">
 </p>
 
 <p align="center">
+    Now available as early access version on <a href="https://play.google.com/store/apps/details?id=edu.hm.cs.tape.bbb_app">Google Play</a>.
+</p>
+
+# LETMO APP
+Let's Meet Online.
+
+<!-- <p align="center">
     Now available as early access version on <a href="https://play.google.com/store/apps/details?id=edu.hm.cs.tape.bbb_app">Google Play</a>.
 </p>
 
@@ -71,4 +78,4 @@ When changing the application icon, you will need to run:
 flutter pub run flutter_launcher_icons:main
 ```
 
-which will update the necessary files for Android and iOS.
+which will update the necessary files for Android and iOS. -->
