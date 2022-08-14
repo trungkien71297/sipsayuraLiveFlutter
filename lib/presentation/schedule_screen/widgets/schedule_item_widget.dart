@@ -34,7 +34,6 @@ class ScheduleItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Align(
       alignment: Alignment.center,
       child: Container(
@@ -64,16 +63,17 @@ class ScheduleItemWidget extends StatelessWidget {
             leading: Text(time + '\n' + date),
             title: Text(meetingName),
             subtitle: Text('Meeting ID: ' + meetingID),
-            trailing: ElevatedButton(
-              onPressed: () => {
-                onTapBtnjoin(context)
-              },
-              child: const Text(
-                'Start',
-                style: TextStyle(fontSize: 18.0),
+            trailing: SizedBox(
+              width: MediaQuery.of(context).size.width / 5,
+              child: ElevatedButton(
+                onPressed: () => {onTapBtnjoin(context)},
+                child: const Text(
+                  'Start',
+                  style: TextStyle(fontSize: 18.0),
+                ),
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.lightBlueAccent, shape: StadiumBorder()),
               ),
-              style: ElevatedButton.styleFrom(
-                  primary: Colors.lightBlueAccent, shape: StadiumBorder()),
             ),
             isThreeLine: true,
           ),
@@ -104,20 +104,20 @@ class ScheduleItemWidget extends StatelessWidget {
     } else {
       final controller = Get.put(JoinMeetingController());
       AwesomeDialog(
-          context: context,
-          dialogType: DialogType.QUESTION,
-          animType: AnimType.BOTTOMSLIDE,
-          title: 'Start Meeting',
-          desc: 'Do you want to start the meeting?',
-          dismissOnBackKeyPress: false,
-          useRootNavigator: true,
-          btnCancelOnPress: () {},
-          btnOkOnPress: () {
-            // controller.joinMeeting();
-          },
-          btnOkColor: Colors.lightBlueAccent,
-          btnOkText: "Yes",
-          btnCancelText: "No")
+              context: context,
+              dialogType: DialogType.QUESTION,
+              animType: AnimType.BOTTOMSLIDE,
+              title: 'Start Meeting',
+              desc: 'Do you want to start the meeting?',
+              dismissOnBackKeyPress: false,
+              useRootNavigator: true,
+              btnCancelOnPress: () {},
+              btnOkOnPress: () {
+                // controller.joinMeeting();
+              },
+              btnOkColor: Colors.lightBlueAccent,
+              btnOkText: "Yes",
+              btnCancelText: "No")
           .show();
     }
   }

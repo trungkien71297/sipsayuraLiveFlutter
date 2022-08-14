@@ -59,10 +59,12 @@ class SignInScreen extends GetWidget<Signup02Controller> {
       backgroundColor: ColorConstant.whiteA700,
       appBar: new AppBar(
         backgroundColor: Colors.lightBlueAccent,
-        leading: Obx(()=>IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: controller.isLoading.value?null:() => Navigator.of(context).pop(),
-        )),
+        leading: Obx(() => IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.black),
+              onPressed: controller.isLoading.value
+                  ? null
+                  : () => Navigator.of(context).pop(),
+            )),
         title: RichText(
             text: TextSpan(children: [
               TextSpan(
@@ -270,17 +272,19 @@ class SignInScreen extends GetWidget<Signup02Controller> {
                           Row(
                             children: <Widget>[
                               const Text('Forgot Password '),
-                              Obx(()=>TextButton(
-                                child: const Text(
-                                  'Reset',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.lightBlueAccent),
-                                ),
-                                onPressed:controller.isLoading.value?null: () {
-                                  onTapforgotpassword();
-                                },
-                              )),
+                              Obx(() => TextButton(
+                                    child: const Text(
+                                      'Reset',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.lightBlueAccent),
+                                    ),
+                                    onPressed: controller.isLoading.value
+                                        ? null
+                                        : () {
+                                            onTapforgotpassword();
+                                          },
+                                  )),
                             ],
                             mainAxisAlignment: MainAxisAlignment.center,
                           ),

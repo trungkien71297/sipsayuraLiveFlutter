@@ -124,18 +124,9 @@ class DashboardScreen extends GetWidget<DashboardController> {
                                                       .size
                                                       .width /
                                                   6),
-                                          // padding: EdgeInsets.all(8.0),
                                           child: Row(
-                                              // mainAxisAlignment:
-                                              // MainAxisAlignment
-                                              //     .spaceBetween,
-                                              // crossAxisAlignment:
-                                              // CrossAxisAlignment.start,
-                                              // mainAxisSize: MainAxisSize.max,
                                               children: [
                                                 Container(
-                                                    // width: getHorizontalSize(
-                                                    //     174.00),
                                                     width:
                                                         MediaQuery.of(context)
                                                                 .size
@@ -299,23 +290,25 @@ class DashboardScreen extends GetWidget<DashboardController> {
                                                                 25.00),
                                                             right: getHorizontalSize(
                                                                 10.00)),
-                                                        child: Container(
-                                                            alignment: Alignment
-                                                                .center,
-                                                            height: getVerticalSize(
-                                                                23.08),
-                                                            width: getHorizontalSize(
-                                                                50.00),
-                                                            decoration: AppDecoration
-                                                                .textstylenunitosemibold92,
-                                                            child: Text(
-                                                                "lbl_add".tr,
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .left,
-                                                                style: AppStyle
-                                                                    .textstylenunitosemibold92
-                                                                    .copyWith(fontSize: getFontSize(15)))))),
+                                                        child: SizedBox(
+                                                          width: MediaQuery.of(context).size.width / 4,
+                                                          child: ElevatedButton(
+                                                            style: ElevatedButton.styleFrom(
+                                                              shape: RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius.circular(
+                                                                  getHorizontalSize(
+                                                                    10.00,
+                                                                  ),
+                                                                ), // <-- Radius
+                                                              ),
+                                                              primary: Colors.lightBlueAccent,
+                                                            ),
+                                                            onPressed: () {
+                                                            },
+                                                            child: Text("lbl_add".tr),
+                                                          ),
+                                                        )
+                                                    )),
                                               ])))
                                 ]))))),
           ]),

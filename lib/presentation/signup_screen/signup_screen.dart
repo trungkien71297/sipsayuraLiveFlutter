@@ -31,10 +31,12 @@ class SignUpScreen extends GetWidget<Signup04Controller> {
             backgroundColor: ColorConstant.whiteA700,
             appBar: new AppBar(
               backgroundColor: Colors.lightBlueAccent,
-              leading: Obx(()=>IconButton(
-                icon: Icon(Icons.arrow_back, color: Colors.black),
-                onPressed: controller.isLoading.value?null:() => Navigator.of(context).pop(),
-              )),
+              leading: Obx(() => IconButton(
+                    icon: Icon(Icons.arrow_back, color: Colors.black),
+                    onPressed: controller.isLoading.value
+                        ? null
+                        : () => Navigator.of(context).pop(),
+                  )),
               title: RichText(
                   text: TextSpan(children: [
                     TextSpan(
@@ -466,6 +468,7 @@ class SignUpScreen extends GetWidget<Signup04Controller> {
             // Navigator.pop(context);
           },
           btnOkIcon: Icons.check_circle,
+          btnOkColor: Colors.lightBlueAccent,
           onDissmissCallback: (type) {
             debugPrint('Dialog Dismiss from callback $type');
           },
@@ -497,9 +500,7 @@ class SignUpScreen extends GetWidget<Signup04Controller> {
         // throw TimeoutException('Connectiion time out.');
         // throw ExceptionHandlers().getExceptionString(e);
       );
-      // print(response.body);
       var responseText = jsonDecode(response.body);
-      // print(response.statusCode.toString());
       controller.isLoading.value = false;
       if (responseText["message"] ==
           "Email and Phone number is already registered.") {
@@ -518,9 +519,7 @@ class SignUpScreen extends GetWidget<Signup04Controller> {
       } else if (responseText["message"].contains('Can\'t send mail')) {
         toastEmailNotValid();
         // controller.isEmailValid.value=false;
-      }
-      else
-      {
+      } else {
         switch (response.statusCode) {
           case 200:
             controller.isLoading.value = false;
@@ -588,9 +587,7 @@ class SignUpScreen extends GetWidget<Signup04Controller> {
             controller.isLoading.value = false;
             break;
         }
-
       }
-
     } on TimeoutException catch (err) {
       Fluttertoast.showToast(
           msg: "Request Timeout.",
@@ -601,7 +598,6 @@ class SignUpScreen extends GetWidget<Signup04Controller> {
           textColor: Colors.white,
           fontSize: 16.0);
       controller.isLoading.value = false;
-      print(err);
     } on HttpException catch (err) {
       Fluttertoast.showToast(
           msg: "Http error",
@@ -612,9 +608,7 @@ class SignUpScreen extends GetWidget<Signup04Controller> {
           textColor: Colors.white,
           fontSize: 16.0);
       controller.isLoading.value = false;
-      print(err);
     } on SocketException catch (err) {
-      print(err);
       Fluttertoast.showToast(
           msg: "Error: Socket Exception.",
           toastLength: Toast.LENGTH_SHORT,
@@ -625,7 +619,6 @@ class SignUpScreen extends GetWidget<Signup04Controller> {
           fontSize: 16.0);
       controller.isLoading.value = false;
     } catch (err) {
-      print(err);
       Fluttertoast.showToast(
           msg: "Something went wrong please try again.",
           toastLength: Toast.LENGTH_SHORT,

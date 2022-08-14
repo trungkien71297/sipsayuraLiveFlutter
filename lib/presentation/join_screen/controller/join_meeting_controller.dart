@@ -404,26 +404,28 @@ class JoinMeetingController extends GetxController {
     try {
       Uri url = Uri.parse(
           "http://192.168.8.205:4000/meetings/deleteMeeting/${getMeetingId()}");
-      final response = await http.delete(
-        url,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET, HEAD",
-          "Access-Control-Allow-Credentials": "true",
-          "authorization": "Bearer ${token}",
-        },
-      ).timeout(
-        Duration(seconds: 10),
-        onTimeout: () => http.Response(
-          '[{"statusCode":"408"}]',
-          408,
-        ),
-        // throw TimeoutException('Connectiion time out.');
-        // throw ExceptionHandlers().getExceptionString(e);
-      )
+      final response = await http
+          .delete(
+            url,
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "GET, HEAD",
+              "Access-Control-Allow-Credentials": "true",
+              "authorization": "Bearer ${token}",
+            },
+          )
+          .timeout(
+            Duration(seconds: 10),
+            onTimeout: () => http.Response(
+              '[{"statusCode":"408"}]',
+              408,
+            ),
+            // throw TimeoutException('Connectiion time out.');
+            // throw ExceptionHandlers().getExceptionString(e);
+          )
           .catchError((onError) {
-        print(onError);
-      });
+            print(onError);
+          });
       switch (response.statusCode) {
         case 200:
           print(response.body);
@@ -572,7 +574,7 @@ class JoinMeetingController extends GetxController {
       update();
     }
     print("done");
-    isLoading2.value= false;
+    isLoading2.value = false;
     update();
   }
 

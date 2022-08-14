@@ -26,8 +26,7 @@ class OnboardingScreen extends GetWidget<OnboardingController> {
               exit(0);
             },
             btnOkText: "Yes",
-            btnCancelText:"No"
-        );
+            btnCancelText: "No");
 
         await dlg.show();
 
@@ -41,188 +40,142 @@ class OnboardingScreen extends GetWidget<OnboardingController> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Padding(
+                Padding(
+                    padding: EdgeInsets.only(
+                        left: getHorizontalSize(10.00),
+                        top: getVerticalSize(100.00),
+                        right: getHorizontalSize(10.00)),
+                    child: Text("lbl_start_a_meeting".tr,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.left,
+                        style: AppStyle.textstylenunitosemibold132
+                            .copyWith(fontSize: getFontSize(25)))),
+                Padding(
+                    padding: EdgeInsets.only(
+                        left: getHorizontalSize(10.00),
+                        top: getVerticalSize(3.00),
+                        right: getHorizontalSize(10.00)),
+                    child: Text("msg_or_join_a_meeti".tr,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.left,
+                        style: AppStyle.textstylenunitolight10
+                            .copyWith(fontSize: getFontSize(15)))),
+                Padding(
+                    padding: EdgeInsets.only(
+                        left: getHorizontalSize(10.00),
+                        top: getVerticalSize(35.00),
+                        right: getHorizontalSize(10.00)),
+                    child: Image.asset(ImageConstant.imgVector39,
+                        height: getVerticalSize(130.00),
+                        width: getHorizontalSize(131.00),
+                        fit: BoxFit.scaleDown)),
+                Padding(
+                    padding: EdgeInsets.only(
+                        left: getHorizontalSize(10.00),
+                        top: getVerticalSize(60.00),
+                        right: getHorizontalSize(10.00)),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              getHorizontalSize(
+                                10.00,
+                              ),
+                            ), // <-- Radius
+                          ),
+                          primary: Colors.lightBlueAccent,
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => StartView()),
+                          );
+                        },
+                        child: Text("lbl_join_meeting".tr),
+                      ),
+                    )),
+                Align(
+                    alignment: Alignment.center,
+                    child: Padding(
                         padding: EdgeInsets.only(
-                            left: getHorizontalSize(10.00),
-                            top: getVerticalSize(100.00),
-                            right: getHorizontalSize(10.00)),
-                        child: Text("lbl_start_a_meeting".tr,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.left,
-                            style: AppStyle.textstylenunitosemibold132
-                                .copyWith(
-                                fontSize: getFontSize(25)))),
-                    Padding(
-                        padding: EdgeInsets.only(
-                            left: getHorizontalSize(10.00),
-                            top: getVerticalSize(3.00),
-                            right: getHorizontalSize(10.00)),
-                        child: Text("msg_or_join_a_meeti".tr,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.left,
-                            style: AppStyle.textstylenunitolight10
-                                .copyWith(
-                                fontSize: getFontSize(15)))),
-                    Padding(
-                        padding: EdgeInsets.only(
-                            left: getHorizontalSize(10.00),
-                            top: getVerticalSize(35.00),
-                            right: getHorizontalSize(10.00)),
-                        child: Image.asset(ImageConstant.imgVector39,
-                            height: getVerticalSize(130.00),
-                            width: getHorizontalSize(131.00),
-                            fit: BoxFit.scaleDown)),
-                    Padding(
-                        padding: EdgeInsets.only(
-                            left: getHorizontalSize(10.00),
-                            top: getVerticalSize(60.00),
-                            right: getHorizontalSize(10.00)),
-                        child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => StartView()),
-                              );
-                            },
-                            child: Container(
-                                alignment: Alignment.center,
-                                height: getVerticalSize(30.00),
-                                width: getHorizontalSize(117.00),
-                                decoration: AppDecoration
-                                    .textstylenunitosemibold10,
-                                child: Text("lbl_join_meeting".tr,
-                                    textAlign: TextAlign.left,
-                                    style: AppStyle
-                                        .textstylenunitosemibold10
-                                        .copyWith(
-                                        fontSize:
-                                        getFontSize(15)))))),
-                    Align(
-                        alignment: Alignment.center,
-                        child: Padding(
-                            padding: EdgeInsets.only(
-                                top: getVerticalSize(50.00),
-                                bottom: getVerticalSize(25.00)),
-                            child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.end,
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: GestureDetector(
-                                          onTap: () {
-                                            onTapBtnSignup();
-                                          },
-                                          child: Container(
-                                              alignment:
-                                              Alignment.center,
-                                              height: getVerticalSize(
-                                                  24.00),
-                                              // width:
-                                              // getHorizontalSize(
-                                              //     52.00),
-                                              width: MediaQuery.of(context).size.width / 5,
-                                              decoration: AppDecoration
-                                                  .textstylenunitosemibold92,
-                                              child: Text(
-                                                  "lbl_sign_up".tr,
-                                                  textAlign:
-                                                  TextAlign.left,
-                                                  style: AppStyle
-                                                      .textstylenunitosemibold92
-                                                      .copyWith(
-                                                      fontSize:
-                                                      getFontSize(
-                                                          14)))))),
-                                  Container(
-                                      height: getVerticalSize(0.50),
-                                      // width: getHorizontalSize(8.25),
-                                      width: MediaQuery.of(context).size.width / 12,
-                                      margin: EdgeInsets.all(8.0),
-                                      // EdgeInsets.only(
-                                      //     left: getHorizontalSize(
-                                      //         14.00),
-                                      //     top: getVerticalSize(12.00),
-                                      //     bottom:
-                                      //     getVerticalSize(11.50)),
-                                      decoration: BoxDecoration(
-                                          color: ColorConstant
-                                              .black900)),
-                                  Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      // EdgeInsets.only(
-                                      //     left: getHorizontalSize(
-                                      //         1),
-                                      //     right: getHorizontalSize(
-                                      //         1),
-                                      // ),
-                                      child: Text("lbl_or".tr,
-                                          overflow:
-                                          TextOverflow.ellipsis,
-                                          textAlign: TextAlign.left,
-                                          style: AppStyle
-                                              .textstylemontserratbold6
-                                              .copyWith(
-                                              fontSize:
-                                              getFontSize(
-                                                  8)))),
-                                  Container(
-                                      height: getVerticalSize(0.50),
-                                      // width: getHorizontalSize(8.25),
-                                      width: MediaQuery.of(context).size.width / 12,
-                                      margin: EdgeInsets.all(8.0),
-                                      // EdgeInsets.only(
-                                      //     left:
-                                      //     getHorizontalSize(3.44),
-                                      //     top: getVerticalSize(12.00),
-                                      //     bottom:
-                                      //     getVerticalSize(11.50)),
-                                      decoration: BoxDecoration(
-                                          color: ColorConstant
-                                              .black900)),
-                                  Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Column(
-                                          mainAxisSize:
-                                          MainAxisSize.min,
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment
-                                              .start,
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                          children: [
-                                            GestureDetector(
-                                                onTap: () {
-                                                  onTapBtnSignin();
-                                                },
-                                                child: Container(
-                                                    alignment:
-                                                    Alignment.center,
-                                                    height: getVerticalSize(
-                                                        24.00),
-                                                    // width:
-                                                    // getHorizontalSize(
-                                                    //     52.00),
-                                                    width: MediaQuery.of(context).size.width/5,
-                                                    decoration: AppDecoration
-                                                        .textstylenunitosemibold92,
-                                                    child: Text(
-                                                        "lbl_sign_in".tr,
-                                                        textAlign:
-                                                        TextAlign.left,
-                                                        style: AppStyle
-                                                            .textstylenunitosemibold92
-                                                            .copyWith(
-                                                            fontSize:
-                                                            getFontSize(
-                                                                14))))),
-                                          ]))
-                                ])))
-                  ]))),
+                            top: getVerticalSize(50.00),
+                            bottom: getVerticalSize(25.00)),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: SizedBox(
+                                  // height: 40,
+                                  width:
+                                      MediaQuery.of(context).size.width * 2 / 8,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                          getHorizontalSize(
+                                            10.00,
+                                          ),
+                                        ), // <-- Radius
+                                      ),
+                                      primary: Colors.lightBlueAccent,
+                                    ),
+                                    onPressed: () {
+                                      onTapBtnSignup();
+                                    },
+                                    child: Text("lbl_sign_up".tr),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                  height: getVerticalSize(0.50),
+                                  width: MediaQuery.of(context).size.width / 12,
+                                  margin: EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                      color: ColorConstant.black900)),
+                              Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text("lbl_or".tr,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.left,
+                                      style: AppStyle.textstylemontserratbold6
+                                          .copyWith(fontSize: getFontSize(8)))),
+                              Container(
+                                  height: getVerticalSize(0.50),
+                                  width: MediaQuery.of(context).size.width / 12,
+                                  margin: EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                      color: ColorConstant.black900)),
+                              Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        2 /
+                                        8,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            getHorizontalSize(
+                                              10.00,
+                                            ),
+                                          ), // <-- Radius
+                                        ),
+                                        primary: Colors.lightBlueAccent,
+                                      ),
+                                      onPressed: () {
+                                        onTapBtnSignin();
+                                      },
+                                      child: Text("lbl_sign_in".tr),
+                                    ),
+                                  ))
+                            ])))
+              ]))),
     );
   }
 
@@ -233,6 +186,7 @@ class OnboardingScreen extends GetWidget<OnboardingController> {
   onTapBtnSignup() {
     Get.toNamed(AppRoutes.signupScreen);
   }
+
   onTapBtnSignin() {
     Get.toNamed(AppRoutes.signinScreen);
   }

@@ -91,8 +91,10 @@ class ScheduleController extends GetxController with StateMixin<dynamic> {
               // print(DateFormat("yyyy-MM-dd HH:mm").parse(
               //     '${data[index]["scheduled_at_Date"].toString()} ${data[index]["end_Time"].toString()}'));
               print(DateTime.now().toString());
-              if (new DateFormat("yyyy-MM-dd HH:mm").parse(
-                  '${data[index]["scheduled_at_Date"].toString()} ${data[index]["end_Time"].toString()}').isAfter(DateTime.now())) {
+              if (new DateFormat("yyyy-MM-dd HH:mm")
+                  .parse(
+                      '${data[index]["scheduled_at_Date"].toString()} ${data[index]["end_Time"].toString()}')
+                  .isAfter(DateTime.now())) {
                 // if (!(pastMeetings.contains(data[index]["meeting_id"]))) {
                 //   pastMeetings.add(data[index]);
                 // }

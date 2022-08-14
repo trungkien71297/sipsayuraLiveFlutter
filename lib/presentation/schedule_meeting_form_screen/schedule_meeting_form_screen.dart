@@ -157,7 +157,8 @@ class ScheduleMeetingFormScreen
                           ),
                           Padding(
                             padding: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width / 8,
+                              left: MediaQuery.of(context).size.width *1.2/ 8,
+                              right: MediaQuery.of(context).size.width / 13,
                               top: getVerticalSize(
                                 4.00,
                               ),
@@ -514,7 +515,6 @@ class ScheduleMeetingFormScreen
                                                                               child: Obx(
                                                                                 () => Text(
                                                                                   DateFormat.jm().format(DateTime(controller.selectedDate.value.year, controller.selectedDate.value.month, controller.selectedDate.value.day, controller.selectedStartTime.value.hour, controller.selectedStartTime.value.minute)).toString(),
-
                                                                                 ),
                                                                               ),
                                                                               // child: Text(
