@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:bbb_app/presentation/schedule_screen/widgets/schedule_past_item_widget.dart';
 import 'package:intl/intl.dart';
 
+import '../join_screen/controller/join_meeting_controller.dart';
 import '../nav_drawer_draweritem/controller/nav_drawer_controller.dart';
 import '../nav_drawer_draweritem/nav_drawer_draweritem.dart';
 import '../schedule_meeting_form_screen/controller/schedule_meeting_form_controller.dart';
@@ -237,8 +238,8 @@ class ScheduleScreen extends GetWidget<ScheduleController> {
                                                                               ),
                                                                             );
                                                                           },
-                                                                        ),
-                                                                ),
+
+                                                                ),),
                                                               ),
                                                       ],
                                                     ),
@@ -568,6 +569,8 @@ class ScheduleScreen extends GetWidget<ScheduleController> {
         },
       ).show();
     } else {
+      final controller = Get.put(JoinMeetingController());
+      controller.getJsonData();
       Get.toNamed(AppRoutes.joinMeetingScreen);
     }
   }

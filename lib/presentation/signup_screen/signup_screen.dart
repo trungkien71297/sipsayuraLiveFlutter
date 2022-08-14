@@ -31,10 +31,10 @@ class SignUpScreen extends GetWidget<Signup04Controller> {
             backgroundColor: ColorConstant.whiteA700,
             appBar: new AppBar(
               backgroundColor: Colors.lightBlueAccent,
-              leading: IconButton(
+              leading: Obx(()=>IconButton(
                 icon: Icon(Icons.arrow_back, color: Colors.black),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
+                onPressed: controller.isLoading.value?null:() => Navigator.of(context).pop(),
+              )),
               title: RichText(
                   text: TextSpan(children: [
                     TextSpan(
@@ -499,6 +499,7 @@ class SignUpScreen extends GetWidget<Signup04Controller> {
       );
       // print(response.body);
       var responseText = jsonDecode(response.body);
+      // print(response.statusCode.toString());
       controller.isLoading.value = false;
       if (responseText["message"] ==
           "Email and Phone number is already registered.") {

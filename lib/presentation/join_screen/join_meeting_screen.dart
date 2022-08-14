@@ -48,7 +48,7 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
         ),
         body:
             GetBuilder<JoinMeetingController>(builder: (JoinMeetingController) {
-          return Container(
+          return Obx(()=>Container(
             alignment: Alignment.center,
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
@@ -63,10 +63,12 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                               child: CircularProgressIndicator())),
                     )
                   : Container(
+
                       child: Column(
                         // mainAxisSize: MainAxisSize.min,
                         // crossAxisAlignment: CrossAxisAlignment.center,
-                        // mainAxisAlignment: MainAxisAlignment.start,
+                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
                         children: [
                           Container(
                             margin: EdgeInsets.only(
@@ -81,15 +83,18 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                               ),
                             ),
                             decoration: BoxDecoration(
-                              color: ColorConstant.black9007f,
-                              borderRadius: BorderRadius.circular(
-                                getHorizontalSize(
-                                  4.00,
+                              borderRadius: BorderRadius.circular(5.0),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0.0, 1.0), //(x,y)
+                                  blurRadius: 6.0,
                                 ),
-                              ),
+                              ],
                             ),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisSize: MainAxisSize.max,
                               children: [
@@ -109,12 +114,14 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                     "lbl_topic".tr,
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.left,
-                                    style: AppStyle.textstylenunitosemibold10
-                                        .copyWith(
-                                      fontSize: getFontSize(
-                                        10,
-                                      ),
-                                    ),
+                                    style: TextStyle(color: Colors.black,
+                                        // AppStyle.textstylenunitosemibold10
+                                        //     .copyWith(
+                                        //   fontSize: getFontSize(
+                                        //     10,
+                                        //   ),
+                                        fontSize: 15.0, fontWeight: FontWeight.w500,
+                                        ),
                                   ),
                                 ),
                                 Padding(
@@ -122,8 +129,8 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                     top: getVerticalSize(
                                       9.00,
                                     ),
-                                    right: getHorizontalSize(
-                                      22.00,
+                                    left: getHorizontalSize(
+                                      60.00,
                                     ),
                                     bottom: getVerticalSize(
                                       6.00,
@@ -136,12 +143,13 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                         .replaceAll('%27', '\''),
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.right,
-                                    style: AppStyle.textstylenunitosemibold10
-                                        .copyWith(
-                                      fontSize: getFontSize(
-                                        10,
-                                      ),
-                                    ),
+                                    style: TextStyle(color: Colors.blueGrey
+                                        // AppStyle.textstylenunitosemibold10
+                                        //     .copyWith(
+                                        //   fontSize: getFontSize(
+                                        //     10,
+                                        //   ),
+                                        ),
                                   ),
                                 ),
                               ],
@@ -153,22 +161,25 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                 9.00,
                               ),
                               top: getVerticalSize(
-                                2.00,
+                                5.00,
                               ),
                               right: getHorizontalSize(
                                 9.00,
                               ),
                             ),
                             decoration: BoxDecoration(
-                              color: ColorConstant.black9007f,
-                              borderRadius: BorderRadius.circular(
-                                getHorizontalSize(
-                                  4.00,
+                              borderRadius: BorderRadius.circular(5.0),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0.0, 1.0), //(x,y)
+                                  blurRadius: 6.0,
                                 ),
-                              ),
+                              ],
                             ),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisSize: MainAxisSize.max,
                               children: [
@@ -188,11 +199,14 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                     "lbl_when".tr,
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.left,
-                                    style: AppStyle.textstylenunitosemibold10
-                                        .copyWith(
-                                      fontSize: getFontSize(
-                                        10,
-                                      ),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15.0, fontWeight: FontWeight.w500,
+                                      // style: AppStyle.textstylenunitosemibold10
+                                      //     .copyWith(
+                                      //   fontSize: getFontSize(
+                                      //     10,
+                                      //   ),
                                     ),
                                   ),
                                 ),
@@ -201,8 +215,8 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                     top: getVerticalSize(
                                       8.00,
                                     ),
-                                    right: getHorizontalSize(
-                                      22.00,
+                                    left: getHorizontalSize(
+                                      60.00,
                                     ),
                                     bottom: getVerticalSize(
                                       7.00,
@@ -212,12 +226,13 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                     "${controller.apiResponse["scheduled_at_Date"].toString()}  ${controller.apiResponse["scheduled_at_Time"].toString()}",
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.right,
-                                    style: AppStyle.textstylenunitosemibold10
-                                        .copyWith(
-                                      fontSize: getFontSize(
-                                        10,
-                                      ),
-                                    ),
+                                    style: TextStyle(color: Colors.blueGrey
+                                        // style: AppStyle.textstylenunitosemibold10
+                                        //     .copyWith(
+                                        //   fontSize: getFontSize(
+                                        //     10,
+                                        //   ),
+                                        ),
                                   ),
                                 ),
                               ],
@@ -229,22 +244,25 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                 9.00,
                               ),
                               top: getVerticalSize(
-                                2.00,
+                                  5.00,
                               ),
                               right: getHorizontalSize(
                                 9.00,
                               ),
                             ),
                             decoration: BoxDecoration(
-                              color: ColorConstant.black9007f,
-                              borderRadius: BorderRadius.circular(
-                                getHorizontalSize(
-                                  4.00,
+                              borderRadius: BorderRadius.circular(5.0),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0.0, 1.0), //(x,y)
+                                  blurRadius: 6.0,
                                 ),
-                              ),
+                              ],
                             ),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisSize: MainAxisSize.max,
                               children: [
@@ -264,11 +282,14 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                     "lbl_meeting_id".tr,
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.left,
-                                    style: AppStyle.textstylenunitosemibold10
-                                        .copyWith(
-                                      fontSize: getFontSize(
-                                        10,
-                                      ),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15.0, fontWeight: FontWeight.w500,
+                                    // style: AppStyle.textstylenunitosemibold10
+                                    //     .copyWith(
+                                    //   fontSize: getFontSize(
+                                    //     10,
+                                    //   ),
                                     ),
                                   ),
                                 ),
@@ -277,8 +298,8 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                     top: getVerticalSize(
                                       7.00,
                                     ),
-                                    right: getHorizontalSize(
-                                      22.00,
+                                    left: getHorizontalSize(
+                                      40.00,
                                     ),
                                     bottom: getVerticalSize(
                                       8.00,
@@ -289,11 +310,12 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                         .toString(),
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.right,
-                                    style: AppStyle.textstylenunitosemibold10
-                                        .copyWith(
-                                      fontSize: getFontSize(
-                                        10,
-                                      ),
+                                    style: TextStyle(color: Colors.blueGrey
+                                    // style: AppStyle.textstylenunitosemibold10
+                                    //     .copyWith(
+                                    //   fontSize: getFontSize(
+                                    //     10,
+                                    //   ),
                                     ),
                                   ),
                                 ),
@@ -306,22 +328,25 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                 9.00,
                               ),
                               top: getVerticalSize(
-                                2.00,
+                                  5.00,
                               ),
                               right: getHorizontalSize(
                                 9.00,
                               ),
                             ),
                             decoration: BoxDecoration(
-                              color: ColorConstant.black9007f,
-                              borderRadius: BorderRadius.circular(
-                                getHorizontalSize(
-                                  4.00,
+                              borderRadius: BorderRadius.circular(5.0),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0.0, 1.0), //(x,y)
+                                  blurRadius: 6.0,
                                 ),
-                              ),
+                              ],
                             ),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisSize: MainAxisSize.max,
                               children: [
@@ -341,11 +366,14 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                     "lbl_duration".tr,
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,
-                                    style: AppStyle.textstylenunitosemibold10
-                                        .copyWith(
-                                      fontSize: getFontSize(
-                                        10,
-                                      ),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15.0, fontWeight: FontWeight.w500,
+                                    // style: AppStyle.textstylenunitosemibold10
+                                    //     .copyWith(
+                                    //   fontSize: getFontSize(
+                                    //     10,
+                                    //   ),
                                     ),
                                   ),
                                 ),
@@ -354,8 +382,8 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                     top: getVerticalSize(
                                       7.00,
                                     ),
-                                    right: getHorizontalSize(
-                                      22.00,
+                                    left: getHorizontalSize(
+                                      50.00,
                                     ),
                                     bottom: getVerticalSize(
                                       8.00,
@@ -367,11 +395,12 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                         " mins",
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.right,
-                                    style: AppStyle.textstylenunitosemibold10
-                                        .copyWith(
-                                      fontSize: getFontSize(
-                                        10,
-                                      ),
+                                    style: TextStyle(color: Colors.blueGrey
+                                    // style: AppStyle.textstylenunitosemibold10
+                                    //     .copyWith(
+                                    //   fontSize: getFontSize(
+                                    //     10,
+                                    //   ),
                                     ),
                                   ),
                                 ),
@@ -384,22 +413,25 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                 9.00,
                               ),
                               top: getVerticalSize(
-                                2.00,
+                                  5.00,
                               ),
                               right: getHorizontalSize(
                                 9.00,
                               ),
                             ),
                             decoration: BoxDecoration(
-                              color: ColorConstant.black9007f,
-                              borderRadius: BorderRadius.circular(
-                                getHorizontalSize(
-                                  4.00,
+                              borderRadius: BorderRadius.circular(5.0),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0.0, 1.0), //(x,y)
+                                  blurRadius: 6.0,
                                 ),
-                              ),
+                              ],
                             ),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisSize: MainAxisSize.max,
                               children: [
@@ -419,11 +451,14 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                     "lbl_passcode_1".tr,
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,
-                                    style: AppStyle.textstylenunitosemibold10
-                                        .copyWith(
-                                      fontSize: getFontSize(
-                                        10,
-                                      ),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15.0, fontWeight: FontWeight.w500,
+                                    // style: AppStyle.textstylenunitosemibold10
+                                    //     .copyWith(
+                                    //   fontSize: getFontSize(
+                                    //     10,
+                                    //   ),
                                     ),
                                   ),
                                 ),
@@ -432,8 +467,8 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                     top: getVerticalSize(
                                       8.00,
                                     ),
-                                    right: getHorizontalSize(
-                                      22.00,
+                                    left: getHorizontalSize(
+                                      45.00,
                                     ),
                                     bottom: getVerticalSize(
                                       7.00,
@@ -444,11 +479,12 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                         .toString(),
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.right,
-                                    style: AppStyle.textstylenunitosemibold10
-                                        .copyWith(
-                                      fontSize: getFontSize(
-                                        10,
-                                      ),
+                                    style: TextStyle(color: Colors.blueGrey
+                                    // style: AppStyle.textstylenunitosemibold10
+                                    //     .copyWith(
+                                    //   fontSize: getFontSize(
+                                    //     10,
+                                    //   ),
                                     ),
                                   ),
                                 ),
@@ -471,23 +507,7 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                               onTap: () {
                                 onTapBtnStart(context);
                               },
-                              child: controller.isLoading1.value
-                                  ? Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(
-                                          height: 10.0,
-                                          width: 10.0,
-                                          child: CircularProgressIndicator(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        Text("Please wait",
-                                            style: TextStyle(fontSize: 16))
-                                      ],
-                                    )
-                                  : Container(
+                              child: Container(
                                       alignment: Alignment.center,
                                       height: getVerticalSize(
                                         30.00,
@@ -497,7 +517,27 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                       ),
                                       decoration: AppDecoration
                                           .textstylenunitosemibold10,
-                                      child: Text(
+                                      child: controller.isLoading1.value?Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          SizedBox(
+                                            height: 10.0,
+                                            width: 10.0,
+                                            child: CircularProgressIndicator(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          Text("Please wait",
+                                            style: AppStyle
+                                                .textstylenunitosemibold101
+                                                .copyWith(
+                                              fontSize: getFontSize(
+                                                10,
+                                              ),
+                                            ),)
+                                        ],
+                                      ):Text(
                                         "lbl_start_now".tr,
                                         textAlign: TextAlign.center,
                                         style: AppStyle
@@ -599,7 +639,7 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                       ),
                     ),
             ),
-          );
+          ));
         }),
       ),
     );
@@ -695,8 +735,8 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
 
   getRefreshMeetings() {
     final controller = Get.put(ScheduleController());
-    controller.futureMeetings = [];
-    controller.pastMeetings = [];
+    // controller.futureMeetings = [];
+    // controller.pastMeetings = [];
     controller.getJsonData();
   }
 

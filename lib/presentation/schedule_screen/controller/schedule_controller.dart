@@ -19,23 +19,23 @@ class ScheduleController extends GetxController with StateMixin<dynamic> {
   ConnectivityResult result = ConnectivityResult.none;
 
   var isInternetOn = false.obs;
-  late bool isUpcomingMeetingListClicked;
+  // late bool isUpcomingMeetingListClicked;
 
   var clickedIndex = 0;
 
   void isUpcomingListClicked(int? value) {
-    isUpcomingMeetingListClicked = true;
+    // isUpcomingMeetingListClicked = true;
     clickedIndex = value!;
-    print(clickedIndex);
     update();
+    print(clickedIndex);
   }
 
-  void isPastListClicked(int? value) {
-    isUpcomingMeetingListClicked = false;
-    clickedIndex = value!;
-    print(clickedIndex);
-    update();
-  }
+  // void isPastListClicked(int? value) {
+  //   isUpcomingMeetingListClicked = false;
+  //   clickedIndex = value!;
+  //   print(clickedIndex);
+  //   update();
+  // }
 
   var meetings = <ScheduleItemModel>[].obs;
   var data = [];
@@ -87,15 +87,23 @@ class ScheduleController extends GetxController with StateMixin<dynamic> {
             futureMeetings = [];
             pastMeetings = [];
             for (var index = 0; index < data.length; index++) {
-              if (new DateTime.now().isAfter(DateFormat("yyyy-MM-dd hh:mm").parse(
-                  '${data[index]["scheduled_at_Date"].toString()} ${data[index]["end_Time"].toString()} '))) {
-                if (!(pastMeetings.contains(data[index]["meeting_id"]))) {
-                  pastMeetings.add(data[index]);
-                }
+              // print('${data[index]["scheduled_at_Date"].toString()} ${data[index]["end_Time"].toString()}');
+              // print(DateFormat("yyyy-MM-dd HH:mm").parse(
+              //     '${data[index]["scheduled_at_Date"].toString()} ${data[index]["end_Time"].toString()}'));
+              print(DateTime.now().toString());
+              if (new DateFormat("yyyy-MM-dd HH:mm").parse(
+                  '${data[index]["scheduled_at_Date"].toString()} ${data[index]["end_Time"].toString()}').isAfter(DateTime.now())) {
+                // if (!(pastMeetings.contains(data[index]["meeting_id"]))) {
+                //   pastMeetings.add(data[index]);
+                // }
+                futureMeetings.add(data[index]);
+                // pastMeetings.add(data[index]);
               } else {
-                if (!(futureMeetings.contains(data[index]["meeting_id"]))) {
-                  futureMeetings.add(data[index]);
-                }
+                // if (!(futureMeetings.contains(data[index]["meeting_id"]))) {
+                //   futureMeetings.add(data[index]);
+                // }
+                pastMeetings.add(data[index]);
+                // futureMeetings.add(data[index]);
               }
             }
             break;

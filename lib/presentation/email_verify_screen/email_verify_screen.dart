@@ -1,8 +1,12 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:bbb_app/core/app_export.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import '../../core/utils/color_constant.dart';
 import '../../core/utils/math_utils.dart';
 import 'package:flutter/material.dart';
@@ -135,7 +139,7 @@ class EmailveryScreen extends GetWidget<EmailveryController> {
                                     ),
                                   ),
 
-                                  Text("Please waite", style:
+                                  Text("Please wait", style:
                                   TextStyle(fontSize: 16,color: Colors.white))
                                 ],
 
@@ -188,7 +192,7 @@ class EmailveryScreen extends GetWidget<EmailveryController> {
     );
   }
 
-  final url = "http://192.168.8.175/accounts/verify-email";
+  final url = "http://192.168.8.205/accounts/verify-email";
 
   /**
    * verify email function
@@ -214,16 +218,135 @@ class EmailveryScreen extends GetWidget<EmailveryController> {
       ).show();
     } else {
     controller.isLoading.value=true;
-    await Future.delayed(const Duration(seconds: 2), (){});
     try {
       final response = await post(Uri.parse(url), body: {
         "token":_Sendotp.text
-      });
-      print(response.body);
-      controller.isLoading.value=false;
-      toastsuccessful();
-      onTapBtnSignin();
-    } catch (err) {}}
+      }).timeout(
+        Duration(seconds: 10),
+        onTimeout: () => http.Response(
+          '[{"statusCode":"408"}]',
+          408,
+        ),
+        // throw TimeoutException('Connectiion time out.');
+        // throw ExceptionHandlers().getExceptionString(e);
+      );
+          print(response.statusCode);
+          controller.isLoading.value=false;
+          toastsuccessful();
+          onTapBtnSignin();
+      // switch (response.statusCode) {
+      //   case 200:
+      //     print(response.body);
+      //     controller.isLoading.value=false;
+      //     toastsuccessful();
+      //     onTapBtnSignin();
+      //     break;
+      //   case 500:
+      //     Fluttertoast.showToast(
+      //         msg: "Internal Server Error.",
+      //         toastLength: Toast.LENGTH_SHORT,
+      //         gravity: ToastGravity.BOTTOM,
+      //         timeInSecForIosWeb: 1,
+      //         backgroundColor: Colors.red,
+      //         textColor: Colors.white,
+      //         fontSize: 16.0);
+      //     controller.isLoading.value = false;
+      //     break;
+      //   case 503:
+      //     Fluttertoast.showToast(
+      //         msg: "Service Unavailable.",
+      //         toastLength: Toast.LENGTH_SHORT,
+      //         gravity: ToastGravity.BOTTOM,
+      //         timeInSecForIosWeb: 1,
+      //         backgroundColor: Colors.red,
+      //         textColor: Colors.white,
+      //         fontSize: 16.0);
+      //     controller.isLoading.value = false;
+      //
+      //     break;
+      //   case 400:
+      //     Fluttertoast.showToast(
+      //         msg: "Email or Password is Incorrect!",
+      //         toastLength: Toast.LENGTH_SHORT,
+      //         gravity: ToastGravity.BOTTOM,
+      //         timeInSecForIosWeb: 1,
+      //         backgroundColor: Colors.red,
+      //         textColor: Colors.white,
+      //         fontSize: 16.0);
+      //     controller.isLoading.value = false;
+      //     break;
+      //   case 404:
+      //     Fluttertoast.showToast(
+      //         msg: "The server can not find the requested resource.",
+      //         toastLength: Toast.LENGTH_SHORT,
+      //         gravity: ToastGravity.BOTTOM,
+      //         timeInSecForIosWeb: 1,
+      //         backgroundColor: Colors.red,
+      //         textColor: Colors.white,
+      //         fontSize: 16.0);
+      //     controller.isLoading.value = false;
+      //     break;
+      //   case 408:
+      //     Fluttertoast.showToast(
+      //         msg: "Request Timeout.",
+      //         toastLength: Toast.LENGTH_SHORT,
+      //         gravity: ToastGravity.BOTTOM,
+      //         timeInSecForIosWeb: 1,
+      //         backgroundColor: Colors.red,
+      //         textColor: Colors.white,
+      //         fontSize: 16.0);
+      //     controller.isLoading.value = false;
+      //     break;
+      //   default:
+      //     toastUnsuccessful();
+      //     controller.isLoading.value = false;
+      //     break;
+      // }
+    } on TimeoutException catch (err) {
+      Fluttertoast.showToast(
+          msg: "Request Timeout.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      controller.isLoading.value = false;
+      print(err);
+    } on HttpException catch (err) {
+      Fluttertoast.showToast(
+          msg: "Http error",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      controller.isLoading.value = false;
+      print(err);
+    } on SocketException catch (err) {
+      print(err);
+      Fluttertoast.showToast(
+          msg: "Error: Socket Exception.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      controller.isLoading.value = false;
+    } catch (err) {
+      print(err);
+      Fluttertoast.showToast(
+          msg: "Something went wrong please try again.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      controller.isLoading.value = false;
+    }}
   }
 
   void toastsuccessful() => Fluttertoast.showToast(
@@ -232,6 +355,15 @@ class EmailveryScreen extends GetWidget<EmailveryController> {
       gravity: ToastGravity.TOP,
       timeInSecForIosWeb: 4,
       backgroundColor: Colors.green,
+      textColor: Colors.white,
+      fontSize: 16.0);
+
+  void toastUnsuccessful() => Fluttertoast.showToast(
+      msg: "Email verification failed.",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 2,
+      backgroundColor: Colors.red,
       textColor: Colors.white,
       fontSize: 16.0);
 

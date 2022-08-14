@@ -65,7 +65,9 @@ class ScheduleItemWidget extends StatelessWidget {
             title: Text(meetingName),
             subtitle: Text('Meeting ID: ' + meetingID),
             trailing: ElevatedButton(
-              onPressed: () => {onTapBtnjoin(context)},
+              onPressed: () => {
+                onTapBtnjoin(context)
+              },
               child: const Text(
                 'Start',
                 style: TextStyle(fontSize: 18.0),
@@ -111,7 +113,7 @@ class ScheduleItemWidget extends StatelessWidget {
           useRootNavigator: true,
           btnCancelOnPress: () {},
           btnOkOnPress: () {
-            controller.joinMeeting();
+            // controller.joinMeeting();
           },
           btnOkColor: Colors.lightBlueAccent,
           btnOkText: "Yes",
