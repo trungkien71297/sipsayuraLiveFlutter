@@ -513,7 +513,8 @@ class ScheduleMeetingFormScreen
                                                                               ),
                                                                               child: Obx(
                                                                                 () => Text(
-                                                                                  DateFormat('HH:mm').format(DateTime(controller.selectedDate.value.year, controller.selectedDate.value.month, controller.selectedDate.value.day, controller.selectedStartTime.value.hour, controller.selectedStartTime.value.minute)).toString(),
+                                                                                  DateFormat.jm().format(DateTime(controller.selectedDate.value.year, controller.selectedDate.value.month, controller.selectedDate.value.day, controller.selectedStartTime.value.hour, controller.selectedStartTime.value.minute)).toString(),
+
                                                                                 ),
                                                                               ),
                                                                               // child: Text(
@@ -644,7 +645,7 @@ class ScheduleMeetingFormScreen
                                                                               ),
                                                                               child: Obx(
                                                                                 () => Text(
-                                                                                  DateFormat('HH:mm').format(DateTime(controller.selectedDate.value.year, controller.selectedDate.value.month, controller.selectedDate.value.day, controller.selectedEndTime.value.hour, controller.selectedEndTime.value.minute)).toString(),
+                                                                                  DateFormat.jm().format(DateTime(controller.selectedDate.value.year, controller.selectedDate.value.month, controller.selectedDate.value.day, controller.selectedEndTime.value.hour, controller.selectedEndTime.value.minute)).toString(),
                                                                                 ),
                                                                               ),
                                                                               // child: Text(

@@ -232,14 +232,15 @@ class ScheduleScreen extends GetWidget<ScheduleController> {
                                                                               child: ScheduleItemWidget(
                                                                                 duration: controller.futureMeetings[index]["max_duration"].toString(),
                                                                                 date: controller.futureMeetings[index]["scheduled_at_Date"].toString(),
-                                                                                time: controller.futureMeetings[index]["scheduled_at_Time"].toString(),
+                                                                                // time: controller.futureMeetings[index]["scheduled_at_Time"].toString(),
+                                                                                time: DateFormat.jm().format(DateFormat("yyyy-MM-dd HH:mm").parse('${controller.futureMeetings[index]["scheduled_at_Date"].toString()} ${controller.futureMeetings[index]["scheduled_at_Time"].toString()}')).toString(),
                                                                                 meetingID: controller.futureMeetings[index]["meeting_id"].toString(),
                                                                                 meetingName: controller.futureMeetings[index]["name"].toString().replaceAll('%20', ' ').replaceAll('%27', '\''),
                                                                               ),
                                                                             );
                                                                           },
-
-                                                                ),),
+                                                                        ),
+                                                                ),
                                                               ),
                                                       ],
                                                     ),
@@ -428,7 +429,8 @@ class ScheduleScreen extends GetWidget<ScheduleController> {
                                                                                 SchedulePastItemWidget(
                                                                               duration: controller.pastMeetings[index]["max_duration"].toString(),
                                                                               date: controller.pastMeetings[index]["scheduled_at_Date"].toString(),
-                                                                              time: controller.pastMeetings[index]["scheduled_at_Time"].toString(),
+                                                                              // time: controller.pastMeetings[index]["scheduled_at_Time"].toString(),
+                                                                              time: DateFormat.jm().format(DateFormat("yyyy-MM-dd HH:mm").parse('${controller.pastMeetings[index]["scheduled_at_Date"].toString()} ${controller.pastMeetings[index]["scheduled_at_Time"].toString()}')).toString(),
                                                                               meetingID: controller.pastMeetings[index]["meeting_id"].toString(),
                                                                               meetingName: controller.pastMeetings[index]["name"].toString().replaceAll('%20', ' ').replaceAll('%27', '\''),
                                                                             ),

@@ -223,7 +223,8 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                     ),
                                   ),
                                   child: Text(
-                                    "${controller.apiResponse["scheduled_at_Date"].toString()}  ${controller.apiResponse["scheduled_at_Time"].toString()}",
+                                    // '${controller.apiResponse["scheduled_at_Date"].toString()}  ${controller.apiResponse["scheduled_at_Time"].toString()}',
+                                    DateFormat.yMd().add_jm().format(DateFormat("yyyy-MM-dd HH:mm").parse('${controller.apiResponse["scheduled_at_Date"].toString()} ${controller.apiResponse["scheduled_at_Time"].toString()}')).toString(),
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.right,
                                     style: TextStyle(color: Colors.blueGrey
