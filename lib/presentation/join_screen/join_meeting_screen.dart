@@ -503,53 +503,92 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                 10.00,
                               ),
                             ),
-                            child: GestureDetector(
-                              onTap: () {
-                                onTapBtnStart(context);
-                              },
-                              child: Container(
-                                      alignment: Alignment.center,
-                                      height: getVerticalSize(
-                                        30.00,
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width / 2,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      getHorizontalSize(
+                                        10.00,
                                       ),
-                                      width: getHorizontalSize(
-                                        117.00,
-                                      ),
-                                      decoration: AppDecoration
-                                          .textstylenunitosemibold10,
-                                      child: controller.isLoading1.value?Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          SizedBox(
-                                            height: 10.0,
-                                            width: 10.0,
-                                            child: CircularProgressIndicator(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          Text("Please wait",
-                                            style: AppStyle
-                                                .textstylenunitosemibold101
-                                                .copyWith(
-                                              fontSize: getFontSize(
-                                                10,
-                                              ),
-                                            ),)
-                                        ],
-                                      ):Text(
-                                        "lbl_start_now".tr,
-                                        textAlign: TextAlign.center,
-                                        style: AppStyle
-                                            .textstylenunitosemibold101
-                                            .copyWith(
-                                          fontSize: getFontSize(
-                                            10,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                    ), // <-- Radius
+                                  ),
+                                  primary: Colors.lightBlueAccent,
+                                ),
+                                onPressed: () {
+                                  onTapBtnStart(context);
+                                },
+                                child: controller.isLoading1.value?Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                SizedBox(
+                                                  height: 10.0,
+                                                  width: 10.0,
+                                                  child: CircularProgressIndicator(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                Text("Please wait",
+                                                  style: AppStyle
+                                                      .textstylenunitosemibold101
+                                                      .copyWith(
+                                                    fontSize: getFontSize(
+                                                      10,
+                                                    ),
+                                                  ),)
+                                              ],
+                                            ):Text("lbl_start_now".tr),
+                              ),
                             ),
+                            // child: GestureDetector(
+                            //   onTap: () {
+                            //     onTapBtnStart(context);
+                            //   },
+                            //   child: Container(
+                            //           alignment: Alignment.center,
+                            //           height: getVerticalSize(
+                            //             30.00,
+                            //           ),
+                            //           width: getHorizontalSize(
+                            //             117.00,
+                            //           ),
+                            //           decoration: AppDecoration
+                            //               .textstylenunitosemibold10,
+                            //           child: controller.isLoading1.value?Row(
+                            //             mainAxisAlignment:
+                            //             MainAxisAlignment.spaceEvenly,
+                            //             children: [
+                            //               SizedBox(
+                            //                 height: 10.0,
+                            //                 width: 10.0,
+                            //                 child: CircularProgressIndicator(
+                            //                   color: Colors.white,
+                            //                 ),
+                            //               ),
+                            //               Text("Please wait",
+                            //                 style: AppStyle
+                            //                     .textstylenunitosemibold101
+                            //                     .copyWith(
+                            //                   fontSize: getFontSize(
+                            //                     10,
+                            //                   ),
+                            //                 ),)
+                            //             ],
+                            //           ):Text(
+                            //             "lbl_start_now".tr,
+                            //             textAlign: TextAlign.center,
+                            //             style: AppStyle
+                            //                 .textstylenunitosemibold101
+                            //                 .copyWith(
+                            //               fontSize: getFontSize(
+                            //                 10,
+                            //               ),
+                            //             ),
+                            //           ),
+                            //         ),
+                            // ),
                           ),
                           Padding(
                             padding: EdgeInsets.only(
@@ -563,32 +602,71 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                 10.00,
                               ),
                             ),
-                            child: GestureDetector(
-                              onTap: () {
-                                onTapBtnShare();
-                              },
-                              child: Container(
-                                alignment: Alignment.center,
-                                height: getVerticalSize(
-                                  30.00,
-                                ),
-                                width: getHorizontalSize(
-                                  117.00,
-                                ),
-                                decoration:
-                                    AppDecoration.textstylenunitosemibold10,
-                                child: Text(
-                                  "lbl_invite".tr,
-                                  textAlign: TextAlign.center,
-                                  style: AppStyle.textstylenunitosemibold101
-                                      .copyWith(
-                                    fontSize: getFontSize(
-                                      10,
-                                    ),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width / 2,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      getHorizontalSize(
+                                        10.00,
+                                      ),
+                                    ), // <-- Radius
                                   ),
+                                  primary: Colors.lightBlueAccent,
                                 ),
+                                onPressed: () {
+                                  onTapBtnShare();
+                                },
+                                child: controller.isLoading1.value?Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SizedBox(
+                                      height: 10.0,
+                                      width: 10.0,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Text("Please wait",
+                                      style: AppStyle
+                                          .textstylenunitosemibold101
+                                          .copyWith(
+                                        fontSize: getFontSize(
+                                          10,
+                                        ),
+                                      ),)
+                                  ],
+                                ):Text("lbl_invite".tr,),
                               ),
                             ),
+                            // child: GestureDetector(
+                            //   onTap: () {
+                            //     onTapBtnShare();
+                            //   },
+                            //   child: Container(
+                            //     alignment: Alignment.center,
+                            //     height: getVerticalSize(
+                            //       30.00,
+                            //     ),
+                            //     width: getHorizontalSize(
+                            //       117.00,
+                            //     ),
+                            //     decoration:
+                            //         AppDecoration.textstylenunitosemibold10,
+                            //     child: Text(
+                            //       "lbl_invite".tr,
+                            //       textAlign: TextAlign.center,
+                            //       style: AppStyle.textstylenunitosemibold101
+                            //           .copyWith(
+                            //         fontSize: getFontSize(
+                            //           10,
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
                           ),
                           Padding(
                             padding: EdgeInsets.only(
@@ -605,35 +683,74 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                 22.00,
                               ),
                             ),
-                            child: GestureDetector(
-                              onTap: () {
-                                onTapBtnDelete(context);
-                              },
-                              child: Obx(() => Container(
-                                    alignment: Alignment.center,
-                                    height: getVerticalSize(
-                                      30.00,
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width / 2,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      getHorizontalSize(
+                                        10.00,
+                                      ),
+                                    ), // <-- Radius
+                                  ),
+                                  primary: Colors.red,
+                                ),
+                                onPressed: () {
+                                  onTapBtnDelete(context);
+                                },
+                                child: controller.isLoading2.value?Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SizedBox(
+                                      height: 10.0,
+                                      width: 10.0,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                    width: getHorizontalSize(
-                                      117.00,
-                                    ),
-                                    decoration: AppDecoration
-                                        .textstylenunitosemibold1011,
-                                    child: controller.isLoading2.value
-                                        ? CircularProgressIndicator()
-                                        : Text(
-                                            "lbl_delete".tr,
-                                            textAlign: TextAlign.center,
-                                            style: AppStyle
-                                                .textstylenunitosemibold101
-                                                .copyWith(
-                                              fontSize: getFontSize(
-                                                10,
-                                              ),
-                                            ),
-                                          ),
-                                  )),
+                                    Text("Please wait",
+                                      style: AppStyle
+                                          .textstylenunitosemibold101
+                                          .copyWith(
+                                        fontSize: getFontSize(
+                                          10,
+                                        ),
+                                      ),)
+                                  ],
+                                ):Text("lbl_delete".tr,),
+                              ),
                             ),
+                            // child: GestureDetector(
+                            //   onTap: () {
+                            //     onTapBtnDelete(context);
+                            //   },
+                            //   child: Obx(() => Container(
+                            //         alignment: Alignment.center,
+                            //         height: getVerticalSize(
+                            //           30.00,
+                            //         ),
+                            //         width: getHorizontalSize(
+                            //           117.00,
+                            //         ),
+                            //         decoration: AppDecoration
+                            //             .textstylenunitosemibold1011,
+                            //         child: controller.isLoading2.value
+                            //             ? CircularProgressIndicator()
+                            //             : Text(
+                            //                 "lbl_delete".tr,
+                            //                 textAlign: TextAlign.center,
+                            //                 style: AppStyle
+                            //                     .textstylenunitosemibold101
+                            //                     .copyWith(
+                            //                   fontSize: getFontSize(
+                            //                     10,
+                            //                   ),
+                            //                 ),
+                            //               ),
+                            //       )),
+                            // ),
                           ),
                         ],
                       ),
