@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -50,9 +51,9 @@ class ScheduleMeetingFormController extends GetxController {
   var apiResponse = "".obs;
 
   var selectedDate = DateTime.now().obs;
-  var selectedStartTime = TimeOfDay.now().obs;
+  var selectedStartTime = TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 1))).obs;
   var selectedEndTime =
-      TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 30))).obs;
+      TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 31))).obs;
 
   String generatePassword({
     bool letter = true,
@@ -108,7 +109,7 @@ class ScheduleMeetingFormController extends GetxController {
   chooseStartTime() async {
     TimeOfDay? pickedTime = await showTimePicker(
       context: Get.context!,
-      initialTime: TimeOfDay.now(),
+      initialTime: TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 1))),
       // builder: (context, childWidget) {
       //   return MediaQuery(
       //       data: MediaQuery.of(context).copyWith(
@@ -228,7 +229,7 @@ class ScheduleMeetingFormController extends GetxController {
     isLoading.value = true;
     print(token);
     try {
-      Uri url = Uri.parse("http://192.168.8.205:4000/meetings/createMeeting");
+      Uri url = Uri.parse("http://${dotenv.env['ip_address']}:4000/meetings/createMeeting");
       final response = await http.post(url, headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, HEAD",
@@ -239,16 +240,12 @@ class ScheduleMeetingFormController extends GetxController {
             .replaceAll(' ', '%20')
             .replaceAll('\'', '%27'),
         'attend_pw': passcodeController.text,
-        // 'max_participant':
-        //     selectedPartcipantCount.value.replaceAll(RegExp("[]"), ""),
         'max_participant': participantstxtController.text,
-        // 'max_duration':
-        //     (selectedDuration.value.replaceAll(RegExp("[ Minutes]"), "")),
-        // 'max_duration': duration.value,
         'start_date':
             DateFormat("yyyy-MM-dd").format(selectedDate.value).toString(),
         'selected_start_time':
             "${selectedStartTime.value.hour}:${selectedStartTime.value.minute}",
+        'current_time':DateTime.now().toString(),
         'selected_end_time':
             "${selectedEndTime.value.hour}:${selectedEndTime.value.minute}",
         'auto_start_recording': isAutoRecordingState.toString(),

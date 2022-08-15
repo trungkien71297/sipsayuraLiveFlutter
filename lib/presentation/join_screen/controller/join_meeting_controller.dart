@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -62,7 +63,7 @@ class JoinMeetingController extends GetxController {
     late String token = prefs.getString("Token")!;
     try {
       Uri url =
-          Uri.parse("http://192.168.8.205:4000/join/info/${getMeetingId()}");
+          Uri.parse("http://${dotenv.env['ip_address']}:4000/join/info/${getMeetingId()}");
       final response = await http
           .post(url, headers: {
             "Access-Control-Allow-Origin": "*",
@@ -232,7 +233,7 @@ class JoinMeetingController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     late String token = prefs.getString("Token")!;
     try {
-      Uri url = Uri.parse("http://192.168.8.205:4000/join/${getMeetingId()}");
+      Uri url = Uri.parse("http://${dotenv.env['ip_address']}:4000/join/${getMeetingId()}");
       final response = await http
           .post(url, headers: {
             "Access-Control-Allow-Origin": "*",
@@ -403,7 +404,7 @@ class JoinMeetingController extends GetxController {
     late String token = prefs.getString("Token")!;
     try {
       Uri url = Uri.parse(
-          "http://192.168.8.205:4000/meetings/deleteMeeting/${getMeetingId()}");
+          "http://${dotenv.env['ip_address']}:4000/meetings/deleteMeeting/${getMeetingId()}");
       final response = await http
           .delete(
             url,

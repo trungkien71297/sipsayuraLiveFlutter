@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:bbb_app/core/app_export.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -479,7 +480,7 @@ class SignUpScreen extends GetWidget<Signup04Controller> {
     }
   }
 
-  final url = "http://192.168.8.205:4000/accounts/register";
+  final url = "http://${dotenv.env['ip_address']}:4000/accounts/register";
   void sing_up() async {
     controller.isLoading.value = true;
     try {

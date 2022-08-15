@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:bbb_app/core/app_export.dart';
 import 'package:bbb_app/presentation/signin_screen/controller/signin_controller.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:flutter/material.dart';
@@ -335,11 +336,8 @@ class SignInScreen extends GetWidget<Signup02Controller> {
     }
   }
 
-  final url = "http://192.168.8.205:4000/accounts/authenticate";
+  final url = "http://${dotenv.env['ip_address']}:4000/accounts/authenticate";
 
-  /**
-   * This fuction use for login
-   */
   void postDataLogin() async {
     controller.isLoading.value = true;
 

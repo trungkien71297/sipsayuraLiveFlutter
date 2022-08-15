@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -60,7 +61,7 @@ class ScheduleController extends GetxController with StateMixin<dynamic> {
       late String token = prefs.getString("Token")!;
       try {
         Uri url =
-            Uri.parse("http://192.168.8.205:4000/meetings/getMeetingByUserID");
+            Uri.parse("http://${dotenv.env['ip_address']}:4000/meetings/getMeetingByUserID");
         final response = await http
             .post(url, headers: {
               "Access-Control-Allow-Origin": "*",
@@ -90,7 +91,7 @@ class ScheduleController extends GetxController with StateMixin<dynamic> {
               // print('${data[index]["scheduled_at_Date"].toString()} ${data[index]["end_Time"].toString()}');
               // print(DateFormat("yyyy-MM-dd HH:mm").parse(
               //     '${data[index]["scheduled_at_Date"].toString()} ${data[index]["end_Time"].toString()}'));
-              print(DateTime.now().toString());
+              // print(DateTime.now().toString());
               if (new DateFormat("yyyy-MM-dd HH:mm")
                   .parse(
                       '${data[index]["scheduled_at_Date"].toString()} ${data[index]["end_Time"].toString()}')

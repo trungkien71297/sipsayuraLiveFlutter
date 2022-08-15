@@ -7,6 +7,7 @@ import 'package:bbb_app/src/locale/app_localizations_delegate.dart';
 import 'package:bbb_app/src/utils/log.dart';
 import 'package:bbb_app/src/view/start/start_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -14,8 +15,10 @@ import 'package:bbb_app/core/app_export.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Entry point of the application.
-Future main() async {
+// Future main() async {
+Future<void> main() async{
   /// Logging settings
+  dotenv.load();
   Log.allowVerbose = false;
   Log.allowDebug = true;
   runApp(
