@@ -28,12 +28,12 @@ class SimpleWebSocket {
   connect() async {
     try {
       _socket = await _connectForSelfSignedCert(_url, cookie: _cookie);
-      this.onOpen();
       _socket!.listen((data) {
         this.onMessage(data);
       }, onDone: () {
         this.onClose(_socket!.closeCode, _socket!.closeReason);
       });
+      this.onOpen();
     } catch (e) {
       this.onClose(500, e.toString());
     }
@@ -74,8 +74,9 @@ class SimpleWebSocket {
       request.headers.add('Connection', 'Upgrade');
       request.headers.add('Upgrade', 'websocket');
       request.headers.add('Sec-WebSocket-Version', '13');
+      request.headers.add('Sec-Fetch-Mode', 'websocket');
+      request.headers.add('Sec-WebSocket-Protocol', 'graphql-transport-ws');
       request.headers.add('Sec-WebSocket-Key', key.toLowerCase());
-
       if (_additionalHeaders != null) {
         _additionalHeaders!.entries.forEach((e) {
           request.headers.add(e.key, e.value);
@@ -83,11 +84,14 @@ class SimpleWebSocket {
       }
 
       if (cookie != null) {
-        request.headers.add("Cookie", cookie);
+        final finalCookie = getJSESSIONID(cookie);
+        request.cookies.add(Cookie('JSESSIONID', finalCookie));
+        // request.headers.add('Cookie', 'JSESSIONID=$finalCookie');
       }
 
       HttpClientResponse response = await request.close();
-
+      Log.debug(
+          'Connect ${response.statusCode} ${response.headers}\n Request \n ${request.headers}');
       // if(response.statusCode == 400) {
       //   response.transform(utf8.decoder).listen((contents) {
       //     print(contents);
@@ -105,5 +109,16 @@ class SimpleWebSocket {
     } catch (e) {
       throw e;
     }
+  }
+
+  String getJSESSIONID(String cookie) {
+    final list = cookie.split(';');
+    for (var l in list) {
+      if (l.contains('JSESSIONID')) {
+        final keyValue = l.split('=');
+        return keyValue[1].trim();
+      }
+    }
+    return '';
   }
 }

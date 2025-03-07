@@ -51,19 +51,21 @@ class CallConnection extends CallManager implements SipUaHelperListener {
     Log.info(
         "[VoiceConnection] Trying to connect to audio using transport scheme '$_currentTransportScheme'");
 
-    helper!.start(super.buildSettings(transportScheme: _currentTransportScheme));
+    helper!
+        .start(super.buildSettings(transportScheme: _currentTransportScheme));
 
     _muteEventSub = _provider.muteBloc.stream.listen((event) {
       _onMuteStateChange(event);
     });
-    _userVoiceStatusStreamSub =_provider.userVoiceStatusBloc.stream.listen((event) {
+    _userVoiceStatusStreamSub =
+        _provider.userVoiceStatusBloc.stream.listen((event) {
       _onUserVoiceStatusChanged(event);
     });
 
     // Code before null safty
 
-  //  _muteEventSub = _provider.muteBloc.listen(_onMuteStateChange);
-  //  _userVoiceStatusStreamSub =_provider.userVoiceStatusBloc.listen(_onUserVoiceStatusChanged);
+    //  _muteEventSub = _provider.muteBloc.listen(_onMuteStateChange);
+    //  _userVoiceStatusStreamSub =_provider.userVoiceStatusBloc.listen(_onUserVoiceStatusChanged);
   }
 
   /// Called when the mute state is changed.
@@ -174,7 +176,7 @@ class CallConnection extends CallManager implements SipUaHelperListener {
   }
 
   @override
-  void onNewNotify(Notify ntf) {
+  void onNewNotify(dynamic ntf) {
     // TODO: implement onNewNotify
   }
 }

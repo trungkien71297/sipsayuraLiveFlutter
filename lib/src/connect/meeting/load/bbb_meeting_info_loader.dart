@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bbb_app/src/connect/meeting/load/exception/meeting_info_load_exception.dart';
@@ -11,6 +12,8 @@ import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:http/io_client.dart';
+import 'package:xml/xml.dart' as xml;
 
 /// Meeting info loader for BBB.
 class BBBMeetingInfoLoader extends MeetingInfoLoader {
@@ -78,8 +81,9 @@ class BBBMeetingInfoLoader extends MeetingInfoLoader {
       initialJoinUrl = await _postJoinForm(meetingUrl, authenticityToken, name);
     }
 
-    String joinUrl = await _fetchJoinUrl(initialJoinUrl!);
-
+    MapEntry<String, MeetingInfo> result = await _fetchJoinUrl(initialJoinUrl!);
+    String joinUrl = result.key;
+    final meetingInfo = result.value;
     // Fetch session token from the final join URL
     String? sessionToken = Uri.parse(joinUrl).queryParameters["sessionToken"];
 
@@ -88,7 +92,8 @@ class BBBMeetingInfoLoader extends MeetingInfoLoader {
       waitingRoomStatusUpdater!(true);
 
       // Wait until user has either been accepted or declined
-      joinUrl = await (_waitForModeratorAccept(joinUrl, sessionToken) as FutureOr<String>);
+      joinUrl = await (_waitForModeratorAccept(joinUrl, sessionToken)
+          as FutureOr<String>);
       if (joinUrl == null) {
         throw new WaitingRoomDeclinedException(
             "User has not been accepted by the moderator to join the meeting");
@@ -96,38 +101,39 @@ class BBBMeetingInfoLoader extends MeetingInfoLoader {
     }
 
     // Call the "enter" endpoint to fetch all needed meeting data
-    Uri parsedUri = Uri.parse(joinUrl);
-    parsedUri = parsedUri.replace(path: "/bigbluebutton/api/enter");
-    http.Response response =
-        await http.get(parsedUri, headers: {"cookie": _cookie!});
-    Map<String, dynamic> enterJson = json.decode(response.body)["response"];
+    // Uri parsedUri = Uri.parse(joinUrl);
+    // parsedUri = parsedUri.replace(path: "/bigbluebutton/api/enter");
+    // http.Response response =
+    //     await http.get(parsedUri, headers: {"cookie": _cookie!});
+    // Map<String, dynamic> enterJson = json.decode(response.body)["response"];
 
     Map<String, dynamic> iceServers = await _loadIceServers(joinUrl);
     Log.info("STUN / TURN servers: " + iceServers.toString());
-
-    return MeetingInfo(
-      meetingUrl: meetingUrl,
-      joinUrl: joinUrl,
-      sessionToken: sessionToken,
-      cookie: _cookie,
-      authToken: enterJson["authToken"],
-      conference: enterJson["conference"],
-      room: enterJson["room"],
-      conferenceName: enterJson["confname"],
-      fullUserName: enterJson["fullname"],
-      dialNumber: enterJson["dialnumber"],
-      externMeetingID: enterJson["externMeetingID"],
-      externUserID: enterJson["externUserID"],
-      meetingID: enterJson["meetingID"],
-      internalUserID: enterJson["internalUserID"],
-      role: enterJson["role"],
-      logoutUrl: enterJson["logoutUrl"],
-      voiceBridge: enterJson["voicebridge"],
-      webVoiceConf: enterJson["webvoiceconf"],
-      isBreakout: enterJson["isBreakout"],
-      muteOnStart: enterJson["muteOnStart"],
-      iceServers: iceServers,
-    );
+    meetingInfo.meetingUrl = meetingUrl;
+    meetingInfo.joinUrl = joinUrl;
+    meetingInfo.sessionToken = sessionToken;
+    meetingInfo.cookie = _cookie;
+    meetingInfo.iceServers = iceServers;
+    meetingInfo.conferenceName = 'OKOK';
+    return meetingInfo;
+    // return r
+    //   conference: enterJson["conference"],
+    //   room: enterJson["room"],
+    //   conferenceName: enterJson["confname"],
+    //   fullUserName: enterJson["fullname"],
+    //   dialNumber: enterJson["dialnumber"],
+    //   externMeetingID: enterJson["externMeetingID"],
+    //   externUserID: enterJson["externUserID"],
+    //   meetingID: enterJson["meetingID"],
+    //   internalUserID: enterJson["internalUserID"],
+    //   role: enterJson["role"],
+    //   logoutUrl: enterJson["logoutUrl"],
+    //   voiceBridge: enterJson["voicebridge"],
+    //   webVoiceConf: enterJson["webvoiceconf"],
+    //   isBreakout: enterJson["isBreakout"],
+    //   muteOnStart: enterJson["muteOnStart"],
+    //   iceServers: iceServers,
+    // );
   }
 
   /// Check if the passed [joinUrl] is actually the BBB waiting room.
@@ -172,33 +178,45 @@ class BBBMeetingInfoLoader extends MeetingInfoLoader {
   }
 
   /// Fetch the final join URL used to join the meeting.
-  Future<String> _fetchJoinUrl(String initialJoinUrl) async {
+  Future<MapEntry<String, MeetingInfo>> _fetchJoinUrl(
+      String initialJoinUrl) async {
     // Read location header from the response (using the joinURL initially) until we get a URL including the sessionToken as parameter
     String currentUrl = initialJoinUrl;
     final client = http.Client();
+    MeetingInfo meetingInfo = MeetingInfo();
+    try {
+      http.StreamedResponse? response = null;
+      do {
+        final request = Request('GET', Uri.parse(currentUrl))
+          ..followRedirects = false;
+        response = await client.send(request);
+        if (response.statusCode != HttpStatus.ok) {
+          throw new Exception(
+              "Request to join URL returned unexpected status code ${response.statusCode} in the response. Expected 302 Found.");
+        }
+        final res = await response.stream.bytesToString();
+        final document = xml.XmlDocument.parse(res);
+        currentUrl = document.findAllElements('url').first.innerText;
+        meetingInfo.authToken =
+            document.findAllElements('auth_token').first.innerText;
+        meetingInfo.meetingID =
+            document.findAllElements('meeting_id').first.innerText;
 
-    dynamic response = null;
-    do {
-      final request = Request('GET', Uri.parse(currentUrl))
-        ..followRedirects = false;
-      response = await client.send(request);
-      if (response.statusCode != HttpStatus.found) {
-        throw new Exception(
-            "Request to join URL returned unexpected status code ${response.statusCode} in the response. Expected 302 Found.");
-      }
+        if (currentUrl == null) {
+          throw new Exception(
+              "Expected to find the join URL in the 'location' header");
+        }
+      } while (
+          !Uri.parse(currentUrl).queryParameters.containsKey("sessionToken"));
 
-      currentUrl = response.headers["location"];
-      if (currentUrl == null) {
-        throw new Exception(
-            "Expected to find the join URL in the 'location' header");
-      }
-    } while (
-        !Uri.parse(currentUrl).queryParameters.containsKey("sessionToken"));
+      // Fetch cookie
+      _cookie = response.headers["set-cookie"];
 
-    // Fetch cookie
-    _cookie = response.headers["set-cookie"];
-
-    return currentUrl;
+      return MapEntry(currentUrl, meetingInfo);
+    } catch (e) {
+      log('== ${e.toString()}');
+      return MapEntry('', meetingInfo);
+    }
   }
 
   Future<String> _postLoginForm(

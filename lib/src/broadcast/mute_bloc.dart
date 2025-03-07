@@ -17,7 +17,7 @@ enum MuteEvent {
 enum MuteState { MUTING, UNMUTING, MUTED, UNMUTED }
 
 class MuteBloc extends Bloc<MuteEvent, MuteState> {
-  MuteBloc() : super(MuteState.MUTED);
+  MuteBloc() : super(MuteState.UNMUTED);
 
   /// Toggle the mute status.
   void toggle() =>

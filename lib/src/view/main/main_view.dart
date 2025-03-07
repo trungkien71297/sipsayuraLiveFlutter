@@ -46,7 +46,8 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
   late Map<String, IncomingWebcamVideoConnection> _videoConnections;
 
   /// List of screenshare streams we currently display.
-  late Map<String, IncomingScreenshareVideoConnection> _screenshareVideoConnections;
+  late Map<String, IncomingScreenshareVideoConnection>
+      _screenshareVideoConnections;
 
   /// Counter for total unread messages.
   int _totalUnreadMessages = 0;
@@ -92,6 +93,7 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
     _videoConnectionsStreamSubscription = _mainWebSocket!
         .videoModule!.videoConnectionsStream
         .listen((videoConnections) {
+      Log.info('videoConnections ${videoConnections.length}');
       setState(() => _videoConnections = videoConnections);
     });
 
@@ -100,6 +102,8 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
     _screenshareVideoConnectionsStreamSubscription = _mainWebSocket!
         .videoModule!.screenshareVideoConnectionsStream
         .listen((screenshareVideoConnections) {
+      Log.info(
+          'screenshareVideoConnections ${screenshareVideoConnections.length}');
       setState(
           () => _screenshareVideoConnections = screenshareVideoConnections);
     });
@@ -112,7 +116,8 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
 
     _pollStreamSubscription =
         _mainWebSocket!.pollModule!.pollStream.listen((event) async {
-      PollOption option = await (_openPollDialog(event) as FutureOr<PollOption>);
+      PollOption option =
+          await (_openPollDialog(event) as FutureOr<PollOption>);
 
       _mainWebSocket!.pollModule!.vote(event.id, option.id);
     });
@@ -466,7 +471,8 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
 
         bool videoShown = _videoConnections[key]!.remoteRenderer.renderVideo;
 
-        RTCVideoRenderer remoteRenderer = _videoConnections[key]!.remoteRenderer;
+        RTCVideoRenderer remoteRenderer =
+            _videoConnections[key]!.remoteRenderer;
 
         RTCVideoView videoView = RTCVideoView(remoteRenderer,
             objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitContain);
@@ -594,8 +600,10 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
                     _totalUnreadMessages < 100 ? "$_totalUnreadMessages" : "∗",
                     softWrap: false,
                     style: TextStyle(
-                        color:
-                            Theme.of(context).primaryTextTheme.bodyText1!.color),
+                        color: Theme.of(context)
+                            .primaryTextTheme
+                            .bodyText1!
+                            .color),
                   ),
                 ),
             ],
@@ -711,8 +719,8 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
                       color: Theme.of(context).textTheme.bodyText1!.color,
                     ),
                   ),
-                  Text(
-                      AppLocalizations.of(context)!.get("privacy-policy.title")!),
+                  Text(AppLocalizations.of(context)!
+                      .get("privacy-policy.title")!),
                 ],
               ),
             ),

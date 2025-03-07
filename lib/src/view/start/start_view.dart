@@ -259,8 +259,11 @@ class _StartViewState extends State<StartView> {
             AppLocalizations.of(context)!.get("start.bbb-trademark")!,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color:
-                  Theme.of(context).textTheme.bodyText1!.color!.withOpacity(0.5),
+              color: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .color!
+                  .withOpacity(0.5),
               fontSize: 12.0,
             ),
           ),
@@ -538,8 +541,8 @@ class _StartViewState extends State<StartView> {
             barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text(
-                    AppLocalizations.of(context)!.get("login.in-waiting-room")!),
+                title: Text(AppLocalizations.of(context)!
+                    .get("login.in-waiting-room")!),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [

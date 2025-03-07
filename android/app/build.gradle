@@ -69,6 +69,8 @@ android {
             signingConfig System.getenv('BUILD_RELEASE') ? signingConfigs.release : signingConfigs.debug
         }
     }
+    android.ndkVersion "21.4.7075529"
+
 }
 
 flutter {

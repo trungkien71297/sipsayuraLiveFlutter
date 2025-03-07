@@ -16,10 +16,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Entry point of the application.
 // Future main() async {
-Future<void> main() async{
+Future<void> main() async {
   /// Logging settings
   dotenv.load();
-  Log.allowVerbose = false;
+  Log.allowVerbose = true;
   Log.allowDebug = true;
   runApp(
     ChangeNotifierProvider<AppStateNotifier>(
