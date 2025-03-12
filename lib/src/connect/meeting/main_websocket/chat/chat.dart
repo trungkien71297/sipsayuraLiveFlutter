@@ -98,50 +98,50 @@ class ChatModule extends Module {
 
     final String msgId = "$senderID-${_messageCounter++}";
 
-    sendMessage({
-      "msg": "method",
-      "method": "sendGroupChatMsg",
-      "params": [
-        msg.chatID ?? defaultChatID,
-        {
-          "color": 0,
-          "correlationId": msgId,
-          "sender": {
-            "id": senderID,
-            "name": _meetingInfo.fullUserName,
-          },
-          "message": msg.content,
-        },
-      ],
-    });
+    // sendMessage({
+    //   "msg": "method",
+    //   "method": "sendGroupChatMsg",
+    //   "params": [
+    //     msg.chatID ?? defaultChatID,
+    //     {
+    //       "color": 0,
+    //       "correlationId": msgId,
+    //       "sender": {
+    //         "id": senderID,
+    //         "name": _meetingInfo.fullUserName,
+    //       },
+    //       "message": msg.content,
+    //     },
+    //   ],
+    // });
 
     return waitForSentMsgConfirmation(msgId);
   }
 
   /// Start that the current user is typing for the passed chatID.
   void startUserTyping([String? chatID]) {
-    sendMessage({
-      "msg": "method",
-      "method": "startUserTyping",
-      "params": [
-        chatID == null
-            ? "public"
-            : _chatGroups
-                .firstWhere((element) => element.id == chatID)
-                .participantIDs
-                .firstWhere(
-                    (element) => element != _meetingInfo.internalUserID),
-      ],
-    });
+    // sendMessage({
+    //   "msg": "method",
+    //   "method": "startUserTyping",
+    //   "params": [
+    //     chatID == null
+    //         ? "public"
+    //         : _chatGroups
+    //             .firstWhere((element) => element.id == chatID)
+    //             .participantIDs
+    //             .firstWhere(
+    //                 (element) => element != _meetingInfo.internalUserID),
+    //   ],
+    // });
   }
 
   /// Stop that the current user is typing.
   void stopUserTyping() {
-    sendMessage({
-      "msg": "method",
-      "method": "stopUserTyping",
-      "params": [],
-    });
+    // sendMessage({
+    //   "msg": "method",
+    //   "method": "stopUserTyping",
+    //   "params": [],
+    // });
   }
 
   /// Create a private chat group with the passed [other] user.
@@ -159,46 +159,46 @@ class ChatModule extends Module {
       }
     }
 
-    sendMessage({
-      "msg": "method",
-      "method": "createGroupChat",
-      "params": [
-        {
-          "_id": MainWebSocketUtil.getRandomAlphanumericWithCaps(17),
-          "meetingId": _meetingInfo.meetingID,
-          "userId": other.id,
-          "clientType": "HTML5",
-          "validated": true,
-          "connectionId": MainWebSocketUtil.getRandomAlphanumericWithCaps(17),
-          "approved": true,
-          "loginTime": DateTime.now().millisecondsSinceEpoch,
-          "inactivityCheck": false,
-          "connectionStatus": "online",
-          "sortName": other.sortName,
-          "color": "#0d47a1",
-          "breakoutProps": {
-            "isBreakoutUser": false,
-            "parentId": "bbb-none",
-          },
-          "effectiveConnectionType": null,
-          "responseDelay": 0,
-          "loggedOut": false,
-          "intId": other.id,
-          "extId": "none",
-          "name": other.name,
-          "role": other.role,
-          "guest": false,
-          "authed": true,
-          "guestStatus": "ALLOW",
-          "emoji": "none",
-          "presenter": other.isPresenter,
-          "locked": true,
-          "avatar": Uri.parse(_meetingInfo.joinUrl!)
-              .replace(path: "/client/avatar.png")
-              .toString(),
-        }
-      ]
-    });
+    // sendMessage({
+    //   "msg": "method",
+    //   "method": "createGroupChat",
+    //   "params": [
+    //     {
+    //       "_id": MainWebSocketUtil.getRandomAlphanumericWithCaps(17),
+    //       "meetingId": _meetingInfo.meetingID,
+    //       "userId": other.id,
+    //       "clientType": "HTML5",
+    //       "validated": true,
+    //       "connectionId": MainWebSocketUtil.getRandomAlphanumericWithCaps(17),
+    //       "approved": true,
+    //       "loginTime": DateTime.now().millisecondsSinceEpoch,
+    //       "inactivityCheck": false,
+    //       "connectionStatus": "online",
+    //       "sortName": other.sortName,
+    //       "color": "#0d47a1",
+    //       "breakoutProps": {
+    //         "isBreakoutUser": false,
+    //         "parentId": "bbb-none",
+    //       },
+    //       "effectiveConnectionType": null,
+    //       "responseDelay": 0,
+    //       "loggedOut": false,
+    //       "intId": other.id,
+    //       "extId": "none",
+    //       "name": other.name,
+    //       "role": other.role,
+    //       "guest": false,
+    //       "authed": true,
+    //       "guestStatus": "ALLOW",
+    //       "emoji": "none",
+    //       "presenter": other.isPresenter,
+    //       "locked": true,
+    //       "avatar": Uri.parse(_meetingInfo.joinUrl!)
+    //           .replace(path: "/client/avatar.png")
+    //           .toString(),
+    //     }
+    //   ]
+    // });
   }
 
   /// Remove the passed already existing chat [group].
@@ -387,7 +387,8 @@ class ChatModule extends Module {
   }
 
   /// Called on a new incoming chat group.
-  void _onNewGroupChat(String? chatID, String? name, Set<String> participantIDs) {
+  void _onNewGroupChat(
+      String? chatID, String? name, Set<String> participantIDs) {
     if (chatID != defaultChatID && participantIDs.length == 2) {
       // Only for private chats
       // For some reason the chat name is always the name of the other participant (even for the participant).
@@ -409,13 +410,13 @@ class ChatModule extends Module {
             ["${group.id}"]
           ]
         : [];
-    subscribe(_groupChatMessageTopic, params: params);
+    // subscribe(_groupChatMessageTopic, params: params);
   }
 
   @override
   void onConnected() {
-    subscribe(_groupChatTopic);
-    subscribe(_usersTypingTopic);
+    // subscribe(_groupChatTopic);
+    // subscribe(_usersTypingTopic);
   }
 
   @override

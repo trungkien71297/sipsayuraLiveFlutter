@@ -5,19 +5,19 @@ import '../core/utils/math_utils.dart';
 
 class AppStyle {
   static TextStyle textstylemontserratregular111 =
-  textstylemontserratregular11.copyWith(
+      textstylemontserratregular11.copyWith(
     color: ColorConstant.gray500,
   );
 
   static TextStyle textstylemontserratregular11 =
-  textstylemontserratregular9.copyWith(
+      textstylemontserratregular9.copyWith(
     fontSize: getFontSize(
       11,
     ),
   );
 
   static TextStyle textstylemontserratsemibold9 =
-  textstylemontserratextralight9.copyWith(
+      textstylemontserratextralight9.copyWith(
     fontWeight: FontWeight.w600,
   );
 
@@ -31,19 +31,19 @@ class AppStyle {
   );
 
   static TextStyle textstylenunitosemibold132 =
-  textstylenunitosemibold131.copyWith(
+      textstylenunitosemibold131.copyWith(
     color: ColorConstant.black900,
   );
 
   static TextStyle textstylenunitosemibold131 =
-  textstylenunitosemibold93.copyWith(
+      textstylenunitosemibold93.copyWith(
     fontSize: getFontSize(
       13,
     ),
   );
 
   static TextStyle textstylenunitosemibold91 =
-  textstylenunitosemibold93.copyWith(
+      textstylenunitosemibold93.copyWith(
     color: Colors.white,
   );
 
@@ -75,10 +75,10 @@ class AppStyle {
   );
 
   static TextStyle textstylenunitosemibold92 =
-  textstylenunitosemibold93.copyWith();
+      textstylenunitosemibold93.copyWith();
 
   static TextStyle textstylemontserratregular9 =
-  textstylemontserratextralight9.copyWith(
+      textstylemontserratextralight9.copyWith(
     fontWeight: FontWeight.w400,
   );
 
@@ -92,33 +92,33 @@ class AppStyle {
   );
 
   static TextStyle textstylenunitosemibold18 =
-  textstylenunitosemibold132.copyWith(
+      textstylenunitosemibold132.copyWith(
     fontSize: getFontSize(
       18,
     ),
   );
 
   static TextStyle textstylemontserratextralight9 =
-  textstylemontserratextralight10.copyWith(
+      textstylemontserratextralight10.copyWith(
     fontSize: getFontSize(
       9,
     ),
   );
 
   static TextStyle textstylenunitosemibold14 =
-  textstylenunitosemibold13.copyWith(
+      textstylenunitosemibold13.copyWith(
     fontSize: getFontSize(
       14,
     ),
   );
 
   static TextStyle textstylenunitosemibold13 =
-  textstylenunitosemibold131.copyWith(
+      textstylenunitosemibold131.copyWith(
     color: ColorConstant.whiteA700,
   );
 
   static TextStyle textstylenunitosemibold10 =
-  textstylenunitosemibold13.copyWith(
+      textstylenunitosemibold13.copyWith(
     fontSize: getFontSize(
       10,
     ),
@@ -145,7 +145,7 @@ class AppStyle {
   );
 
   static TextStyle textstylenunitosemibold9 =
-  textstylenunitosemibold93.copyWith(
+      textstylenunitosemibold93.copyWith(
     color: ColorConstant.gray500,
   );
 
@@ -168,30 +168,30 @@ class AppStyle {
   );
 
   static TextStyle textstylemontserratromanlight8 =
-  textstylemontserratromanlight85.copyWith();
+      textstylemontserratromanlight85.copyWith();
 
   static TextStyle textstylemontserratromanlight84 =
-  textstylemontserratromanlight85.copyWith();
+      textstylemontserratromanlight85.copyWith();
 
   static TextStyle textstylemontserratromanlight83 =
-  textstylemontserratromanbold8.copyWith(
+      textstylemontserratromanbold8.copyWith(
     fontWeight: FontWeight.w300,
   );
 
   static TextStyle textstylemontserratromanlight82 =
-  textstylemontserratromanlight85.copyWith();
+      textstylemontserratromanlight85.copyWith();
 
   static TextStyle textstylemontserratromanlight81 =
-  textstylemontserratromanlight85.copyWith();
+      textstylemontserratromanlight85.copyWith();
 
   static TextStyle textstylemontserratromanlight87 =
-  textstylemontserratromanlight85.copyWith();
+      textstylemontserratromanlight85.copyWith();
 
   static TextStyle textstylemontserratromanlight86 =
-  textstylemontserratromanlight85.copyWith();
+      textstylemontserratromanlight85.copyWith();
 
   static TextStyle textstylemontserratromanlight85 =
-  textstylemontserratromanbold8.copyWith(
+      textstylemontserratromanbold8.copyWith(
     fontWeight: FontWeight.w300,
   );
 
@@ -211,29 +211,29 @@ class AppStyle {
   );
 
   static TextStyle textstylemontserratromanmedium97 =
-  textstylemontserratromanmedium96.copyWith();
+      textstylemontserratromanmedium96.copyWith();
 
   static TextStyle textstylemontserratromanmedium92 =
-  textstylemontserratromanmedium96.copyWith();
+      textstylemontserratromanmedium96.copyWith();
 
   static TextStyle textstylemontserratromanmedium93 =
-  textstylemontserratromanmedium96.copyWith();
+      textstylemontserratromanmedium96.copyWith();
 
   static TextStyle textstylemontserratromanmedium95 =
-  textstylemontserratromanmedium96.copyWith();
+      textstylemontserratromanmedium96.copyWith();
 
   static TextStyle textstylemontserratromanmedium94 =
-  textstylemontserratromanmedium96.copyWith();
+      textstylemontserratromanmedium96.copyWith();
 
   static TextStyle textstylemontserratromanbold9 =
-  textstylemontserratromanbold8.copyWith(
+      textstylemontserratromanbold8.copyWith(
     fontSize: getFontSize(
       9,
     ),
   );
 
   static TextStyle textstylemontserratromanmedium96 =
-  textstylemontserratromanbold9.copyWith(
+      textstylemontserratromanbold9.copyWith(
     color: ColorConstant.black900,
     fontFamily: 'Montserrat',
     fontWeight: FontWeight.w500,
@@ -248,9 +248,8 @@ class AppStyle {
     fontWeight: FontWeight.w700,
   );
 
-
   static TextStyle textstylemontserratromanregular91 =
-  textstylemontserratromanregular9.copyWith();
+      textstylemontserratromanregular9.copyWith();
 
   static TextStyle textstylemontserratromanregular9 = TextStyle(
     color: ColorConstant.black900,
@@ -262,18 +261,16 @@ class AppStyle {
   );
 
   static TextStyle textstylemontserratromanmedium9 =
-  textstylemontserratromanmedium96.copyWith();
-
+      textstylemontserratromanmedium96.copyWith();
 
   static TextStyle textstylemontserratromanmedium91 =
-  textstylemontserratromanmedium96.copyWith();
-
+      textstylemontserratromanmedium96.copyWith();
 
   static TextStyle textstylemontserratromanregular92 =
-  textstylemontserratromanregular9.copyWith();
+      textstylemontserratromanregular9.copyWith();
 
   static TextStyle textstylenunitosemibold101 =
-  textstylenunitosemibold10.copyWith();
+      textstylenunitosemibold10.copyWith();
 
   static TextStyle textstyleregular8 = TextStyle(
     color: ColorConstant.black900Null,
@@ -281,5 +278,4 @@ class AppStyle {
       8,
     ),
   );
-
 }

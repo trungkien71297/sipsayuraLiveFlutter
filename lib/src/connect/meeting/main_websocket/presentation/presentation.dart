@@ -75,10 +75,10 @@ class PresentationModule extends Module {
   Annotation? _lastPollResultAnnotation;
 
   /// Subscription to slide events.
-  late StreamSubscription<PresentationSlideEvent> _slideEventSubscription;
+  // late StreamSubscription<PresentationSlideEvent> _slideEventSubscription;
 
   /// Subscription to presentation events.
-  late StreamSubscription<PresentationEvent> _presentationEventSubscription;
+  // late StreamSubscription<PresentationEvent> _presentationEventSubscription;
 
   /// Topic where stream-cursor messages are published.
   final String _streamCursorTopic;
@@ -91,53 +91,53 @@ class PresentationModule extends Module {
 
   @override
   void onConnected() {
-    subscribe(_presentationTopic);
-    subscribe(_slidesTopic);
-    subscribe(_slidePositionTopic);
-    subscribe(_annotationsTopic);
-    subscribe(_streamAnnotationsTopic, params: [
-      "added",
-      {
-        "useCollection": false,
-        "args": [],
-      },
-    ]);
-    subscribe(_streamAnnotationsTopic, params: [
-      "removed",
-      {
-        "useCollection": false,
-        "args": [],
-      },
-    ]);
-    subscribe(_streamCursorTopic, params: [
-      "message",
-      {
-        "useCollection": false,
-        "args": [],
-      },
-    ]);
+    // subscribe(_presentationTopic);
+    // subscribe(_slidesTopic);
+    // subscribe(_slidePositionTopic);
+    // subscribe(_annotationsTopic);
+    // subscribe(_streamAnnotationsTopic, params: [
+    //   "added",
+    //   {
+    //     "useCollection": false,
+    //     "args": [],
+    //   },
+    // ]);
+    // subscribe(_streamAnnotationsTopic, params: [
+    //   "removed",
+    //   {
+    //     "useCollection": false,
+    //     "args": [],
+    //   },
+    // ]);
+    // subscribe(_streamCursorTopic, params: [
+    //   "message",
+    //   {
+    //     "useCollection": false,
+    //     "args": [],
+    //   },
+    // ]);
 
-    _presentationEventSubscription = presentationEventsStream.listen((event) {
-      if ((event.eventType == EventType.ADDED ||
-              event.eventType == EventType.CHANGED) &&
-          event.presentation!.current!) {
-        _currentPresentation = event.presentation;
-      }
-    });
+    // _presentationEventSubscription = presentationEventsStream.listen((event) {
+    //   if ((event.eventType == EventType.ADDED ||
+    //           event.eventType == EventType.CHANGED) &&
+    //       event.presentation!.current!) {
+    //     _currentPresentation = event.presentation;
+    //   }
+    // });
 
-    _slideEventSubscription = slideEventsStream.listen((event) {
-      if ((event.eventType == SlideEventType.ADDED ||
-              event.eventType == SlideEventType.CHANGED) &&
-          event.slide!.current!) {
-        _currentSlide = event.slide;
-      }
-    });
+    // _slideEventSubscription = slideEventsStream.listen((event) {
+    //   if ((event.eventType == SlideEventType.ADDED ||
+    //           event.eventType == SlideEventType.CHANGED) &&
+    //       event.slide!.current!) {
+    //     _currentSlide = event.slide;
+    //   }
+    // });
   }
 
   @override
   Future<void> onDisconnect() async {
-    _slideEventSubscription.cancel();
-    _presentationEventSubscription.cancel();
+    // _slideEventSubscription.cancel();
+    // _presentationEventSubscription.cancel();
 
     _presentationEventStreamController.close();
     _slideEventStreamController.close();
@@ -267,9 +267,11 @@ class PresentationModule extends Module {
       PresentationSlide? slideChanged;
 
       List<dynamic> argsJson = fields["args"];
-      for (Map<String, dynamic> argJson in argsJson as Iterable<Map<String, dynamic>>) {
+      for (Map<String, dynamic> argJson
+          in argsJson as Iterable<Map<String, dynamic>>) {
         List<dynamic> annotationsJson = argJson["annotations"];
-        for (Map<String, dynamic> annotationJson in annotationsJson as Iterable<Map<String, dynamic>>) {
+        for (Map<String, dynamic> annotationJson
+            in annotationsJson as Iterable<Map<String, dynamic>>) {
           String? annotationId = annotationJson["annotation"]["id"];
           String? slideId = annotationJson["whiteboardId"];
 
@@ -309,7 +311,8 @@ class PresentationModule extends Module {
       PresentationSlide? slideChanged;
 
       List<dynamic> argsJson = fields["args"];
-      for (Map<String, dynamic> argJson in argsJson as Iterable<Map<String, dynamic>>) {
+      for (Map<String, dynamic> argJson
+          in argsJson as Iterable<Map<String, dynamic>>) {
         String? slideId = argJson["whiteboardId"];
         PresentationSlide? slide = _slides[slideId];
 
@@ -405,7 +408,8 @@ class PresentationModule extends Module {
 
     List<dynamic> resultsJson = fields["result"];
     List<PollResultEntry> entries = [];
-    for (Map<String, dynamic> resultEntryJson in resultsJson as Iterable<Map<String, dynamic>>) {
+    for (Map<String, dynamic> resultEntryJson
+        in resultsJson as Iterable<Map<String, dynamic>>) {
       int? id = resultEntryJson["id"];
       String? key = resultEntryJson["key"];
       int? votes = resultEntryJson["numVotes"];
@@ -757,7 +761,8 @@ class PresentationModule extends Module {
 
     Presentation? presentation = _presentationsByID[id];
 
-    if (fields.containsKey("current")) presentation!.current = fields["current"];
+    if (fields.containsKey("current"))
+      presentation!.current = fields["current"];
     if (fields.containsKey("downloadable"))
       presentation!.downloadable = fields["downloadable"];
     if (fields.containsKey("conversion"))
@@ -856,7 +861,8 @@ class PresentationModule extends Module {
     List<PresentationPage> pages = [];
     if (fields.containsKey("pages")) {
       List<dynamic> jsonPages = fields["pages"];
-      for (Map<String, dynamic> jsonPage in jsonPages as Iterable<Map<String, dynamic>>) {
+      for (Map<String, dynamic> jsonPage
+          in jsonPages as Iterable<Map<String, dynamic>>) {
         pages.add(_jsonToPresentationPage(jsonPage));
       }
     }

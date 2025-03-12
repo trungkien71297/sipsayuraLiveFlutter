@@ -22,7 +22,7 @@ class MeetingModule extends Module {
 
   @override
   void onConnected() {
-    subscribe(_meetingsTopic);
+    // subscribe(_meetingsTopic);
   }
 
   @override

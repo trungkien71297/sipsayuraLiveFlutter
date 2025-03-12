@@ -3,7 +3,7 @@ import '/core/app_export.dart';
 
 class EmailveryController extends GetxController with StateMixin<dynamic> {
   Rx<EmailveryModel> emailveryModelObj = EmailveryModel().obs;
-  var isLoading=false.obs;
+  var isLoading = false.obs;
 
   @override
   void onReady() {

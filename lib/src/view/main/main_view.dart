@@ -9,7 +9,6 @@ import 'package:bbb_app/src/connect/meeting/main_websocket/main_websocket.dart';
 import 'package:bbb_app/src/connect/meeting/main_websocket/meeting/meeting.dart';
 import 'package:bbb_app/src/connect/meeting/main_websocket/poll/model/option.dart';
 import 'package:bbb_app/src/connect/meeting/main_websocket/poll/model/poll.dart';
-import 'package:bbb_app/src/connect/meeting/main_websocket/user/model/user.dart';
 import 'package:bbb_app/src/connect/meeting/main_websocket/user/user_module.dart';
 import 'package:bbb_app/src/connect/meeting/main_websocket/video/connection/incoming_screenshare_video_connection.dart';
 import 'package:bbb_app/src/connect/meeting/main_websocket/video/connection/incoming_webcam_video_connection.dart';
@@ -72,7 +71,7 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
   late StreamSubscription<MeetingEvent> _meetingEventSubscription;
 
   /// Subscription to user events.
-  late StreamSubscription<UserEvent> _userEventStreamSubscription;
+  // late StreamSubscription<UserEvent> _userEventStreamSubscription;
 
   /// Subscription to user changes.
   late StreamSubscription _userChangesStreamSubscription;
@@ -130,28 +129,28 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
       }
     });
 
-    _userEventStreamSubscription =
-        _mainWebSocket!.userModule!.changes.listen((event) {
-      if (event.data.id == widget._meetingInfo.internalUserID &&
-          event.data.ejected!) {
-        _onCurrentUserKicked();
-      }
+    // _userEventStreamSubscription =
+    //     _mainWebSocket!.userModule!.changes.listen((event) {
+    //   // if (event.data.id == widget._meetingInfo.internalUserID &&
+    //   //     event.data.ejected!) {
+    //   //   _onCurrentUserKicked();
+    //   // }
 
-      // Check whether user is currently talking
-      if (event.type == UserEventType.CHANGED) {
-        if (!event.data.talking! &&
-            _currentlyTalkingUsers.contains(event.data.name)) {
-          setState(() {
-            _currentlyTalkingUsers.remove(event.data.name);
-          });
-        } else if (event.data.talking! &&
-            !_currentlyTalkingUsers.contains(event.data.name)) {
-          setState(() {
-            _currentlyTalkingUsers.add(event.data.name);
-          });
-        }
-      }
-    });
+    //   // // Check whether user is currently talking
+    //   // if (event.type == UserEventType.CHANGED) {
+    //   //   if (!event.data.talking! &&
+    //   //       _currentlyTalkingUsers.contains(event.data.name)) {
+    //   //     setState(() {
+    //   //       _currentlyTalkingUsers.remove(event.data.name);
+    //   //     });
+    //   //   } else if (event.data.talking! &&
+    //   //       !_currentlyTalkingUsers.contains(event.data.name)) {
+    //   //     setState(() {
+    //   //       _currentlyTalkingUsers.add(event.data.name);
+    //   //     });
+    //   //   }
+    //   // }
+    // });
 
     _userChangesStreamSubscription =
         _mainWebSocket!.userModule!.changes.listen((userMap) {
@@ -194,7 +193,7 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
     _unreadMessageCounterStreamSubscription.cancel();
     _pollStreamSubscription.cancel();
     _meetingEventSubscription.cancel();
-    _userEventStreamSubscription.cancel();
+    // _userEventStreamSubscription.cancel();
     _userChangesStreamSubscription.cancel();
 
     WidgetsBinding.instance.removeObserver(this);
@@ -468,58 +467,62 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
       itemCount: _videoConnections.length,
       itemBuilder: (BuildContext context, int index) {
         String key = _videoConnections.keys.elementAt(index);
-
-        bool videoShown = _videoConnections[key]!.remoteRenderer.renderVideo;
-
-        RTCVideoRenderer remoteRenderer =
-            _videoConnections[key]!.remoteRenderer;
-
-        RTCVideoView videoView = RTCVideoView(remoteRenderer,
-            objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitContain);
-
         return Container(
           margin: const EdgeInsets.all(8),
           color: Colors.black87,
           child: AspectRatio(
             aspectRatio: 4 / 3,
-            child: Stack(
-              children: [
-                if (!videoShown) Center(child: CircularProgressIndicator()),
-                videoView,
-                Container(
-                  margin: EdgeInsets.only(top: 10),
-                  alignment: Alignment.topCenter,
-                  child: Container(
-                    padding: const EdgeInsets.fromLTRB(6, 2, 6, 2),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white.withOpacity(0.7),
-                    ),
-                    child: Text(
-                      _mainWebSocket!.userModule!
-                          .getUserByID(_videoConnections[key]!.internalUserId)!
-                          .name!,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    icon: Icon(Icons.fullscreen),
-                    color: Colors.grey,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              FullscreenView(child: videoView),
+            child: ValueListenableBuilder<bool>(
+              valueListenable: _videoConnections[key]!.readyToPlay,
+              builder: (context, value, child) {
+                RTCVideoRenderer remoteRenderer =
+                    _videoConnections[key]!.remoteRenderer;
+
+                RTCVideoView videoView = RTCVideoView(remoteRenderer,
+                    objectFit:
+                        RTCVideoViewObjectFit.RTCVideoViewObjectFitContain);
+
+                return Stack(
+                  children: [
+                    if (!value) Center(child: CircularProgressIndicator()),
+                    videoView,
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      alignment: Alignment.topCenter,
+                      child: Container(
+                        padding: const EdgeInsets.fromLTRB(6, 2, 6, 2),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white.withOpacity(0.7),
                         ),
-                      );
-                    },
-                  ),
-                ),
-              ],
+                        child: Text(
+                          _mainWebSocket!.userModule!
+                              .getUserByID(
+                                  _videoConnections[key]!.internalUserId)!
+                              .name!,
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        icon: Icon(Icons.fullscreen),
+                        color: Colors.grey,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  FullscreenView(child: videoView),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         );
@@ -768,9 +771,10 @@ class _MainViewState extends State<MainView> with WidgetsBindingObserver {
 
   /// Check if the current user is the presenter.
   bool _isPresenter() {
-    User? currentUser = _mainWebSocket!.userModule!
-        .getUserByID(widget._meetingInfo.internalUserID);
+    return false;
+    // User? currentUser = _mainWebSocket!.userModule!
+    //     .getUserByID(widget._meetingInfo.internalUserID);
 
-    return currentUser != null && currentUser.isPresenter!;
+    // return currentUser != null && currentUser.isPresenter!;
   }
 }

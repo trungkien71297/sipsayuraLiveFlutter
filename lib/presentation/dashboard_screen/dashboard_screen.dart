@@ -124,71 +124,71 @@ class DashboardScreen extends GetWidget<DashboardController> {
                                                       .size
                                                       .width /
                                                   6),
-                                          child: Row(
-                                              children: [
-                                                Container(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            4 /
-                                                            6,
-                                                    child: Center(
-                                                      child: TextFormField(
-                                                          focusNode:
-                                                              FocusNode(),
-                                                          controller: controller
-                                                              .group7Controller,
-                                                          decoration:
-                                                              InputDecoration(
-                                                                  hintText:
-                                                                      "msg_search_for_peop"
-                                                                          .tr,
-                                                                  hintStyle: AppStyle
-                                                                      .textstylenunitosemibold9
-                                                                      .copyWith(
-                                                                          fontSize: getFontSize(
+                                          child: Row(children: [
+                                            Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    4 /
+                                                    6,
+                                                child: Center(
+                                                  child: TextFormField(
+                                                      focusNode: FocusNode(),
+                                                      controller: controller
+                                                          .group7Controller,
+                                                      decoration:
+                                                          InputDecoration(
+                                                              hintText:
+                                                                  "msg_search_for_peop"
+                                                                      .tr,
+                                                              hintStyle: AppStyle
+                                                                  .textstylenunitosemibold9
+                                                                  .copyWith(
+                                                                      fontSize:
+                                                                          getFontSize(
                                                                               12),
-                                                                          color: ColorConstant
-                                                                              .gray500),
-                                                                  enabledBorder: OutlineInputBorder(
-                                                                      borderRadius: BorderRadius.circular(
+                                                                      color: ColorConstant
+                                                                          .gray500),
+                                                              enabledBorder: OutlineInputBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius.circular(
                                                                           getHorizontalSize(
                                                                               10.00)),
-                                                                      borderSide: BorderSide(
+                                                                  borderSide:
+                                                                      BorderSide(
                                                                           color: Colors
                                                                               .transparent)),
-                                                                  focusedBorder: OutlineInputBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              getHorizontalSize(10.00)),
-                                                                      borderSide: BorderSide(color: Colors.transparent)),
-                                                                  disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(getHorizontalSize(10.00)), borderSide: BorderSide(color: Colors.transparent)),
-                                                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(getHorizontalSize(10.00)), borderSide: BorderSide.none),
-                                                                  prefixIcon: Container(
-                                                                      margin: EdgeInsets.only(left: getHorizontalSize(10.00), top: getVerticalSize(7.00), right: getHorizontalSize(8.51), bottom: getVerticalSize(6.51)),
-                                                                      child: Container(
-                                                                        height:
-                                                                            getSize(10),
-                                                                        width: getSize(
+                                                              focusedBorder: OutlineInputBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius.circular(getHorizontalSize(10.00)),
+                                                                  borderSide: BorderSide(color: Colors.transparent)),
+                                                              disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(getHorizontalSize(10.00)), borderSide: BorderSide(color: Colors.transparent)),
+                                                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(getHorizontalSize(10.00)), borderSide: BorderSide.none),
+                                                              prefixIcon: Container(
+                                                                  margin: EdgeInsets.only(left: getHorizontalSize(10.00), top: getVerticalSize(7.00), right: getHorizontalSize(8.51), bottom: getVerticalSize(6.51)),
+                                                                  child: Container(
+                                                                    height:
+                                                                        getSize(
                                                                             10),
-                                                                        child:
-                                                                            Icon(
-                                                                          Icons
-                                                                              .search_outlined,
-                                                                          color:
-                                                                              Colors.black45,
-                                                                          size:
-                                                                              24.0,
-                                                                        ),
-                                                                      )),
-                                                                  suffixIcon: Padding(padding: EdgeInsets.only(right: getHorizontalSize(15.00)), child: IconButton(onPressed: controller.group7Controller.clear, icon: Icon(Icons.clear, color: Colors.grey.shade600))),
-                                                                  filled: true,
-                                                                  fillColor: ColorConstant.gray300),
-                                                          style: TextStyle(fontSize: getFontSize(11.0)),
-                                                          onChanged: (value) {}),
-                                                    )),
-                                              ]))),
+                                                                    width:
+                                                                        getSize(
+                                                                            10),
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .search_outlined,
+                                                                      color: Colors
+                                                                          .black45,
+                                                                      size:
+                                                                          24.0,
+                                                                    ),
+                                                                  )),
+                                                              suffixIcon: Padding(padding: EdgeInsets.only(right: getHorizontalSize(15.00)), child: IconButton(onPressed: controller.group7Controller.clear, icon: Icon(Icons.clear, color: Colors.grey.shade600))),
+                                                              filled: true,
+                                                              fillColor: ColorConstant.gray300),
+                                                      style: TextStyle(fontSize: getFontSize(11.0)),
+                                                      onChanged: (value) {}),
+                                                )),
+                                          ]))),
                                   Align(
                                       alignment: Alignment.center,
                                       child: Container(
@@ -284,31 +284,43 @@ class DashboardScreen extends GetWidget<DashboardController> {
                                                     alignment: Alignment.center,
                                                     child: Padding(
                                                         padding: EdgeInsets.only(
-                                                            left: getHorizontalSize(
-                                                                10.00),
-                                                            top: getVerticalSize(
-                                                                25.00),
-                                                            right: getHorizontalSize(
-                                                                10.00)),
+                                                            left:
+                                                                getHorizontalSize(
+                                                                    10.00),
+                                                            top:
+                                                                getVerticalSize(
+                                                                    25.00),
+                                                            right:
+                                                                getHorizontalSize(
+                                                                    10.00)),
                                                         child: SizedBox(
-                                                          width: MediaQuery.of(context).size.width / 4,
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width /
+                                                              4,
                                                           child: ElevatedButton(
-                                                            style: ElevatedButton.styleFrom(
-                                                              shape: RoundedRectangleBorder(
-                                                                borderRadius: BorderRadius.circular(
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
                                                                   getHorizontalSize(
                                                                     10.00,
                                                                   ),
                                                                 ), // <-- Radius
                                                               ),
-                                                              primary: Colors.lightBlueAccent,
+                                                              primary: Colors
+                                                                  .lightBlueAccent,
                                                             ),
-                                                            onPressed: () {
-                                                            },
-                                                            child: Text("lbl_add".tr),
+                                                            onPressed: () {},
+                                                            child: Text(
+                                                                "lbl_add".tr),
                                                           ),
-                                                        )
-                                                    )),
+                                                        ))),
                                               ])))
                                 ]))))),
           ]),

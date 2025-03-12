@@ -22,7 +22,7 @@ class PollModule extends Module {
 
   @override
   void onConnected() {
-    subscribe(_pollTopic);
+    // subscribe(_pollTopic);
   }
 
   @override
@@ -45,7 +45,8 @@ class PollModule extends Module {
 
         List<dynamic> answersJson = fields["answers"];
         List<PollOption> options = [];
-        for (Map<String, dynamic> answerJson in answersJson as Iterable<Map<String, dynamic>>) {
+        for (Map<String, dynamic> answerJson
+            in answersJson as Iterable<Map<String, dynamic>>) {
           int? answerId = answerJson["id"];
           String? key = answerJson["key"];
 

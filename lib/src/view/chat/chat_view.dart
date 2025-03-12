@@ -175,14 +175,14 @@ class _ChatViewState extends State<ChatView> {
                   controller: _scrollController,
                   itemBuilder: (BuildContext context, int index) {
                     ChatMessage message = _messages[index];
-                    User sender = widget._mainWebSocket!.userModule!
-                        .getUserByID(message.senderID)!;
-
-                    return _buildChatMessageWidget(
-                      message,
-                      sender,
-                      context,
-                    );
+                    // User sender = widget._mainWebSocket!.userModule!
+                    //     .getUserByID(message.senderID)!;
+                    return SizedBox();
+                    // return _buildChatMessageWidget(
+                    //   message,
+                    //   sender,
+                    //   context,
+                    // );
                   },
                 ),
               ),

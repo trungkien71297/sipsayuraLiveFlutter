@@ -3,19 +3,12 @@ import '/core/app_export.dart';
 import 'package:bbb_app/presentation/profile_screen/models/profile_model.dart';
 
 class ProfileController extends GetxController with StateMixin<dynamic> {
-
-   Rx<ProfileModel> profileModel =  ProfileModel(
-     "first_name",
-      "last_name",
-      "user_email",
-      "phone_no",
-      "user_role",
-      true,
-      "Token"
-  ).obs;
+  Rx<ProfileModel> profileModel = ProfileModel("first_name", "last_name",
+          "user_email", "phone_no", "user_role", true, "Token")
+      .obs;
 
   bool isLoaded = false;
-  ProfileModel? profile ;
+  ProfileModel? profile;
   late SharedPreferences prefs;
   @override
   void onReady() {
@@ -32,13 +25,11 @@ class ProfileController extends GetxController with StateMixin<dynamic> {
     // TODO: implement onInit
     super.onInit();
     setProfile();
-    print("Model get value in init"+ profileModel.value.firstName);
+    print("Model get value in init" + profileModel.value.firstName);
   }
-  void initView() {
 
-  }
+  void initView() {}
   Future<void> setProfile() async {
-
     prefs = await SharedPreferences.getInstance();
     profileModel.value.firstName = prefs.getString("first_name")!;
     profileModel.value.lastName = prefs.getString("last_name")!;
@@ -58,11 +49,12 @@ class ProfileController extends GetxController with StateMixin<dynamic> {
     //     prefs.getString("Token")!
     // );
     // print("Shared preference:"+ prefs.getString("first_name")!);
-     print("Model get value in set profile"+ profileModel.value.firstName);
-    profileModel.update((firstName) {prefs.getString("first_name"); });
-    print("Model get value in set profile"+ profileModel.value.firstName);
+    print("Model get value in set profile" + profileModel.value.firstName);
+    profileModel.update((firstName) {
+      prefs.getString("first_name");
+    });
+    print("Model get value in set profile" + profileModel.value.firstName);
     // this.profileModel=profileModel;
     isLoaded = true;
   }
-
 }

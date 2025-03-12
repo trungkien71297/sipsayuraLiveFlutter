@@ -19,18 +19,18 @@ class CallModule extends Module {
 
   @override
   void onConnected() {
-    _connection.connect();
+    // _connection.connect();
   }
 
   @override
   Future<void> onDisconnect() async {
-    _connection.disconnect();
+    // _connection.disconnect();
   }
 
   @override
   void processMessage(Map<String, dynamic> msg) {}
 
   void reconnectAudio() {
-    _connection.reconnect();
+    // _connection.reconnect();
   }
 }

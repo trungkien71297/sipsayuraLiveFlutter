@@ -6,13 +6,13 @@ import 'dart:io';
 import 'package:bbb_app/src/connect/meeting/load/exception/meeting_info_load_exception.dart';
 import 'package:bbb_app/src/connect/meeting/load/meeting_info_loader.dart';
 import 'package:bbb_app/src/connect/meeting/meeting_info.dart';
+import 'package:bbb_app/src/utils/const.dart';
 import 'package:bbb_app/src/utils/log.dart';
 import 'package:bbb_app/src/utils/websocket.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:http/io_client.dart';
 import 'package:xml/xml.dart' as xml;
 
 /// Meeting info loader for BBB.
@@ -107,14 +107,19 @@ class BBBMeetingInfoLoader extends MeetingInfoLoader {
     //     await http.get(parsedUri, headers: {"cookie": _cookie!});
     // Map<String, dynamic> enterJson = json.decode(response.body)["response"];
 
+    dynamic api = await getApi(_cookie ?? '', sessionToken ?? '');
+    Map<String, dynamic> meetingInfoJson =
+        await getMeetingClientSettings(_cookie ?? '', sessionToken ?? '');
+    Map<String, dynamic> metadata =
+        await getMetadata(_cookie ?? '', sessionToken ?? '');
     Map<String, dynamic> iceServers = await _loadIceServers(joinUrl);
-    Log.info("STUN / TURN servers: " + iceServers.toString());
+    // Log.info("STUN / TURN servers: " + iceServers.toString());
     meetingInfo.meetingUrl = meetingUrl;
     meetingInfo.joinUrl = joinUrl;
     meetingInfo.sessionToken = sessionToken;
     meetingInfo.cookie = _cookie;
     meetingInfo.iceServers = iceServers;
-    meetingInfo.conferenceName = 'OKOK';
+    meetingInfo.conferenceName = '';
     return meetingInfo;
     // return r
     //   conference: enterJson["conference"],
@@ -189,6 +194,7 @@ class BBBMeetingInfoLoader extends MeetingInfoLoader {
       do {
         final request = Request('GET', Uri.parse(currentUrl))
           ..followRedirects = false;
+        request.headers.addAll({'content-type': 'text/xml;charset=utf-8'});
         response = await client.send(request);
         if (response.statusCode != HttpStatus.ok) {
           throw new Exception(
@@ -480,5 +486,69 @@ class BBBMeetingInfoLoader extends MeetingInfoLoader {
     }
     _meetingNotStartedRetries = _maxMeetingNotStartedRetries;
     _waitingRoomPollAttempts = _maxWaitingRoomPolls;
+  }
+
+  Future<Map<String, dynamic>> getMeetingClientSettings(
+      String cookie, String sessionToken) async {
+    Map<String, String> headers = {
+      "Accept": "*/*",
+      "Accept-Language": "en-US,en;q=0.5",
+      "Accept-Encoding": "gzip, deflate, br, zstd",
+      "x-session-token": sessionToken,
+      "Connection": "keep-alive",
+      "Cookie": cookie,
+      "Sec-Fetch-Dest": "empty",
+      "Sec-Fetch-Mode": "cors",
+      "Sec-Fetch-Site": "same-origin",
+      "DNT": "1",
+      "Sec-GPC": "1",
+      "Priority": "u=4",
+    };
+    final response = await http.get(
+        Uri.parse('https://$baseURL/api/rest/clientSettings'),
+        headers: headers);
+    return json.decode(response.body);
+  }
+
+  Future<Map<String, dynamic>> getMetadata(
+      String cookie, String sessionToken) async {
+    Map<String, String> headers = {
+      "Accept": "*/*",
+      "Accept-Language": "en-US,en;q=0.5",
+      "Accept-Encoding": "gzip, deflate, br, zstd",
+      "x-session-token": sessionToken,
+      "Connection": "keep-alive",
+      "Cookie": cookie,
+      "Sec-Fetch-Dest": "empty",
+      "Sec-Fetch-Mode": "cors",
+      "Sec-Fetch-Site": "same-origin",
+      "DNT": "1",
+      "Sec-GPC": "1",
+      "Priority": "u=4",
+    };
+    final response = await http.get(
+        Uri.parse('https://$baseURL/api/rest/userMetadata'),
+        headers: headers);
+    return json.decode(response.body);
+  }
+
+  Future<dynamic> getApi(String cookie, String sessionToken) async {
+    Map<String, String> headers = {
+      "Accept": "*/*",
+      "Accept-Language": "en-US,en;q=0.5",
+      "Accept-Encoding": "gzip, deflate, br, zstd",
+      "x-session-token": sessionToken,
+      "Connection": "keep-alive",
+      "Cookie": cookie,
+      "Sec-Fetch-Dest": "empty",
+      "Sec-Fetch-Mode": "cors",
+      "Sec-Fetch-Site": "same-origin",
+      "DNT": "1",
+      "Sec-GPC": "1",
+      "Priority": "u=4",
+    };
+    final response = await http
+        .get(Uri.parse('https://$baseURL/bigbluebutton/api'), headers: headers);
+    return response.body;
   }
 }

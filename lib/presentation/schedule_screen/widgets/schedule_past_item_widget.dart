@@ -62,9 +62,7 @@ class SchedulePastItemWidget extends StatelessWidget {
             title: Text(meetingName),
             subtitle: Text('Meeting ID: ' + meetingID),
             trailing: ElevatedButton(
-              onPressed: () => {
-                onTapBtnDelete(context)
-              },
+              onPressed: () => {onTapBtnDelete(context)},
               child: const Text(
                 'Delete',
                 style: TextStyle(fontSize: 18.0),
@@ -101,20 +99,20 @@ class SchedulePastItemWidget extends StatelessWidget {
     } else {
       final controller = Get.put(JoinMeetingController());
       AwesomeDialog(
-          context: context,
-          dialogType: DialogType.QUESTION,
-          animType: AnimType.BOTTOMSLIDE,
-          title: 'Delete Meeting?',
-          desc: 'Are you really wanted to delete the meeting?',
-          dismissOnBackKeyPress: false,
-          useRootNavigator: true,
-          btnCancelOnPress: () {},
-          btnOkOnPress: () {
-            // controller.deleteMeeting();
-          },
-          btnOkColor: Colors.lightBlueAccent,
-          btnOkText: "Yes",
-          btnCancelText: "No")
+              context: context,
+              dialogType: DialogType.QUESTION,
+              animType: AnimType.BOTTOMSLIDE,
+              title: 'Delete Meeting?',
+              desc: 'Are you really wanted to delete the meeting?',
+              dismissOnBackKeyPress: false,
+              useRootNavigator: true,
+              btnCancelOnPress: () {},
+              btnOkOnPress: () {
+                // controller.deleteMeeting();
+              },
+              btnOkColor: Colors.lightBlueAccent,
+              btnOkText: "Yes",
+              btnCancelText: "No")
           .show();
     }
   }

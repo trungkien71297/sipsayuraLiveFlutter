@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:bbb_app/data/models/user/user.dart';
 import 'package:bbb_app/src/connect/meeting/main_websocket/chat/chat.dart';
 import 'package:bbb_app/src/connect/meeting/main_websocket/chat/group.dart';
 import 'package:bbb_app/src/connect/meeting/main_websocket/main_websocket.dart';
-import 'package:bbb_app/src/connect/meeting/main_websocket/user/model/user.dart';
 import 'package:bbb_app/src/connect/meeting/meeting_info.dart';
 import 'package:bbb_app/src/locale/app_localizations.dart';
 import 'package:bbb_app/src/view/chat/chat_view.dart';
@@ -108,8 +108,11 @@ class _MeetingInfoViewState extends State<MeetingInfoView> {
           border: Border(
             bottom: BorderSide(
               width: 1.0,
-              color:
-                  Theme.of(context).textTheme.bodyText1!.color!.withOpacity(0.3),
+              color: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .color!
+                  .withOpacity(0.3),
             ),
           ),
         ),
@@ -204,31 +207,32 @@ class _MeetingInfoViewState extends State<MeetingInfoView> {
 
   /// Create a sorted user list for display in this widget.
   List<User?> _createSortedUserList() {
-    List<User?> users = widget._mainWebSocket!.userModule!.users;
+    return widget._mainWebSocket!.userModule!.users.whereType<User>().toList();
+    // List<User?> users = widget._mainWebSocket!.userModule!.users;
 
-    List<User?> currentUser = [];
-    List<User?> moderators = [];
-    List<User?> nonModerators = [];
-    for (User? user in users) {
-      if (user!.connectionStatus != User.CONNECTIONSTATUS_ONLINE) {
-        continue;
-      }
+    // List<User?> currentUser = [];
+    // List<User?> moderators = [];
+    // List<User?> nonModerators = [];
+    // for (User? user in users) {
+    //   if (user!.connectionStatus != User.CONNECTIONSTATUS_ONLINE) {
+    //     continue;
+    //   }
 
-      if (user.id == widget._meetingInfo.internalUserID) {
-        currentUser.add(user);
-      } else if (user.role == User.ROLE_MODERATOR &&
-          user.id != widget._meetingInfo.internalUserID) {
-        moderators.add(user);
-      } else if (user.role != User.ROLE_MODERATOR &&
-          user.id != widget._meetingInfo.internalUserID) {
-        nonModerators.add(user);
-      }
-    }
+    //   if (user.id == widget._meetingInfo.internalUserID) {
+    //     currentUser.add(user);
+    //   } else if (user.role == User.ROLE_MODERATOR &&
+    //       user.id != widget._meetingInfo.internalUserID) {
+    //     moderators.add(user);
+    //   } else if (user.role != User.ROLE_MODERATOR &&
+    //       user.id != widget._meetingInfo.internalUserID) {
+    //     nonModerators.add(user);
+    //   }
+    // }
 
-    moderators.sort((a, b) => a!.sortName!.compareTo(b!.sortName!));
-    nonModerators.sort((a, b) => a!.sortName!.compareTo(b!.sortName!));
+    // moderators.sort((a, b) => a!.sortName!.compareTo(b!.sortName!));
+    // nonModerators.sort((a, b) => a!.sortName!.compareTo(b!.sortName!));
 
-    return currentUser + moderators + nonModerators;
+    // return currentUser + moderators + nonModerators;
   }
 
   Widget _buildUsers(BuildContext context, List<User?> users) {
@@ -253,15 +257,15 @@ class _MeetingInfoViewState extends State<MeetingInfoView> {
 
   /// Get the current UI audio state representation for the given [user].
   AudioState _getAudioState(User user) {
-    if (user.joined!) {
-      if (user.listenOnly!) {
-        return AudioState(Icons.headset, Colors.blueAccent);
-      } else if (user.muted!) {
-        return AudioState(Icons.mic_off, Colors.redAccent);
-      } else {
-        return AudioState(Icons.mic, Color(0xFF66CC66));
-      }
-    }
+    // if (user.joined!) {
+    //   if (user.listenOnly!) {
+    //     return AudioState(Icons.headset, Colors.blueAccent);
+    //   } else if (user.muted!) {
+    //     return AudioState(Icons.mic_off, Colors.redAccent);
+    //   } else {
+    //     return AudioState(Icons.mic, Color(0xFF66CC66));
+    //   }
+    // }
 
     return AudioState(Icons.close, Colors.blueGrey);
   }
@@ -286,7 +290,7 @@ class _MeetingInfoViewState extends State<MeetingInfoView> {
   }
 
   Widget _buildUserEntry(User user, BuildContext context) {
-    final bool isCurrentUser = user.id == widget._meetingInfo.internalUserID;
+    final bool isCurrentUser = user.userId == widget._meetingInfo.userId;
 
     final Widget bubble = SizedBox(
       width: 70,
@@ -298,7 +302,7 @@ class _MeetingInfoViewState extends State<MeetingInfoView> {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                borderRadius: user.role == User.ROLE_MODERATOR
+                borderRadius: user.isModerator == true
                     ? BorderRadius.circular(10)
                     : BorderRadius.circular(99999),
                 color: isCurrentUser
@@ -307,7 +311,9 @@ class _MeetingInfoViewState extends State<MeetingInfoView> {
               ),
               child: Center(
                 child: Text(
-                  user.name!.length > 2 ? user.name!.substring(0, 2) : user.name!,
+                  user.name!.length > 2
+                      ? user.name!.substring(0, 2)
+                      : user.name!,
                   style: TextStyle(
                       color: isCurrentUser
                           ? Theme.of(context).textTheme.bodyText1!.color
@@ -330,7 +336,7 @@ class _MeetingInfoViewState extends State<MeetingInfoView> {
         padding: EdgeInsets.only(left: 0.0, right: 10.0),
         child: Row(
           children: [
-            if (user.isPresenter!)
+            if (user.isDialIn == true)
               Container(
                   margin: const EdgeInsets.only(right: 15.0),
                   child: Icon(
@@ -359,7 +365,7 @@ class _MeetingInfoViewState extends State<MeetingInfoView> {
   Widget _createItemPopupMenu(User user) => PopupMenuButton<String>(
         onSelected: (result) {
           if (result == "createPrivateChat") {
-            widget._mainWebSocket!.chatModule!.createGroupChat(user);
+            // widget._mainWebSocket!.chatModule!.createGroupChat(user);
           }
         },
         itemBuilder: (context) => [

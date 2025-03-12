@@ -56,6 +56,4 @@ class ImageConstant {
   static String imgIconarrowleft = 'assets/images/img_iconarrowleft.svg';
 
   static String imgMdicheck = 'assets/images/img_mdicheck.svg';
-  }
-
-
+}

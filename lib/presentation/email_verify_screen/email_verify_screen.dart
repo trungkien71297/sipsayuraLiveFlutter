@@ -25,21 +25,15 @@ class EmailveryScreen extends GetWidget<EmailveryController> {
       backgroundColor: Colors.black45,
       appBar: new AppBar(
         backgroundColor: Colors.lightBlueAccent,
-        title: RichText(
-            text: TextSpan(
-                children: [
-
-                ]),
-            textAlign:
-            TextAlign.left),
+        title:
+            RichText(text: TextSpan(children: []), textAlign: TextAlign.left),
         centerTitle: true,
         elevation: 0.0,
         iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.only(
-              left: 0, right: 0, top: 0, bottom: 0),
+          padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 0),
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(0), color: Colors.white),
@@ -87,7 +81,7 @@ class EmailveryScreen extends GetWidget<EmailveryController> {
                           ),
                           Padding(
                             padding:
-                            const EdgeInsets.only(left: 16.0, bottom: 20.0),
+                                const EdgeInsets.only(left: 16.0, bottom: 20.0),
                             child: TextFormField(
                               controller: _Sendotp,
                               autovalidateMode: null,
@@ -96,7 +90,6 @@ class EmailveryScreen extends GetWidget<EmailveryController> {
                                   return 'code cannot be a empty';
                                 } else if (value.isEmpty) {
                                   return null;
-
                                 }
 
                                 return null;
@@ -108,13 +101,15 @@ class EmailveryScreen extends GetWidget<EmailveryController> {
                                     fontSize: 18,
                                     color: Colors.black45,
                                     fontStyle: FontStyle.italic),
-                                icon: Icon(Icons.key, color: Colors.lightBlueAccent),
+                                icon: Icon(Icons.key,
+                                    color: Colors.lightBlueAccent),
                                 enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.lightBlueAccent),
+                                  borderSide:
+                                      BorderSide(color: Colors.lightBlueAccent),
                                 ),
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide:
-                                  BorderSide(color: Colors.lightBlueAccent),
+                                      BorderSide(color: Colors.lightBlueAccent),
                                 ),
                               ),
                             ),
@@ -122,48 +117,53 @@ class EmailveryScreen extends GetWidget<EmailveryController> {
                           SizedBox(
                             height: 40,
                             width: 150,
-                            child: Obx(()=>ElevatedButton(
-                              onPressed: () {
-                                postVerifyData(context);
-                              },
-                              child: controller.isLoading.value
-                                  ? Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(
-                                    height: 12.0,
-                                    width: 12.0,
-                                    child:  CircularProgressIndicator(
-                                      color: Colors.white,
-
-                                    ),
-                                  ),
-
-                                  Text("Please wait", style:
-                                  TextStyle(fontSize: 16,color: Colors.white))
-                                ],
-
-                              ): Text(
-                                'Verify Email',
+                            child: Obx(
+                              () => ElevatedButton(
+                                onPressed: () {
+                                  postVerifyData(context);
+                                },
+                                child: controller.isLoading.value
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          SizedBox(
+                                            height: 12.0,
+                                            width: 12.0,
+                                            child: CircularProgressIndicator(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          Text("Please wait",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.white))
+                                        ],
+                                      )
+                                    : Text(
+                                        'Verify Email',
+                                      ),
+                                style: ButtonStyle(
+                                    foregroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.white),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.lightBlueAccent),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                            side: const BorderSide(
+                                                color:
+                                                    Colors.lightBlueAccent)))),
                               ),
-                              style: ButtonStyle(
-                                  foregroundColor:
-                                  MaterialStateProperty.all<Color>(
-                                      Colors.white),
-                                  backgroundColor:
-                                  MaterialStateProperty.all<Color>(
-                                      Colors.lightBlueAccent),
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(20.0),
-                                          side: const BorderSide(
-                                              color: Colors.lightBlueAccent)))),
-                            ),),
+                            ),
                           ),
-                      SizedBox(
-                        height: 10,),
+                          SizedBox(
+                            height: 10,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -217,136 +217,136 @@ class EmailveryScreen extends GetWidget<EmailveryController> {
         },
       ).show();
     } else {
-    controller.isLoading.value=true;
-    try {
-      final response = await post(Uri.parse(url), body: {
-        "token":_Sendotp.text
-      }).timeout(
-        Duration(seconds: 10),
-        onTimeout: () => http.Response(
-          '[{"statusCode":"408"}]',
-          408,
-        ),
-        // throw TimeoutException('Connectiion time out.');
-        // throw ExceptionHandlers().getExceptionString(e);
-      );
-          print(response.statusCode);
-          controller.isLoading.value=false;
-          toastsuccessful();
-          onTapBtnSignin();
-      // switch (response.statusCode) {
-      //   case 200:
-      //     print(response.body);
-      //     controller.isLoading.value=false;
-      //     toastsuccessful();
-      //     onTapBtnSignin();
-      //     break;
-      //   case 500:
-      //     Fluttertoast.showToast(
-      //         msg: "Internal Server Error.",
-      //         toastLength: Toast.LENGTH_SHORT,
-      //         gravity: ToastGravity.BOTTOM,
-      //         timeInSecForIosWeb: 1,
-      //         backgroundColor: Colors.red,
-      //         textColor: Colors.white,
-      //         fontSize: 16.0);
-      //     controller.isLoading.value = false;
-      //     break;
-      //   case 503:
-      //     Fluttertoast.showToast(
-      //         msg: "Service Unavailable.",
-      //         toastLength: Toast.LENGTH_SHORT,
-      //         gravity: ToastGravity.BOTTOM,
-      //         timeInSecForIosWeb: 1,
-      //         backgroundColor: Colors.red,
-      //         textColor: Colors.white,
-      //         fontSize: 16.0);
-      //     controller.isLoading.value = false;
-      //
-      //     break;
-      //   case 400:
-      //     Fluttertoast.showToast(
-      //         msg: "Email or Password is Incorrect!",
-      //         toastLength: Toast.LENGTH_SHORT,
-      //         gravity: ToastGravity.BOTTOM,
-      //         timeInSecForIosWeb: 1,
-      //         backgroundColor: Colors.red,
-      //         textColor: Colors.white,
-      //         fontSize: 16.0);
-      //     controller.isLoading.value = false;
-      //     break;
-      //   case 404:
-      //     Fluttertoast.showToast(
-      //         msg: "The server can not find the requested resource.",
-      //         toastLength: Toast.LENGTH_SHORT,
-      //         gravity: ToastGravity.BOTTOM,
-      //         timeInSecForIosWeb: 1,
-      //         backgroundColor: Colors.red,
-      //         textColor: Colors.white,
-      //         fontSize: 16.0);
-      //     controller.isLoading.value = false;
-      //     break;
-      //   case 408:
-      //     Fluttertoast.showToast(
-      //         msg: "Request Timeout.",
-      //         toastLength: Toast.LENGTH_SHORT,
-      //         gravity: ToastGravity.BOTTOM,
-      //         timeInSecForIosWeb: 1,
-      //         backgroundColor: Colors.red,
-      //         textColor: Colors.white,
-      //         fontSize: 16.0);
-      //     controller.isLoading.value = false;
-      //     break;
-      //   default:
-      //     toastUnsuccessful();
-      //     controller.isLoading.value = false;
-      //     break;
-      // }
-    } on TimeoutException catch (err) {
-      Fluttertoast.showToast(
-          msg: "Request Timeout.",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-      controller.isLoading.value = false;
-      print(err);
-    } on HttpException catch (err) {
-      Fluttertoast.showToast(
-          msg: "Http error",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-      controller.isLoading.value = false;
-      print(err);
-    } on SocketException catch (err) {
-      print(err);
-      Fluttertoast.showToast(
-          msg: "Error: Socket Exception.",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-      controller.isLoading.value = false;
-    } catch (err) {
-      print(err);
-      Fluttertoast.showToast(
-          msg: "Something went wrong please try again.",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-      controller.isLoading.value = false;
-    }}
+      controller.isLoading.value = true;
+      try {
+        final response =
+            await post(Uri.parse(url), body: {"token": _Sendotp.text}).timeout(
+          Duration(seconds: 10),
+          onTimeout: () => http.Response(
+            '[{"statusCode":"408"}]',
+            408,
+          ),
+          // throw TimeoutException('Connectiion time out.');
+          // throw ExceptionHandlers().getExceptionString(e);
+        );
+        print(response.statusCode);
+        controller.isLoading.value = false;
+        toastsuccessful();
+        onTapBtnSignin();
+        // switch (response.statusCode) {
+        //   case 200:
+        //     print(response.body);
+        //     controller.isLoading.value=false;
+        //     toastsuccessful();
+        //     onTapBtnSignin();
+        //     break;
+        //   case 500:
+        //     Fluttertoast.showToast(
+        //         msg: "Internal Server Error.",
+        //         toastLength: Toast.LENGTH_SHORT,
+        //         gravity: ToastGravity.BOTTOM,
+        //         timeInSecForIosWeb: 1,
+        //         backgroundColor: Colors.red,
+        //         textColor: Colors.white,
+        //         fontSize: 16.0);
+        //     controller.isLoading.value = false;
+        //     break;
+        //   case 503:
+        //     Fluttertoast.showToast(
+        //         msg: "Service Unavailable.",
+        //         toastLength: Toast.LENGTH_SHORT,
+        //         gravity: ToastGravity.BOTTOM,
+        //         timeInSecForIosWeb: 1,
+        //         backgroundColor: Colors.red,
+        //         textColor: Colors.white,
+        //         fontSize: 16.0);
+        //     controller.isLoading.value = false;
+        //
+        //     break;
+        //   case 400:
+        //     Fluttertoast.showToast(
+        //         msg: "Email or Password is Incorrect!",
+        //         toastLength: Toast.LENGTH_SHORT,
+        //         gravity: ToastGravity.BOTTOM,
+        //         timeInSecForIosWeb: 1,
+        //         backgroundColor: Colors.red,
+        //         textColor: Colors.white,
+        //         fontSize: 16.0);
+        //     controller.isLoading.value = false;
+        //     break;
+        //   case 404:
+        //     Fluttertoast.showToast(
+        //         msg: "The server can not find the requested resource.",
+        //         toastLength: Toast.LENGTH_SHORT,
+        //         gravity: ToastGravity.BOTTOM,
+        //         timeInSecForIosWeb: 1,
+        //         backgroundColor: Colors.red,
+        //         textColor: Colors.white,
+        //         fontSize: 16.0);
+        //     controller.isLoading.value = false;
+        //     break;
+        //   case 408:
+        //     Fluttertoast.showToast(
+        //         msg: "Request Timeout.",
+        //         toastLength: Toast.LENGTH_SHORT,
+        //         gravity: ToastGravity.BOTTOM,
+        //         timeInSecForIosWeb: 1,
+        //         backgroundColor: Colors.red,
+        //         textColor: Colors.white,
+        //         fontSize: 16.0);
+        //     controller.isLoading.value = false;
+        //     break;
+        //   default:
+        //     toastUnsuccessful();
+        //     controller.isLoading.value = false;
+        //     break;
+        // }
+      } on TimeoutException catch (err) {
+        Fluttertoast.showToast(
+            msg: "Request Timeout.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        controller.isLoading.value = false;
+        print(err);
+      } on HttpException catch (err) {
+        Fluttertoast.showToast(
+            msg: "Http error",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        controller.isLoading.value = false;
+        print(err);
+      } on SocketException catch (err) {
+        print(err);
+        Fluttertoast.showToast(
+            msg: "Error: Socket Exception.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        controller.isLoading.value = false;
+      } catch (err) {
+        print(err);
+        Fluttertoast.showToast(
+            msg: "Something went wrong please try again.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        controller.isLoading.value = false;
+      }
+    }
   }
 
   void toastsuccessful() => Fluttertoast.showToast(
@@ -370,5 +370,4 @@ class EmailveryScreen extends GetWidget<EmailveryController> {
   onTapBtnSignin() {
     Get.toNamed(AppRoutes.signinScreen);
   }
-
 }

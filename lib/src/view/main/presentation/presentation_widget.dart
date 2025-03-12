@@ -41,7 +41,7 @@ class _PresentationWidgetState extends State<PresentationWidget> {
       PresentationPainterController();
 
   /// Subscription to slide events.
-  StreamSubscription<PresentationSlideEvent>? _slideEventSubscription;
+  // StreamSubscription<PresentationSlideEvent>? _slideEventSubscription;
 
   /// Whether the widget is currently shown in fullscreen mode.
   bool _isFullscreen = false;
@@ -65,7 +65,7 @@ class _PresentationWidgetState extends State<PresentationWidget> {
 
   @override
   void dispose() {
-    _slideEventSubscription!.cancel();
+    // _slideEventSubscription!.cancel();
 
     super.dispose();
   }
@@ -113,8 +113,8 @@ class _PresentationWidgetState extends State<PresentationWidget> {
                 border: Border.all(
                     color: Theme.of(context).textTheme.bodyText1!.color!)),
             child: AspectRatio(
-              aspectRatio:
-                  _currentSlide!.bounds!.width! / _currentSlide!.bounds!.height!,
+              aspectRatio: _currentSlide!.bounds!.width! /
+                  _currentSlide!.bounds!.height!,
               child: Stack(
                 children: [
                   presentation,
@@ -155,60 +155,60 @@ class _PresentationWidgetState extends State<PresentationWidget> {
         );
       });
     } else {
-      if (_slideEventSubscription == null) {
-        _initializeSlideEventSubscription();
-      }
+      // if (_slideEventSubscription == null) {
+      //   _initializeSlideEventSubscription();
+      // }
 
       return Center(child: CircularProgressIndicator());
     }
   }
 
   void _initializeSlideEventSubscription() {
-    _currentSlide = widget._mainWebSocket!.presentationModule!.currentSlide;
-    _slideEventSubscription = widget
-        ._mainWebSocket!.presentationModule!.slideEventsStream
-        .listen((event) {
-      Presentation? currentPresentation =
-          widget._mainWebSocket!.presentationModule!.currentPresentation;
-      if (currentPresentation != null) {
-        bool isRelevantEvent = event.eventType == SlideEventType.ADDED ||
-            event.eventType == SlideEventType.CHANGED ||
-            event.eventType == SlideEventType.ANNOTATIONS_ONLY_CHANGED;
+    // _currentSlide = widget._mainWebSocket!.presentationModule!.currentSlide;
+    // _slideEventSubscription = widget
+    //     ._mainWebSocket!.presentationModule!.slideEventsStream
+    //     .listen((event) {
+    //   Presentation? currentPresentation =
+    //       widget._mainWebSocket!.presentationModule!.currentPresentation;
+    //   if (currentPresentation != null) {
+    //     bool isRelevantEvent = event.eventType == SlideEventType.ADDED ||
+    //         event.eventType == SlideEventType.CHANGED ||
+    //         event.eventType == SlideEventType.ANNOTATIONS_ONLY_CHANGED;
 
-        if (isRelevantEvent &&
-            event.slide!.current! &&
-            event.slide!.presentationId == currentPresentation.id) {
-          // Check if slide to show changed
-          if (event.slide != _currentSlide) {
-            _currentSlide = event.slide;
-            _updateAnnotations();
-          }
+    //     if (isRelevantEvent &&
+    //         event.slide!.current! &&
+    //         event.slide!.presentationId == currentPresentation.id) {
+    //       // Check if slide to show changed
+    //       if (event.slide != _currentSlide) {
+    //         _currentSlide = event.slide;
+    //         _updateAnnotations();
+    //       }
 
-          // Check if slide bounds changed
-          if (_currentSlide!.bounds != _slideBounds) {
-            _slideBounds = _currentSlide!.bounds;
-            _painterController.bounds = _slideBounds;
-          }
+    //       // Check if slide bounds changed
+    //       if (_currentSlide!.bounds != _slideBounds) {
+    //         _slideBounds = _currentSlide!.bounds;
+    //         _painterController.bounds = _slideBounds;
+    //       }
 
-          if (event.eventType == SlideEventType.ANNOTATIONS_ONLY_CHANGED) {
-            _updateAnnotations();
-          } else {
-            if (_slideBounds != null) {
-              _reloadSVG(_currentSlide!.svgUri!);
-            }
-          }
-        }
-      }
-    });
+    //       if (event.eventType == SlideEventType.ANNOTATIONS_ONLY_CHANGED) {
+    //         _updateAnnotations();
+    //       } else {
+    //         if (_slideBounds != null) {
+    //           _reloadSVG(_currentSlide!.svgUri!);
+    //         }
+    //       }
+    //     }
+    //   }
+    // });
 
-    if (_currentSlide != null) {
-      _slideBounds = _currentSlide!.bounds;
-      _painterController.bounds = _slideBounds;
+    // if (_currentSlide != null) {
+    //   _slideBounds = _currentSlide!.bounds;
+    //   _painterController.bounds = _slideBounds;
 
-      _updateAnnotations();
+    //   _updateAnnotations();
 
-      _reloadSVG(_currentSlide!.svgUri!);
-    }
+    //   _reloadSVG(_currentSlide!.svgUri!);
+    // }
   }
 
   /// Update the shown annotations.
@@ -216,6 +216,6 @@ class _PresentationWidgetState extends State<PresentationWidget> {
     _painterController.cursorPos = _currentSlide!.cursorPos;
     _painterController.annotations = _currentSlide!.annotations.values
         .toList(growable: false)
-          ..sort((o1, o2) => o1.position!.compareTo(o2.position!));
+      ..sort((o1, o2) => o1.position!.compareTo(o2.position!));
   }
 }

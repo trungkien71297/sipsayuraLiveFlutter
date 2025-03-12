@@ -12,31 +12,31 @@ class IncomingScreenshareVideoConnection extends IncomingVideoConnection {
 
   @override
   onIceCandidate(candidate) {
-    send({
-      'callerName': meetingInfo.internalUserID,
-      'candidate': {
-        'candidate': candidate.candidate,
-        'sdpMLineIndex': candidate.sdpMlineIndex,
-        'sdpMid': candidate.sdpMid,
-      },
-      'id': 'iceCandidate',
-      'role': 'recv',
-      'type': 'screenshare',
-      'voiceBridge': meetingInfo.voiceBridge
-    });
+    // send({
+    //   'callerName': meetingInfo.internalUserID,
+    //   'candidate': {
+    //     'candidate': candidate.candidate,
+    //     'sdpMLineIndex': candidate.sdpMlineIndex,
+    //     'sdpMid': candidate.sdpMid,
+    //   },
+    //   'id': 'iceCandidate',
+    //   'role': 'recv',
+    //   'type': 'screenshare',
+    //   'voiceBridge': meetingInfo.voiceBridge
+    // });
   }
 
   @override
   sendOffer(RTCSessionDescription s) {
-    send({
-      'callerName': meetingInfo.internalUserID,
-      'id': 'start',
-      'internalMeetingId': meetingInfo.meetingID,
-      'role': 'recv',
-      'sdpOffer': s.sdp,
-      'type': 'screenshare',
-      'userName': meetingInfo.fullUserName,
-      'voiceBridge': meetingInfo.voiceBridge,
-    });
+    // send({
+    //   'callerName': meetingInfo.internalUserID,
+    //   'id': 'start',
+    //   'internalMeetingId': meetingInfo.meetingID,
+    //   'role': 'recv',
+    //   'sdpOffer': s.sdp,
+    //   'type': 'screenshare',
+    //   'userName': meetingInfo.fullUserName,
+    //   'voiceBridge': meetingInfo.voiceBridge,
+    // });
   }
 }

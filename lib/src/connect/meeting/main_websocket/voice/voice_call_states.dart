@@ -17,7 +17,7 @@ class VoiceCallStatesModule extends Module {
 
   @override
   void onConnected() {
-    subscribe("voice-call-states");
+    // subscribe("voice-call-states");
   }
 
   @override

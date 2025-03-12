@@ -1,6 +1,7 @@
 import 'package:bbb_app/presentation/signup_screen/signup_screen.dart';
 import 'package:bbb_app/presentation/dashboard_screen/dashboard_screen.dart';
 import 'package:bbb_app/presentation/onboarding_screen/onboarding_screen.dart';
+import 'package:bbb_app/presentation/webview_screen.dart';
 import 'package:get/get.dart';
 
 import '../presentation/dashboard_screen/binding/dashboard_binding.dart';
@@ -72,6 +73,7 @@ class AppRoutes {
   static String initialRoute = '/initialRoute';
 
   static String splashscreen = '/splashscreen';
+  static String webview = '/webview';
 
   static List<GetPage> pages = [
     // GetPage(
@@ -223,5 +225,6 @@ class AppRoutes {
         NewMeetingBinding(),
       ],
     ),
+    GetPage(name: webview, page: () => WebViewScreen())
   ];
 }

@@ -62,8 +62,8 @@ class JoinMeetingController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     late String token = prefs.getString("Token")!;
     try {
-      Uri url =
-          Uri.parse("http://${dotenv.env['ip_address']}:4000/join/info/${getMeetingId()}");
+      Uri url = Uri.parse(
+          "http://${dotenv.env['ip_address']}:4000/join/info/${getMeetingId()}");
       final response = await http
           .post(url, headers: {
             "Access-Control-Allow-Origin": "*",
@@ -233,7 +233,8 @@ class JoinMeetingController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     late String token = prefs.getString("Token")!;
     try {
-      Uri url = Uri.parse("http://${dotenv.env['ip_address']}:4000/join/${getMeetingId()}");
+      Uri url = Uri.parse(
+          "http://${dotenv.env['ip_address']}:4000/join/${getMeetingId()}");
       final response = await http
           .post(url, headers: {
             "Access-Control-Allow-Origin": "*",

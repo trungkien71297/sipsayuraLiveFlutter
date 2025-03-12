@@ -16,8 +16,11 @@ class AppNoticeWidget extends StatelessWidget {
             AppLocalizations.of(context)!.get("app.notice")!,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color:
-                  Theme.of(context).textTheme.bodyText1!.color!.withOpacity(0.5),
+              color: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .color!
+                  .withOpacity(0.5),
               fontSize: 12.0,
             ),
           ),

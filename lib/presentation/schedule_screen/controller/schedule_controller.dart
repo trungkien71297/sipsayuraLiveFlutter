@@ -60,8 +60,8 @@ class ScheduleController extends GetxController with StateMixin<dynamic> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       late String token = prefs.getString("Token")!;
       try {
-        Uri url =
-            Uri.parse("http://${dotenv.env['ip_address']}:4000/meetings/getMeetingByUserID");
+        Uri url = Uri.parse(
+            "http://${dotenv.env['ip_address']}:4000/meetings/getMeetingByUserID");
         final response = await http
             .post(url, headers: {
               "Access-Control-Allow-Origin": "*",

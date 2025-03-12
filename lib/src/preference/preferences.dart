@@ -85,8 +85,8 @@ class Preferences {
     if (value != _lastSuccessfulTransportSchemeForSIP) {
       _lastSuccessfulTransportSchemeForSIP = value;
 
-      _getSharedPreferences().then(
-          (sp) => sp!.setString(_lastSuccessfulTransportSchemeForSIPKey, value!));
+      _getSharedPreferences().then((sp) =>
+          sp!.setString(_lastSuccessfulTransportSchemeForSIPKey, value!));
     }
   }
 }

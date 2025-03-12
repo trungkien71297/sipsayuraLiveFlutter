@@ -1,4 +1,6 @@
 import 'package:bbb_app/src/connect/meeting/main_websocket/util/util.dart';
+import 'package:bbb_app/src/utils/graphql_ws.dart';
+import 'package:uuid/uuid.dart';
 
 /// Sender function for messages.
 typedef MessageSender = void Function(Map<String, dynamic> msg);
@@ -31,18 +33,31 @@ abstract class Module {
   /// Subscribe to the passed [topic].
   /// Returns the subscription ID with which we have subscribed to the topic.
   /// The subscription ID is needed to unsubscribe later.
-  String subscribe(
-    String topic, {
-    List<dynamic> params = const [],
-  }) {
-    final String subscriptionID =
-        MainWebSocketUtil.getRandomAlphanumericWithCaps(17);
+  // String subscribe(
+  //   String topic, {
+  //   List<dynamic> params = const [],
+  // }) {
+  //   final String subscriptionID =
+  //       MainWebSocketUtil.getRandomAlphanumericWithCaps(17);
 
+  //   // sendMessage({
+  //   //   "msg": "sub",
+  //   //   "id": subscriptionID,
+  //   //   "name": topic,
+  //   //   "params": params,
+  //   // });
+
+  //   return subscriptionID;
+  // }
+
+  String subscribe({
+    Map<String, dynamic>? payload,
+  }) {
+    final String subscriptionID = Uuid().v4();
     sendMessage({
-      "msg": "sub",
-      "id": subscriptionID,
-      "name": topic,
-      "params": params,
+      'type': GraphQLWSMessageType.SUBSCRIBE,
+      'id': subscriptionID,
+      'payload': payload,
     });
 
     return subscriptionID;
@@ -50,10 +65,10 @@ abstract class Module {
 
   /// Unsubscribe to the subscription with the passed subscription ID.
   void unsubscribe(String subscriptionID) {
-    sendMessage({
-      "msg": "unsub",
-      "id": subscriptionID,
-    });
+    // sendMessage({
+    //   "msg": "unsub",
+    //   "id": subscriptionID,
+    // });
   }
 
   MessageSender get messageSender => _messageSender;

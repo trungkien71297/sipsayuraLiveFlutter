@@ -23,7 +23,7 @@ class VoiceUsersModule extends Module {
   Map<String?, String> _voiceUserIDToUserID = {};
 
   /// Subscription to mute state events.
-  late StreamSubscription<MuteState> _muteEventsSubscription;
+  // late StreamSubscription<MuteState> _muteEventsSubscription;
 
   VoiceUsersModule(
       messageSender, this._meetingInfo, this._userModule, this._provider)
@@ -31,20 +31,19 @@ class VoiceUsersModule extends Module {
 
   @override
   void onConnected() {
-    subscribe(VOICE_USERS);
+    // subscribe(VOICE_USERS);
 
-    _muteEventsSubscription = _provider.muteBloc.stream.listen((state) {
-      if (state == MuteState.MUTED || state == MuteState.UNMUTED) {
-        final isMuted = state == MuteState.MUTED;
+    // _muteEventsSubscription = _provider.muteBloc.stream.listen((state) {
+    //   if (state == MuteState.MUTED || state == MuteState.UNMUTED) {
+    //     final isMuted = state == MuteState.MUTED;
 
-        // Check if this differs from the current user representation we currently have
-        User user = _userModule.getUserByID(_meetingInfo.internalUserID)!;
-        if (user.muted != isMuted) {
-          _sendToggleVoiceMessage();
-        }
-      }
-
-    });
+    //     // Check if this differs from the current user representation we currently have
+    //     // User user = _userModule.getUserByID(_meetingInfo.internalUserID)!;
+    //     // if (user.muted != isMuted) {
+    //     //   _sendToggleVoiceMessage();
+    //     // }
+    //   }
+    // });
 
     // before null safty code
 
@@ -63,7 +62,7 @@ class VoiceUsersModule extends Module {
 
   @override
   Future<void> onDisconnect() async {
-    await _muteEventsSubscription.cancel();
+    // await _muteEventsSubscription.cancel();
   }
 
   /// Send the toggle voice message that will
@@ -104,16 +103,16 @@ class VoiceUsersModule extends Module {
 
     // Check if user with given user ID is present, otherwise add as temporary
     // data in the user module to be added later to the actual user model.
-    User? user = _userModule.getUserByID(userID);
-    if (user != null) {
-      _addFieldsToUser(fields!, user);
-      _userModule.emitUpdateEvent(user);
-    } else {
-      user = User(userID);
-      _addFieldsToUser(fields!, user);
+    // User? user = _userModule.getUserByID(userID);
+    // if (user != null) {
+    //   _addFieldsToUser(fields!, user);
+    //   _userModule.emitUpdateEvent(user);
+    // } else {
+    //   user = User(userID);
+    //   _addFieldsToUser(fields!, user);
 
-      _userModule.addTmpUserInfo(user);
-    }
+    //   _userModule.addTmpUserInfo(user);
+    // }
   }
 
   /// Add the given fields to the passed user object.

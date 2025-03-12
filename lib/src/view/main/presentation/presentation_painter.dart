@@ -104,10 +104,10 @@ class PresentationPainter extends CustomPainter {
 
     double x = info.bounds!.left * controller.bounds!.width! / 100;
     double y = info.bounds!.top * controller.bounds!.height! / 100;
-    double width =
-        info.bounds!.width * controller.bounds!.width! / 100 - marginBottomRight;
-    double height =
-        info.bounds!.height * controller.bounds!.height! / 100 - marginBottomRight;
+    double width = info.bounds!.width * controller.bounds!.width! / 100 -
+        marginBottomRight;
+    double height = info.bounds!.height * controller.bounds!.height! / 100 -
+        marginBottomRight;
 
     double entryHeight = height / info.entries!.length;
 

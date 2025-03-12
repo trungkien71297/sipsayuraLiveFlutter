@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bbb_app/core/app_export.dart';
 import 'package:bbb_app/src/broadcast/app_state_notifier.dart';
 import 'package:bbb_app/src/connect/meeting/load/exception/meeting_info_load_exception.dart';
 import 'package:bbb_app/src/connect/meeting/load/meeting_info_loaders.dart';
@@ -13,6 +14,7 @@ import 'package:bbb_app/src/view/privacy_policy/privacy_policy_view.dart';
 import 'package:bbb_app/src/view/start/start_view__text_form_field_widget.dart';
 import 'package:day_night_switcher/day_night_switcher.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
@@ -67,6 +69,7 @@ class _StartViewState extends State<StartView> {
 
   /// Controller for the user name text field.
   final TextEditingController _usernameTextField = TextEditingController();
+  final TextEditingController _webView = TextEditingController();
 
   /// Controller for the user name text field.
   final TextEditingController _accesscodeTextField = TextEditingController();
@@ -205,6 +208,8 @@ class _StartViewState extends State<StartView> {
                   children: [
                     ..._buildHeaderWidgets(context),
                     _buildForm(context),
+                    Divider(),
+                    _buildWebView(),
                     ..._buildFooterWidgets(context),
                   ],
                 ),
@@ -213,6 +218,28 @@ class _StartViewState extends State<StartView> {
           );
         },
       ),
+    );
+  }
+
+  Widget _buildWebView() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        StartViewTextFormField(
+          controller: _webView,
+          hintText: AppLocalizations.of(context)!.get("login.username"),
+          prefixIcon: Icon(Icons.label),
+          validator: (value) => value!.isEmpty
+              ? AppLocalizations.of(context)!.get("login.username-missing")
+              : null,
+        ),
+        ElevatedButton(
+            onPressed: () {
+              Get.toNamed(AppRoutes.webview,
+                  arguments: {'link': _webView.text});
+            },
+            child: Text('Join webview'))
+      ],
     );
   }
 

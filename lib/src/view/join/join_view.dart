@@ -48,7 +48,7 @@ class _joinViewState extends State<joinView> {
   /// Duration after the user stopped typing after which to check whether
   /// an access code is needed for the current meeting URL.
   static const Duration _checkForAccessCodeNeededDuration =
-  Duration(seconds: 2);
+      Duration(seconds: 2);
 
   /// Key used to get a previously stored meeting URL from shared preferences.
   static const String _meetingURLPreferencesKey = "start_view.meeting-url";
@@ -102,9 +102,9 @@ class _joinViewState extends State<joinView> {
 
     _darkModeSubscription =
         Preferences().darkModeEnabledChanges.listen((event) {
-          Provider.of<AppStateNotifier>(context, listen: false).darkModeEnabled =
-              event;
-        });
+      Provider.of<AppStateNotifier>(context, listen: false).darkModeEnabled =
+          event;
+    });
 
     _restoreInfo();
 
@@ -153,7 +153,7 @@ class _joinViewState extends State<joinView> {
     Uri meetingUrl = link.replace(scheme: "https");
 
     bool isDirectJoinLink =
-    link.queryParameters.containsKey(_uniLinkDirectBBBLinkQueryParameter);
+        link.queryParameters.containsKey(_uniLinkDirectBBBLinkQueryParameter);
     if (isDirectJoinLink) {
       // Join the meeting directly instead of pre-filling the fields
       try {
@@ -166,7 +166,7 @@ class _joinViewState extends State<joinView> {
 
     if (link.queryParameters.containsKey(_uniLinkAccessCodeQueryParameter)) {
       String accessCode =
-      meetingUrl.queryParameters[_uniLinkAccessCodeQueryParameter]!;
+          meetingUrl.queryParameters[_uniLinkAccessCodeQueryParameter]!;
 
       Map<String, String> newQueryParams = Map.of(meetingUrl.queryParameters);
       newQueryParams.remove(_uniLinkAccessCodeQueryParameter);
@@ -218,126 +218,141 @@ class _joinViewState extends State<joinView> {
 
   /// Build the footer widgets for the start view.
   List<Widget> _buildFooterWidgets(BuildContext context) => [
-    Padding(
-      padding: EdgeInsets.only(top: 30, bottom: 0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          DayNightSwitcher(
-            isDarkModeEnabled:
-            Provider.of<AppStateNotifier>(context, listen: false)
-                .darkModeEnabled,
-            onStateChanged: (isDarkModeEnabled) =>
-            Provider.of<AppStateNotifier>(context, listen: false)
-                .darkModeEnabled = isDarkModeEnabled,
-          ),
-          Row(
+        Padding(
+          padding: EdgeInsets.only(top: 30, bottom: 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                icon: Icon(Icons.info),
-                onPressed: () => showAboutDialog(context: context),
+              DayNightSwitcher(
+                isDarkModeEnabled:
+                    Provider.of<AppStateNotifier>(context, listen: false)
+                        .darkModeEnabled,
+                onStateChanged: (isDarkModeEnabled) =>
+                    Provider.of<AppStateNotifier>(context, listen: false)
+                        .darkModeEnabled = isDarkModeEnabled,
               ),
-              IconButton(
-                icon: Icon(Icons.privacy_tip),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PrivacyPolicyView()),
-                  );
-                },
+              Row(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.info),
+                    onPressed: () => showAboutDialog(context: context),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.privacy_tip),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PrivacyPolicyView()),
+                      );
+                    },
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
-    ),
-    Divider(),
-    Padding(
-      padding: EdgeInsets.only(bottom: 10),
-      child: Text(
-        AppLocalizations.of(context)!.get("start.bbb-trademark")!,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color:
-          Theme.of(context).textTheme.bodyText1!.color!.withOpacity(0.5),
-          fontSize: 12.0,
         ),
-      ),
-    ),
-    Divider(),
-    Padding(
-      padding: EdgeInsets.only(bottom: 10),
-      child: AppNoticeWidget(),
-    ),
-  ];
-
-
-
+        Divider(),
+        Padding(
+          padding: EdgeInsets.only(bottom: 10),
+          child: Text(
+            AppLocalizations.of(context)!.get("start.bbb-trademark")!,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .color!
+                  .withOpacity(0.5),
+              fontSize: 12.0,
+            ),
+          ),
+        ),
+        Divider(),
+        Padding(
+          padding: EdgeInsets.only(bottom: 10),
+          child: AppNoticeWidget(),
+        ),
+      ];
 
   /// Build the header _buildHeaderWidgets for the start view.
-  List<Widget> _buildHeaderWidgets (BuildContext context) => [
-    Padding(
-      padding: EdgeInsets.only(bottom: 10),
-      child: Text(
-      "When : Today 1:00 Am",
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        color:
-        Theme.of(context).textTheme.bodyText1!.color!.withOpacity(0.5),
-        fontSize: 12.0,
-      ),
-    ),
-    ),
-    Padding(
-      padding: EdgeInsets.only(bottom: 10),
-      child: Text(
-        "Topic : Green Light",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color:
-          Theme.of(context).textTheme.bodyText1!.color!.withOpacity(0.5),
-          fontSize: 12.0,
+  List<Widget> _buildHeaderWidgets(BuildContext context) => [
+        Padding(
+          padding: EdgeInsets.only(bottom: 10),
+          child: Text(
+            "When : Today 1:00 Am",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .color!
+                  .withOpacity(0.5),
+              fontSize: 12.0,
+            ),
+          ),
         ),
-      ),
-    ),
-    Padding(
-      padding: EdgeInsets.only(bottom: 10),
-      child: Text(
-        "Meeting ID : 8778364876",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color:
-          Theme.of(context).textTheme.bodyText1!.color!.withOpacity(0.5),
-          fontSize: 12.0,
+        Padding(
+          padding: EdgeInsets.only(bottom: 10),
+          child: Text(
+            "Topic : Green Light",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .color!
+                  .withOpacity(0.5),
+              fontSize: 12.0,
+            ),
+          ),
         ),
-      ),
-    ),
-    Padding(
-      padding: EdgeInsets.only(bottom: 10),
-      child: Text(
-        "Duration : 50 Minutes",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color:
-          Theme.of(context).textTheme.bodyText1!.color!.withOpacity(0.5),
-          fontSize: 12.0,
+        Padding(
+          padding: EdgeInsets.only(bottom: 10),
+          child: Text(
+            "Meeting ID : 8778364876",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .color!
+                  .withOpacity(0.5),
+              fontSize: 12.0,
+            ),
+          ),
         ),
-      ),
-    ),
-    Padding(
-      padding: EdgeInsets.only(bottom: 10),
-      child: Text(
-        "Passcode : g5he4g",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color:
-          Theme.of(context).textTheme.bodyText1!.color!.withOpacity(0.5),
-          fontSize: 12.0,
+        Padding(
+          padding: EdgeInsets.only(bottom: 10),
+          child: Text(
+            "Duration : 50 Minutes",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .color!
+                  .withOpacity(0.5),
+              fontSize: 12.0,
+            ),
+          ),
         ),
-      ),
-    ),
-  ];
+        Padding(
+          padding: EdgeInsets.only(bottom: 10),
+          child: Text(
+            "Passcode : g5he4g",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .color!
+                  .withOpacity(0.5),
+              fontSize: 12.0,
+            ),
+          ),
+        ),
+      ];
 
   /// Build the login form.
   Widget _buildForm(BuildContext context) {
@@ -352,10 +367,12 @@ class _joinViewState extends State<joinView> {
           _buildJoinButton(context),
           _buildInviteButton(context),
           _buildDeleteButton(context),
+          Divider(),
         ],
       ),
     );
   }
+
 
   /// Build the user name text field.
   Widget _buildUsernameTextField() {
@@ -391,14 +408,14 @@ class _joinViewState extends State<joinView> {
         if (_userStoppedEditingMeetingUrlTimer == null) {
           _userStoppedEditingMeetingUrlTimer =
               Timer(_checkForAccessCodeNeededDuration, () {
-                _handleUrlUpdate(url);
-              });
+            _handleUrlUpdate(url);
+          });
         } else {
           _userStoppedEditingMeetingUrlTimer!.cancel();
           _userStoppedEditingMeetingUrlTimer =
               Timer(_checkForAccessCodeNeededDuration, () {
-                _handleUrlUpdate(url);
-              });
+            _handleUrlUpdate(url);
+          });
         }
       },
       validator: (value) => value!.isEmpty
@@ -416,7 +433,8 @@ class _joinViewState extends State<joinView> {
         height: 60.0,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-          primary: Colors.lightBlueAccent,  ),
+            primary: Colors.lightBlueAccent,
+          ),
           onPressed: () => _submitForm(context),
           child: new Text(
             "Start",
@@ -427,6 +445,7 @@ class _joinViewState extends State<joinView> {
       ),
     );
   }
+
   Widget _buildInviteButton(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 20),
@@ -435,7 +454,8 @@ class _joinViewState extends State<joinView> {
         height: 60.0,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-          primary: Colors.green,  ),
+            primary: Colors.green,
+          ),
           onPressed: () => _submitForm(context),
           child: new Text(
             "Invite",
@@ -446,6 +466,7 @@ class _joinViewState extends State<joinView> {
       ),
     );
   }
+
   Widget _buildDeleteButton(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 20),
@@ -454,9 +475,9 @@ class _joinViewState extends State<joinView> {
         height: 60.0,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-          primary: Colors.red,  ),
+            primary: Colors.red,
+          ),
           onPressed: () => _submitForm(context),
-
           child: new Text(
             "Delete",
             // AppLocalizations.of(context)!.get("login.join")!,
@@ -492,10 +513,10 @@ class _joinViewState extends State<joinView> {
 
   /// Join a meeting.
   Future<void> _joinMeeting(
-      String meetingURL, {
-        String? username,
-        String? accessCode,
-      }) async {
+    String meetingURL, {
+    String? username,
+    String? accessCode,
+  }) async {
     // Show a snack bar until all information to join the meeting has been loaded
     var snackBarController = _scaffoldState.showSnackBar(SnackBar(
       content: Text(AppLocalizations.of(context)!.get("login.join-trying")!),
@@ -503,7 +524,7 @@ class _joinViewState extends State<joinView> {
 
     try {
       MeetingInfo meetingInfo =
-      await tryJoinMeeting(meetingURL, username, accessCode);
+          await tryJoinMeeting(meetingURL, username, accessCode);
 
       // Check if meeting info isn't null (may happen when the waiting room dialog is cancelled).
       if (meetingInfo != null) {
@@ -574,27 +595,27 @@ class _joinViewState extends State<joinView> {
 
     if (sharedPreferences.containsKey(_meetingURLPreferencesKey)) {
       this._meetingURLController.text =
-      sharedPreferences.getString(_meetingURLPreferencesKey)!;
+          sharedPreferences.getString(_meetingURLPreferencesKey)!;
     }
 
     if (sharedPreferences.containsKey(_userNamePreferencesKey)) {
       this._usernameTextField.text =
-      sharedPreferences.getString(_userNamePreferencesKey)!;
+          sharedPreferences.getString(_userNamePreferencesKey)!;
     }
 
     if (sharedPreferences.containsKey(_accessCodePreferencesKey)) {
       this._accesscodeTextField.text =
-      sharedPreferences.getString(_accessCodePreferencesKey)!;
+          sharedPreferences.getString(_accessCodePreferencesKey)!;
     }
   }
 
   /// Try to join the meeting specified with the passed [meetingUrl], [username] and [accessCode].
   /// Will return null if cancelled.
   Future<MeetingInfo> tryJoinMeeting(
-      String meetingUrl,
-      String? username,
-      String? accessCode,
-      ) async {
+    String meetingUrl,
+    String? username,
+    String? accessCode,
+  ) async {
     Completer<MeetingInfo> _completer = new Completer<MeetingInfo>();
 
     _waitingRoomDialogShown = false;
@@ -616,8 +637,8 @@ class _joinViewState extends State<joinView> {
             barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text(
-                    AppLocalizations.of(context)!.get("login.in-waiting-room")!),
+                title: Text(AppLocalizations.of(context)!
+                    .get("login.in-waiting-room")!),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -718,11 +739,11 @@ class _joinViewState extends State<joinView> {
       http.Response response = await http.get(Uri.parse(meetingUrl));
       response.body.contains('room_access_code')
           ? setState(() {
-        _accessCodeVisible = true;
-      })
+              _accessCodeVisible = true;
+            })
           : setState(() {
-        _accessCodeVisible = false;
-      });
+              _accessCodeVisible = false;
+            });
     } catch (e) {
       // Ignore
     }

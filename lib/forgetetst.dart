@@ -19,21 +19,15 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       backgroundColor: Colors.black45,
       appBar: new AppBar(
         backgroundColor: Colors.lightBlueAccent,
-        title: RichText(
-            text: TextSpan(
-                children: [
-
-                ]),
-            textAlign:
-            TextAlign.left),
+        title:
+            RichText(text: TextSpan(children: []), textAlign: TextAlign.left),
         centerTitle: true,
         elevation: 0.0,
         iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.only(
-              left: 0, right: 0, top: 0, bottom: 0),
+          padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 0),
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(0), color: Colors.white),
@@ -70,10 +64,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           ),
                           const Text(
                             "Don't worry. Resetting your password is easy, just tell us the email address you registered.",
-                            textAlign: TextAlign.center,//Description1
+                            textAlign: TextAlign.center, //Description1
                             style: TextStyle(
-                                fontSize: 16.0,
-                                color: Colors.black54),
+                                fontSize: 16.0, color: Colors.black54),
                           ),
                           const SizedBox(
                             height: 10.0,
@@ -83,10 +76,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           ),
                           Padding(
                             padding:
-                            const EdgeInsets.only(left: 16.0, bottom: 8.0),
+                                const EdgeInsets.only(left: 16.0, bottom: 8.0),
                             child: TextFormField(
                               controller:
-                              emailController, //calling Defined email controllor
+                                  emailController, //calling Defined email controllor
 
                               keyboardType: TextInputType.text,
 
@@ -96,7 +89,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   return 'gmail cannot be empty';
                                 }
                                 if (!RegExp(
-                                    "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                                        "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
                                     .hasMatch(value)) {
                                   return "Please enter a valid email.";
                                 }
@@ -109,13 +102,15 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                     fontSize: 18,
                                     color: Colors.black45,
                                     fontStyle: FontStyle.italic),
-                                icon: Icon(Icons.mail, color: Colors.lightBlueAccent),
+                                icon: Icon(Icons.mail,
+                                    color: Colors.lightBlueAccent),
                                 enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.lightBlueAccent),
+                                  borderSide:
+                                      BorderSide(color: Colors.lightBlueAccent),
                                 ),
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide:
-                                  BorderSide(color: Colors.lightBlueAccent),
+                                      BorderSide(color: Colors.lightBlueAccent),
                                 ),
                               ),
                             ),
@@ -148,18 +143,19 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   ),
                                   style: ButtonStyle(
                                       foregroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.white),
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.white),
                                       backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.lightBlueAccent),
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.lightBlueAccent),
                                       shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
+                                              RoundedRectangleBorder>(
                                           RoundedRectangleBorder(
                                               borderRadius:
-                                              BorderRadius.circular(20.0),
+                                                  BorderRadius.circular(20.0),
                                               side: const BorderSide(
-                                                  color: Colors.lightBlueAccent)))),
+                                                  color:
+                                                      Colors.lightBlueAccent)))),
                                 ),
                               ),
                             ],

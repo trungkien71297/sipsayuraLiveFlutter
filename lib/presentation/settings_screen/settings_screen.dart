@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:bbb_app/core/app_export.dart';
 
 class SettingsScreen extends GetWidget<SettingsController> {
-  int currentTabIndex=0;
+  int currentTabIndex = 0;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -16,25 +16,16 @@ class SettingsScreen extends GetWidget<SettingsController> {
             onPressed: () => Navigator.of(context).pop(),
           ),
           title: RichText(
-              text: TextSpan(
-                  children: [
-                    TextSpan(
-                        text:
-                        "lbl_settings"
-                            .tr,
-                        style: TextStyle(
-                            color: ColorConstant
-                                .whiteA700,
-                            fontSize:
-                            getFontSize(
-                                18),
-                            fontFamily:
-                            'Oldenburg',
-                            fontWeight:
-                            FontWeight.w500)),
-                  ]),
-              textAlign:
-              TextAlign.left),
+              text: TextSpan(children: [
+                TextSpan(
+                    text: "lbl_settings".tr,
+                    style: TextStyle(
+                        color: ColorConstant.whiteA700,
+                        fontSize: getFontSize(18),
+                        fontFamily: 'Oldenburg',
+                        fontWeight: FontWeight.w500)),
+              ]),
+              textAlign: TextAlign.left),
           centerTitle: true,
           elevation: 0.0,
           iconTheme: IconThemeData(color: Colors.black54),
@@ -668,5 +659,4 @@ class SettingsScreen extends GetWidget<SettingsController> {
   settingsScreen() {
     Get.toNamed(AppRoutes.settingsScreen);
   }
-
 }

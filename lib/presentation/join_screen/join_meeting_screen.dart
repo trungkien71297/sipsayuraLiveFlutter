@@ -588,8 +588,8 @@ class JoinMeetingScreen extends GetWidget<JoinMeetingController> {
                                       onTapBtnShare();
                                     },
                                     child: Text(
-                                            "lbl_invite".tr,
-                                          ),
+                                      "lbl_invite".tr,
+                                    ),
                                   ),
                                 ),
                               ),

@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
 import 'incoming_video_connection.dart';
@@ -9,6 +12,8 @@ class IncomingWebcamVideoConnection extends IncomingVideoConnection {
   /// ID of the user that this stream belongs to.
   String? internalUserId;
 
+  ValueNotifier<bool> readyToPlay = ValueNotifier(false);
+
   IncomingWebcamVideoConnection(meetingInfo, cameraId, userId)
       : super(meetingInfo) {
     this._cameraId = cameraId;
@@ -18,15 +23,16 @@ class IncomingWebcamVideoConnection extends IncomingVideoConnection {
   @override
   onPlayStart(message) {
     remoteRenderer.srcObject = pc.getRemoteStreams()[0];
+    readyToPlay.value = true;
   }
 
   @override
-  onIceCandidate(candidate) {
-    send({
+  onIceCandidate(RTCIceCandidate candidate) {
+    graphQLWebSocket?.sendMessage({
       'cameraId': _cameraId,
       'candidate': {
         'candidate': candidate.candidate,
-        'sdpMLineIndex': candidate.sdpMlineIndex,
+        'sdpMLineIndex': candidate.sdpMLineIndex,
         'sdpMid': candidate.sdpMid,
       },
       'id': 'onIceCandidate',
@@ -37,8 +43,8 @@ class IncomingWebcamVideoConnection extends IncomingVideoConnection {
 
   @override
   sendOffer(RTCSessionDescription s) {
-    send({
-      'bitrate': 200,
+    graphQLWebSocket?.sendMessage({
+      'bitrate': 100,
       'cameraId': _cameraId,
       'id': 'start',
       'meetingId': meetingInfo.meetingID,
@@ -49,6 +55,18 @@ class IncomingWebcamVideoConnection extends IncomingVideoConnection {
       'userId': meetingInfo.internalUserID,
       'userName': meetingInfo.fullUserName,
       'voiceBridge': meetingInfo.voiceBridge,
+    });
+  }
+
+  @override
+  onStartResponse(message) {
+    log('==kien 61 incoming_webcam_video_connection.dart ${message} == ${DateTime.now().toString()}');
+    graphQLWebSocket?.sendMessage({
+      "id": "subscriberAnswer",
+      "type": "video",
+      "role": "viewer",
+      "cameraId": _cameraId,
+      "answer": message
     });
   }
 }

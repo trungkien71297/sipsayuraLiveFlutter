@@ -51,7 +51,8 @@ class ScheduleMeetingFormController extends GetxController {
   var apiResponse = "".obs;
 
   var selectedDate = DateTime.now().obs;
-  var selectedStartTime = TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 1))).obs;
+  var selectedStartTime =
+      TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 1))).obs;
   var selectedEndTime =
       TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 31))).obs;
 
@@ -109,7 +110,8 @@ class ScheduleMeetingFormController extends GetxController {
   chooseStartTime() async {
     TimeOfDay? pickedTime = await showTimePicker(
       context: Get.context!,
-      initialTime: TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 1))),
+      initialTime:
+          TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 1))),
       // builder: (context, childWidget) {
       //   return MediaQuery(
       //       data: MediaQuery.of(context).copyWith(
@@ -229,7 +231,8 @@ class ScheduleMeetingFormController extends GetxController {
     isLoading.value = true;
     print(token);
     try {
-      Uri url = Uri.parse("http://${dotenv.env['ip_address']}:4000/meetings/createMeeting");
+      Uri url = Uri.parse(
+          "http://${dotenv.env['ip_address']}:4000/meetings/createMeeting");
       final response = await http.post(url, headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, HEAD",
@@ -245,7 +248,7 @@ class ScheduleMeetingFormController extends GetxController {
             DateFormat("yyyy-MM-dd").format(selectedDate.value).toString(),
         'selected_start_time':
             "${selectedStartTime.value.hour}:${selectedStartTime.value.minute}",
-        'current_time':DateTime.now().toString(),
+        'current_time': DateTime.now().toString(),
         'selected_end_time':
             "${selectedEndTime.value.hour}:${selectedEndTime.value.minute}",
         'auto_start_recording': isAutoRecordingState.toString(),

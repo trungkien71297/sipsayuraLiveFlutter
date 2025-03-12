@@ -1,35 +1,34 @@
 import 'dart:async';
 
+import 'package:bbb_app/data/models/user/user.dart';
 import 'package:bbb_app/src/connect/meeting/main_websocket/module.dart';
-
-import 'model/user.dart';
 
 /// Module dealing with meeting participants/user information.
 class UserModule extends Module {
   /// Stream controller to publish participant changes with.
-  StreamController<UserEvent> _userStreamController =
+  StreamController<List<User?>> _userStreamController =
       StreamController.broadcast();
 
-  /// Map of users we currently have fetched from the web socket
-  /// mapped by their user ID.
-  Map<String?, User?> _usersByID = {};
+  List<User?> _usersByID = [];
 
-  /// Mapping of the user ID to the message ID.
-  Map<String?, String?> _userIDToMsgID = {};
-
-  /// Mapping of the message ID to the user ID.
-  Map<String?, String?> _msgIDToUserID = {};
-
-  /// Information for users that have been received from another place
-  /// (for example VoiceUsersModule) for a user ID that has not yet
-  /// been received.
-  Map<String?, User> _tmpUserInfo = {};
-
+  String? subId;
   UserModule(messageSender) : super(messageSender);
-
   @override
   void onConnected() {
-    subscribe("users");
+    subId = subscribe(payload: {
+      "variables": {"offset": 0, "limit": 50},
+      "extensions": {},
+      "operationName": "Patched_UserListSubscription",
+      "query":
+          "subscription Patched_UserListSubscription(\$offset: Int!, \$limit: Int!) {\n  user(\n    limit: \$limit\n    offset: \$offset\n    order_by: [{nameSortable: asc}]\n  ) {\n    isDialIn\n    userId\n    extId\n    name\n    isModerator\n    role\n    color\n    avatar\n    away\n    raiseHand\n    reactionEmoji\n    avatar\n    presenter\n    pinned\n    locked\n    authed\n    mobile\n    bot\n    guest\n    clientType\n    disconnected\n    loggedOut\n    voice {\n      joined\n      listenOnly\n      voiceUserId\n      __typename\n    }\n    cameras {\n      streamId\n      __typename\n    }\n    presPagesWritable {\n      isCurrentPage\n      pageId\n      userId\n      __typename\n    }\n    lastBreakoutRoom {\n      isDefaultName\n      sequence\n      shortName\n      currentlyInRoom\n      __typename\n    }\n    userLockSettings {\n      disablePublicChat\n      __typename\n    }\n    __typename\n  }\n}"
+    });
+    subscribe(payload: {
+      "variables": {},
+      "extensions": {},
+      "operationName": "UsersCount",
+      "query":
+          "subscription UsersCount {\n  user_aggregate {\n    aggregate {\n      count\n      __typename\n    }\n    __typename\n  }\n}"
+    });
   }
 
   @override
@@ -39,90 +38,49 @@ class UserModule extends Module {
 
   @override
   void processMessage(Map<String, dynamic> msg) {
-    final String? method = msg["msg"];
-
-    if (method == "added") {
-      String? collectionName = msg["collection"];
-
-      if (collectionName == "users") {
-        _handleUsersMsg(msg, UserEventType.ADDED);
-      }
-    } else if (method == "changed") {
-      String? collectionName = msg["collection"];
-
-      if (collectionName == "users") {
-        _handleUsersMsg(msg, UserEventType.CHANGED);
-      }
-    }
-  }
-
-  void _handleUsersMsg(Map<String, dynamic> jsonMsg, UserEventType type) {
-    if (jsonMsg['id'] != null) {
-      Map<String, dynamic> fields = jsonMsg['fields'];
-
-      String? userID =
-          _msgIDToUserID.putIfAbsent(jsonMsg['id'], () => fields['userId']);
-      _userIDToMsgID.putIfAbsent(userID, () => jsonMsg['id']);
-
-      // Fetch existing user or create new one
-      User user = _usersByID.putIfAbsent(userID, () {
-        if (_tmpUserInfo.containsKey(userID)) {
-          // Received user info before receiving it via the users topic.
-          // Now we need to use the early data for the new user object.
-          return _tmpUserInfo.remove(userID);
-        } else {
-          return User(userID); // Just create an empty user
+    if (msg['id'] == subId) {
+      final data = msg['payload']['data'];
+      if (data['patch'] != null) {
+        final patches = (data['patch'] as List);
+        _patchProcess(patches);
+      } else {
+        final usersList = data['user'] as List?;
+        if (usersList?.isNotEmpty == true) {
+          usersList?.forEach((element) {
+            final u = User.fromJson(element);
+            _usersByID.add(u);
+          });
         }
-      })!;
-
-      if (fields['name'] != null) user.name = fields['name'];
-      if (fields['sortName'] != null) user.sortName = fields['sortName'];
-      if (fields['color'] != null) user.color = fields['color'];
-      if (fields['role'] != null) user.role = fields['role'];
-      if (fields['presenter'] != null) user.isPresenter = fields['presenter'];
-      if (fields['connectionStatus'] != null)
-        user.connectionStatus = fields['connectionStatus'];
-      if (fields.containsKey("ejected")) user.ejected = fields["ejected"];
-      if (user.id != null) _usersByID[user.id] = user;
-
-      // Publish changed user map
-      _userStreamController.add(UserEvent(type, user));
+      }
+      _userStreamController.sink.add(users);
     }
   }
 
-  /// Add temporary user info that has been received for a user
-  /// despite not yet being received from the users topic.
-  /// This data will be added later to the regular user data when the
-  /// users topic will send it to us.
-  void addTmpUserInfo(User user) {
-    _tmpUserInfo[user.id] = user;
+  void _patchProcess(List patches) {
+    for (var p in patches) {
+      switch (p['op']) {
+        case 'add':
+          final u = p['value'];
+          _usersByID.add(User.fromJson(u));
+          _usersByID.sort(((a, b) => (a?.name?.toLowerCase() ?? '')
+              .compareTo(b?.name?.toLowerCase() ?? '')));
+          break;
+        case 'remove':
+          final pos = (p['path'] as String).replaceAll('/', '');
+          final posInt = int.tryParse(pos);
+          if (posInt != null) {
+            _usersByID.removeAt(posInt);
+          }
+          break;
+        default:
+      }
+    }
   }
 
-  /// Emit an update event for the given user.
-  void emitUpdateEvent(User user) {
-    _userStreamController.add(UserEvent(UserEventType.CHANGED, user));
-  }
+  Stream<List<User?>> get changes => _userStreamController.stream;
 
-  /// Get changes of the current meetings users.
-  Stream<UserEvent> get changes => _userStreamController.stream;
+  List<User?> get users => List.of(_usersByID);
 
-  /// Get a list of all current users.
-  List<User?> get users => List.of(_usersByID.values);
-
-  /// Get a user by its ID.
-  User? getUserByID(String? id) => _usersByID[id];
+  User? getUserByID(String? id) =>
+      _usersByID.firstWhere((element) => element?.userId == id);
 }
-
-/// Event for users.
-class UserEvent {
-  /// Type of the event.
-  final UserEventType type;
-
-  /// Data the event relates to.
-  final User data;
-
-  UserEvent(this.type, this.data);
-}
-
-/// Available user event types.
-enum UserEventType { ADDED, CHANGED }

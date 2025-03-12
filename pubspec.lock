@@ -253,6 +253,13 @@ packages:
       url: "https://github.com/jja08111/flutter_foreground_service_plugin.git"
     source: git
     version: "0.8.0"
+  flutter_inappwebview:
+    dependency: "direct main"
+    description:
+      name: flutter_inappwebview
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.6.0+2"
   flutter_launcher_icons:
     dependency: "direct main"
     description:
@@ -534,6 +541,41 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.11.1"
+  permission_handler:
+    dependency: "direct main"
+    description:
+      name: permission_handler
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "11.0.1"
+  permission_handler_android:
+    dependency: transitive
+    description:
+      name: permission_handler_android
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "11.1.0"
+  permission_handler_apple:
+    dependency: transitive
+    description:
+      name: permission_handler_apple
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "9.1.4"
+  permission_handler_platform_interface:
+    dependency: transitive
+    description:
+      name: permission_handler_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.12.0"
+  permission_handler_windows:
+    dependency: transitive
+    description:
+      name: permission_handler_windows
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.3"
   petitparser:
     dependency: transitive
     description:
@@ -712,11 +754,9 @@ packages:
   sip_ua:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "86a13f52c7048bca82fcd0a559429c31f0ff08dc"
-      url: "https://github.com/flutter-webrtc/dart-sip-ua.git"
-    source: git
+      name: sip_ua
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.5.1"
   sky_engine:
     dependency: transitive
@@ -885,12 +925,12 @@ packages:
     source: hosted
     version: "3.0.1"
   uuid:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: uuid
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.6"
+    version: "3.0.7"
   vector_math:
     dependency: "direct dev"
     description:
@@ -898,6 +938,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+  web_socket_channel:
+    dependency: "direct main"
+    description:
+      name: web_socket_channel
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.4.0"
   webrtc_interface:
     dependency: transitive
     description:
@@ -920,7 +967,7 @@ packages:
     source: hosted
     version: "0.2.0+1"
   xml:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: xml
       url: "https://pub.dartlang.org"

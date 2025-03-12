@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:bbb_app/src/connect/meeting/meeting_info.dart';
+import 'package:bbb_app/src/utils/graphql_ws.dart';
 import 'package:bbb_app/src/utils/log.dart';
-import 'package:bbb_app/src/utils/websocket.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
 /// Class encapsulating a WebRTC video stream connection.
@@ -15,10 +17,11 @@ abstract class VideoConnection {
   VideoConnection(var meetingInfo) {
     this.meetingInfo = meetingInfo;
   }
-
-  late SimpleWebSocket _socket;
+  GraphQLWebSocket? graphQLWebSocket;
   late RTCPeerConnection pc;
-
+  bool closed = false;
+  bool initialized = false;
+  Timer? timer;
   final Map<String, dynamic> _peerConnectionConstraints = {
     'mandatory': {},
     'optional': [
@@ -38,29 +41,26 @@ abstract class VideoConnection {
     connect();
   }
 
-  void close() {
-    _socket.close();
+  void close() async {
+    await graphQLWebSocket?.disconnect();
     pc.close();
+    timer?.cancel();
   }
 
   void connect() async {
-    final uri = Uri.parse(meetingInfo.joinUrl!).replace(path: _BBB_SFU);
-
-    String origin = Uri.parse(meetingInfo.joinUrl!).origin;
-    Map<String, String> headers = {};
-    headers["Origin"] = origin;
-
-    _socket = SimpleWebSocket(uri.toString(), additionalHeaders: headers);
+    final uri = Uri.parse(meetingInfo.joinUrl!)
+        .replace(path: _BBB_SFU)
+        .replace(scheme: 'wss');
 
     Log.info("[VideoConnection] Connecting to ${uri.toString()}...");
-
-    _socket.onOpen = () {
+    graphQLWebSocket = GraphQLWebSocket(uri.toString(),
+        cookie: meetingInfo.cookie, needInit: false);
+    graphQLWebSocket!.onOpen = () {
       Log.info("[VideoConnection] Connected");
-
-      createOffer();
+      openConnection();
     };
 
-    _socket.onMessage = (message) {
+    graphQLWebSocket!.onMessage = (message) {
       Log.info("[VideoConnection] Received message: '$message'");
 
       try {
@@ -70,21 +70,32 @@ abstract class VideoConnection {
       }
     };
 
-    _socket.onClose = (int? code, String? reason) {
+    graphQLWebSocket!.onClose = (int? code, String? reason) {
       Log.info(
           "[VideoConnection] Connection closed. Reason: '$reason', code: $code");
     };
 
-    await _socket.connect();
+    graphQLWebSocket!.connectWebSocket();
+  }
+
+  void ping() {
+    if (!initialized) {
+      initialized = true;
+      checkPing();
+    }
+    graphQLWebSocket?.sendMessage({
+      'id': VideoConnectId.PING,
+    });
   }
 
   void onMessage(message) async {
     switch (message['id']) {
-      case 'startResponse':
+      case VideoConnectId.STARTRESPONSE:
         {
           await pc.setRemoteDescription(
               new RTCSessionDescription(message['sdpAnswer'], 'answer'));
-          onStartResponse(message);
+          final answer = await pc.createAnswer();
+          onStartResponse(answer);
         }
         break;
 
@@ -98,18 +109,19 @@ abstract class VideoConnection {
         }
         break;
 
-      case 'playStart':
+      case VideoConnectId.PLAYSTART:
         {
           onPlayStart(message);
         }
         break;
-
+      case VideoConnectId.PONG:
+        break;
       default:
         break;
     }
   }
 
-  createOffer() async {
+  Future<void> createOffer() async {
     try {
       Map<String, dynamic> config = {"sdpSemantics": "unified-plan"};
       config.addAll(meetingInfo.iceServers!);
@@ -133,18 +145,37 @@ abstract class VideoConnection {
     }
   }
 
-  send(data) {
-    JsonEncoder encoder = new JsonEncoder();
-    _socket.send(encoder.convert(data));
-  }
-
   onStartResponse(message) {}
 
   onPlayStart(message) {}
 
   afterCreatePeerConnection() {}
 
-  onIceCandidate(candidate) {}
+  onIceCandidate(RTCIceCandidate candidate) {}
 
   sendOffer(RTCSessionDescription s) {}
+
+  void checkPing() {
+    if (timer == null || !timer!.isActive) {
+      timer?.cancel();
+      timer = Timer.periodic(Duration(seconds: 15), (t) {
+        Log.verbose('[Video connection] ${DateTime.now()} Check ping');
+        ping();
+      });
+    }
+  }
+
+  void openConnection() async {
+    ping();
+    await createOffer();
+  }
+}
+
+class VideoConnectId {
+  static const String PING = 'ping';
+  static const String PONG = 'pong';
+  static const String STARTRESPONSE = 'startResponse';
+  static const String START = 'start';
+  static const String SUBCRIBERANSWER = 'subscriberAnswer';
+  static const String PLAYSTART = 'playStart';
 }

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
 class StartViewTextFormField extends StatefulWidget {
-
-  StartViewTextFormField({
-    Key? key,
-    this.onChanged,
-    this.validator,
-    this.controller,
-    this.hintText,
-    this.prefixIcon
-  }) : super(key: key);
+  StartViewTextFormField(
+      {Key? key,
+      this.onChanged,
+      this.validator,
+      this.controller,
+      this.hintText,
+      this.prefixIcon})
+      : super(key: key);
 
   final ValueChanged<String>? onChanged;
   final FormFieldValidator<String>? validator;
@@ -56,7 +55,9 @@ class _StartViewTextFormField extends State<StartViewTextFormField> {
   }
 
   Widget? _getClearButton() {
-    if (!_showClearButton) { return null; }
+    if (!_showClearButton) {
+      return null;
+    }
 
     return IconButton(
       padding: EdgeInsets.all(0),

@@ -46,13 +46,6 @@ class OutgoingWebcamVideoConnection extends VideoConnection {
       ],
     });
 
-    send({
-      'cameraId': _cameraId,
-      'id': 'stop',
-      'role': 'share',
-      'type': 'video'
-    });
-
     super.close();
     _localStream!.dispose();
   }
@@ -80,11 +73,11 @@ class OutgoingWebcamVideoConnection extends VideoConnection {
 
   @override
   onIceCandidate(candidate) {
-    send({
+    graphQLWebSocket?.sendMessage({
       'cameraId': _cameraId,
       'candidate': {
         'candidate': candidate.candidate,
-        'sdpMLineIndex': candidate.sdpMlineIndex,
+        'sdpMLineIndex': candidate.sdpMLineIndex,
         'sdpMid': candidate.sdpMid,
       },
       'id': 'onIceCandidate',
@@ -95,7 +88,7 @@ class OutgoingWebcamVideoConnection extends VideoConnection {
 
   @override
   sendOffer(RTCSessionDescription s) {
-    send({
+    graphQLWebSocket?.sendMessage({
       'bitrate': 200,
       'cameraId': _cameraId,
       'id': 'start',

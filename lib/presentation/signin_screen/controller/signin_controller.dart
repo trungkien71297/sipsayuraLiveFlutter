@@ -7,8 +7,8 @@ class Signup02Controller extends GetxController with StateMixin<dynamic> {
 
   Rx<Signin02Model> signup02ModelObj = Signin02Model().obs;
 
-  var isPasswordVisibilityHidden =true.obs;
-  var isLoading=false.obs;
+  var isPasswordVisibilityHidden = true.obs;
+  var isLoading = false.obs;
 
   @override
   void onReady() {

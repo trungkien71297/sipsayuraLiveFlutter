@@ -60,6 +60,8 @@ class MeetingInfo {
   /// Whether to mute the user on start.
   bool? muteOnStart;
 
+  String? userId;
+
   /// STUN / TURN servers.
   Map<String, dynamic>? iceServers;
 
