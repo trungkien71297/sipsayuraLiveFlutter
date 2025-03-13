@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:bbb_app/src/connect/meeting/main_websocket/module.dart';
+import 'package:bbb_app/src/connect/meeting/main_websocket/video/connection/video_connection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
@@ -14,21 +16,23 @@ class IncomingWebcamVideoConnection extends IncomingVideoConnection {
 
   ValueNotifier<bool> readyToPlay = ValueNotifier(false);
 
-  IncomingWebcamVideoConnection(meetingInfo, cameraId, userId)
-      : super(meetingInfo) {
+  IncomingWebcamVideoConnection(
+      meetingInfo, cameraId, userId, MessageSender sender)
+      : super(meetingInfo, sender) {
     this._cameraId = cameraId;
     this.internalUserId = userId;
   }
 
   @override
   onPlayStart(message) {
+    log('==kien 28 incoming_webcam_video_connection.dart ${message} == ${DateTime.now().toString()}');
     remoteRenderer.srcObject = pc.getRemoteStreams()[0];
     readyToPlay.value = true;
   }
 
   @override
   onIceCandidate(RTCIceCandidate candidate) {
-    graphQLWebSocket?.sendMessage({
+    sender({
       'cameraId': _cameraId,
       'candidate': {
         'candidate': candidate.candidate,
@@ -42,15 +46,15 @@ class IncomingWebcamVideoConnection extends IncomingVideoConnection {
   }
 
   @override
-  sendOffer(RTCSessionDescription s) {
-    graphQLWebSocket?.sendMessage({
+  sendOffer(RTCSessionDescription? s) {
+    sender({
       'bitrate': 100,
       'cameraId': _cameraId,
       'id': 'start',
       'meetingId': meetingInfo.meetingID,
       'record': true,
       'role': 'viewer',
-      'sdpOffer': s.sdp,
+      'sdpOffer': null,
       'type': 'video',
       'userId': meetingInfo.internalUserID,
       'userName': meetingInfo.fullUserName,
@@ -59,14 +63,27 @@ class IncomingWebcamVideoConnection extends IncomingVideoConnection {
   }
 
   @override
-  onStartResponse(message) {
-    log('==kien 61 incoming_webcam_video_connection.dart ${message} == ${DateTime.now().toString()}');
-    graphQLWebSocket?.sendMessage({
+  onStartResponse(message) async {
+    await pc.setRemoteDescription(new RTCSessionDescription(sdp, 'offer'));
+    final answer = await pc.createAnswer();
+    await pc.setLocalDescription(answer);
+    sender({
       "id": "subscriberAnswer",
       "type": "video",
       "role": "viewer",
       "cameraId": _cameraId,
-      "answer": message
+      "answer": answer.sdp
     });
+  }
+
+  @override
+  void close() {
+    sender({
+      'id': VideoConnectId.STOP,
+      'type': 'video',
+      'cameraId': _cameraId,
+      'role': 'share',
+    });
+    super.close();
   }
 }

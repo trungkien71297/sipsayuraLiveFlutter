@@ -27,7 +27,6 @@ class MainWebSocket {
 
   /// Web socket instance to use.
   late GraphQLWebSocket _webSocket;
-  GraphQLWebSocket? _mediaSocket;
 
   /// Counter used to generate message IDs.
   int msgIdCounter = 1;
@@ -55,12 +54,13 @@ class MainWebSocket {
     //     .replace(queryParameters: null)
     //     .replace(path: "graphql");
     final url = 'wss://$baseURL/graphql';
+    _meetingInfo.clienSessionID = Uuid().v4();
     _webSocket = GraphQLWebSocket(url,
         cookie: _meetingInfo.cookie,
         connectionInit: {
           "headers": {
             "X-Session-Token": _meetingInfo.sessionToken,
-            "X-ClientSessionUUID": Uuid().v4(),
+            "X-ClientSessionUUID": _meetingInfo.clienSessionID,
             "X-ClientType": "Android",
             "X-ClientIsMobile": "true"
           }
@@ -106,7 +106,6 @@ class MainWebSocket {
     });
 
     await _webSocket.disconnect();
-    await _mediaSocket?.disconnect();
     for (MapEntry<String, Module> moduleEntry in _modules.entries) {
       moduleEntry.value.onDisconnectBeforeWebsocketClose();
     }
@@ -789,33 +788,6 @@ class MainWebSocket {
       "query":
           "mutation UserJoin(\$authToken: String!, \$clientType: String!, \$clientIsMobile: Boolean!) {\n  userJoinMeeting(\n    authToken: \$authToken\n    clientType: \$clientType\n    clientIsMobile: \$clientIsMobile\n  )\n}"
     });
-  }
-
-  void setupVideoConnect() {
-    final uri = Uri.parse(
-        'wss://$baseURL/bbb-webrtc-sfu?sessionToken=${_meetingInfo.sessionToken}');
-    _mediaSocket = GraphQLWebSocket(
-      uri.toString(),
-      cookie: _meetingInfo.cookie,
-      needInit: false,
-    );
-    Log.info("Connecting to main webrtc at '${uri.toString()}'");
-    _mediaSocket!.onOpen = () {
-      Log.info("Open connection ==webrtc");
-      _mediaSocket?.sendMessage({'id': 'ping'});
-    };
-    _mediaSocket!.onMessage = (message) {
-      Log.verbose("[MainWebsocket ==webrtc] (Received data) | '$message'");
-    };
-
-    _mediaSocket!.onClose = (int? code, String? reason) async {
-      Log.info(
-          "==webrtc Main websocket connection closed. Reason: '$reason', code: $code");
-    };
-
-    // _webSocket.connect();
-    _mediaSocket!.connectWebSocket();
-    videoModule?.mediaSocket = _mediaSocket;
   }
 
   Future<void> doCheckRTT() async {

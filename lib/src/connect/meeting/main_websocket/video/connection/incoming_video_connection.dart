@@ -1,9 +1,10 @@
+import 'package:bbb_app/src/connect/meeting/main_websocket/video/connection/outgoing_webcam_video_connection.dart';
 import 'package:bbb_app/src/connect/meeting/main_websocket/video/connection/video_connection.dart';
 import 'package:bbb_app/src/utils/log.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
 class IncomingVideoConnection extends VideoConnection {
-  IncomingVideoConnection(var meetingInfo) : super(meetingInfo);
+  IncomingVideoConnection(var meetingInfo, MessageSender sender) : super(meetingInfo, sender);
 
   /// Renderer for displaying the stream.
   RTCVideoRenderer remoteRenderer = RTCVideoRenderer();

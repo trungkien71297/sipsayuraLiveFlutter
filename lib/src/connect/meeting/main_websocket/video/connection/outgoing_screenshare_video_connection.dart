@@ -1,3 +1,4 @@
+import 'package:bbb_app/src/connect/meeting/main_websocket/module.dart';
 import 'package:bbb_app/src/connect/meeting/main_websocket/video/connection/video_connection.dart';
 import 'package:bbb_app/src/utils/log.dart';
 import 'package:flutter_foreground_plugin/flutter_foreground_plugin.dart';
@@ -7,7 +8,8 @@ class OutgoingScreenshareVideoConnection extends VideoConnection {
   /// The screenshare stream.
   MediaStream? _localStream;
 
-  OutgoingScreenshareVideoConnection(var meetingInfo) : super(meetingInfo);
+  OutgoingScreenshareVideoConnection(var meetingInfo, MessageSender sender)
+      : super(meetingInfo, sender);
 
   @override
   Future<void> init() async {
@@ -50,7 +52,7 @@ class OutgoingScreenshareVideoConnection extends VideoConnection {
   }
 
   @override
-  sendOffer(RTCSessionDescription s) {
+  sendOffer(RTCSessionDescription? s) {
     // send({
     //   'callerName': meetingInfo.internalUserID,
     //   'id': 'start',

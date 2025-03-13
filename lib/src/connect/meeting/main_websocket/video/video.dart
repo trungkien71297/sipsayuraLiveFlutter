@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bbb_app/data/models/user/user_camera/user_camera.dart';
 import 'package:bbb_app/src/connect/meeting/main_websocket/module.dart';
@@ -11,8 +12,12 @@ import 'package:bbb_app/src/connect/meeting/meeting_info.dart';
 import 'package:bbb_app/src/utils/graphql_ws.dart';
 import 'package:bbb_app/src/utils/log.dart';
 
+import 'connection/video_connection.dart';
+
 /// Module dealing with video stream stuff.
 class VideoModule extends Module {
+  final String _BBB_SFU = "bbb-webrtc-sfu";
+
   /// Video streams subscription topic to subscribe to.
   static const _subscriptionTopicVideo = "video-streams";
   static const _subscriptionTopicScreenshare = "screenshare";
@@ -26,6 +31,8 @@ class VideoModule extends Module {
   StreamController<Map<String, IncomingScreenshareVideoConnection>>
       _screenshareVideoConnectionsStreamController = StreamController<
           Map<String, IncomingScreenshareVideoConnection>>.broadcast();
+  StreamController<OutgoingWebcamVideoConnection> _webcamShareController =
+      StreamController.broadcast();
 
   /// List of video connections we currently have.
   Map<String, IncomingWebcamVideoConnection> _videoConnectionsByCameraId = {};
@@ -55,6 +62,7 @@ class VideoModule extends Module {
   /// Subscription to user changes.
   late StreamSubscription _userChangesStreamSubscription;
   String videoStreams = '';
+  bool initialized = false;
   VideoModule(messageSender, this._meetingInfo, this._userModule)
       : super(messageSender) {
     _userChangesStreamSubscription = _userModule.changes.listen((userEvent) {
@@ -66,8 +74,48 @@ class VideoModule extends Module {
     });
   }
 
+  void connect() async {
+    final uri = Uri.parse(_meetingInfo.joinUrl!)
+        .replace(path: _BBB_SFU)
+        .replace(scheme: 'wss');
+
+    Log.info("[VideoConnection] Connecting to ${uri.toString()}...");
+    mediaSocket = GraphQLWebSocket(uri.toString(),
+        cookie: _meetingInfo.cookie, needInit: false);
+    mediaSocket!.onOpen = () {
+      Log.info("[VideoConnection] Connected");
+    };
+
+    mediaSocket?.onMessage = (message) {
+      Log.info("[VideoConnection] Received message: '$message'");
+
+      try {
+        final msgJson = json. decode(message);
+        if (_videoConnectionsByCameraId.containsKey(msgJson['cameraId'])) {
+          _videoConnectionsByCameraId[msgJson['cameraId']]
+              ?.onMessageCallback(msgJson);
+        }
+
+        if (_webcamShare?.cameraId == msgJson['cameraId'] ||
+            _webcamShare?.cameraId == msgJson['streamId']) {
+          _webcamShare?.onMessageCallback(msgJson);
+        }
+      } on FormatException catch (e) {
+        Log.warning("[VideoConnection] Received invalid JSON: '$message'");
+      }
+    };
+
+    mediaSocket!.onClose = (int? code, String? reason) {
+      Log.info(
+          "[VideoConnection] Connection closed. Reason: '$reason', code: $code");
+    };
+
+    mediaSocket!.connectWebSocket();
+  }
+
   @override
   void onConnected() {
+    connect();
     videoStreams = subscribe(payload: {
       "variables": {},
       "extensions": {},
@@ -94,59 +142,94 @@ class VideoModule extends Module {
     });
     _unshareWebcam();
     _unshareScreen();
+    _webcamShareController.close();
     _userChangesStreamSubscription.cancel();
+    await mediaSocket?.disconnect();
   }
 
   List<UserCamera> listUserCamera = [];
+  void _patchProcess(String id, List patches) {
+    patches.forEach((element) {
+      if (element['op'] == 'add') {
+        final userCamera = UserCamera.fromJson(element['value']);
+        IncomingWebcamVideoConnection v = IncomingWebcamVideoConnection(
+            _meetingInfo,
+            userCamera.streamId,
+            userCamera.user?.userId ?? '',
+            mediaSocket!.sendMessage);
+        _videoConnectionsByCameraId[userCamera.streamId!] = v;
+        listUserCamera.add(userCamera);
+        v.init().then((value) {
+          _videoConnectionsStreamController.add(_videoConnectionsByCameraId);
+        });
+        _cameraIdByStreamIdLookup[id] = userCamera.streamId!;
+      } else {
+        // IncomingWebcamVideoConnection v =
+        //     _videoConnectionsByCameraId.remove(element)!;
+
+        // _videoConnectionsStreamController.add(_videoConnectionsByCameraId);
+
+        // v.close();
+      }
+    });
+  }
 
   @override
   void processMessage(Map<String, dynamic> msg) {
     if (msg['id'] == videoStreams) {
-      Log.verbose('==kien 123123');
+      if (msg['payload']['data']['patch'] != null) {
+        final patches = msg['payload']['data']['patch'] as List;
+        _patchProcess(msg['id'], patches);
+        return;
+      }
       final list = msg['payload']['data']['user_camera'] as List;
+      final currentCameraList = <UserCamera>[];
       if (list.isNotEmpty == true) {
         list.forEach((element) {
-          Log.info("[VideoModule] Adding new video stream...");
           final userCamera = UserCamera.fromJson(element);
-          if (userCamera.streamId != null) {
-            IncomingWebcamVideoConnection v = IncomingWebcamVideoConnection(
-                _meetingInfo,
-                userCamera.streamId,
-                userCamera.user?.userId ?? '');
-            _videoConnectionsByCameraId[userCamera.streamId!] = v;
-            listUserCamera.add(userCamera);
-            v.init().then((value) {
-              _videoConnectionsStreamController
-                  .add(_videoConnectionsByCameraId);
-            });
-            _cameraIdByStreamIdLookup[msg["id"]] = userCamera.streamId!;
-          }
+          currentCameraList.add(userCamera);
         });
       }
+
+      final added = currentCameraList
+          .map((e) => e.streamId)
+          .toSet()
+          .difference(_videoConnectionsByCameraId.keys.toSet());
+      final removed = _videoConnectionsByCameraId.keys
+          .toSet()
+          .difference(currentCameraList.map((e) => e.streamId).toSet());
+      added.forEach((element) {
+        final userCamera =
+            currentCameraList.firstWhere((e) => e.streamId == element);
+        if (userCamera.streamId != null) {
+          IncomingWebcamVideoConnection v = IncomingWebcamVideoConnection(
+              _meetingInfo,
+              userCamera.streamId,
+              userCamera.user?.userId ?? '',
+              mediaSocket!.sendMessage);
+          _videoConnectionsByCameraId[userCamera.streamId!] = v;
+          listUserCamera.add(userCamera);
+          v.init().then((value) {
+            _videoConnectionsStreamController.add(_videoConnectionsByCameraId);
+          });
+          _cameraIdByStreamIdLookup[msg["id"]] = userCamera.streamId!;
+        }
+      });
+      removed.forEach((element) {
+        IncomingWebcamVideoConnection v =
+            _videoConnectionsByCameraId.remove(element)!;
+
+        _videoConnectionsStreamController.add(_videoConnectionsByCameraId);
+
+        v.close();
+      });
     }
+
     // final String? method = msg["msg"];
 
     // if (method == "added") {
     //   String? collectionName = msg["collection"];
 
-    //   if (collectionName == "video-streams") {
-    //     String? cameraID = msg["fields"]["stream"];
-    //     String? userID = msg["fields"]["userId"];
-    //     if (cameraID != null && userID != null) {
-    //       Log.info("[VideoModule] Adding new video stream...");
-
-    //       IncomingWebcamVideoConnection v =
-    //           IncomingWebcamVideoConnection(_meetingInfo, cameraID, userID);
-    //       _videoConnectionsByCameraId[cameraID] = v;
-
-    //       v.init().then((value) => {
-    //             // Publish changed video connections list
-    //             _videoConnectionsStreamController
-    //                 .add(_videoConnectionsByCameraId)
-    //           });
-
-    //       _cameraIdByStreamIdLookup[msg["id"]] = cameraID;
-    //     }
     //   } else if (collectionName == "screenshare") {
     //     String? id = msg["id"];
     //     if (id != null) {
@@ -166,19 +249,6 @@ class VideoModule extends Module {
     // } else if (method == "removed") {
     //   String? collectionName = msg["collection"];
 
-    //   if (collectionName == "video-streams") {
-    //     Log.info("[VideoModule] Removing video stream...");
-
-    //     String? streamID = msg["id"];
-    //     String? cameraID = _cameraIdByStreamIdLookup[streamID];
-
-    //     IncomingWebcamVideoConnection v =
-    //         _videoConnectionsByCameraId.remove(cameraID)!;
-
-    //     // Publish changed video connections list
-    //     _videoConnectionsStreamController.add(_videoConnectionsByCameraId);
-
-    //     v.close();
     //   } else if (collectionName == "screenshare") {
     //     Log.info("[VideoModule] Removing screenshare stream...");
 
@@ -198,8 +268,9 @@ class VideoModule extends Module {
 
   Future<void> _shareWebcam() async {
     if (_webcamShare == null) {
-      _webcamShare =
-          OutgoingWebcamVideoConnection(_meetingInfo, messageSender, _camtype);
+      _webcamShare = OutgoingWebcamVideoConnection(
+          _meetingInfo, messageSender, _camtype, mediaSocket!.sendMessage);
+
       await _webcamShare!.init().catchError((e) {
         _webcamShare = null;
       });
@@ -239,7 +310,8 @@ class VideoModule extends Module {
 
   void _shareScreen() {
     if (_screenShare == null) {
-      _screenShare = OutgoingScreenshareVideoConnection(_meetingInfo);
+      _screenShare = OutgoingScreenshareVideoConnection(
+          _meetingInfo, mediaSocket!.sendMessage);
       _screenShare!.init().catchError((e) {
         _screenShare = null;
       });
@@ -265,6 +337,27 @@ class VideoModule extends Module {
     return _screenShare != null;
   }
 
+  void ping() {
+    if (!initialized) {
+      initialized = true;
+      checkPing();
+    }
+    mediaSocket?.sendMessage({
+      'id': VideoConnectId.PING,
+    });
+  }
+
+  Timer? timer;
+  void checkPing() {
+    if (timer == null || !timer!.isActive) {
+      timer?.cancel();
+      timer = Timer.periodic(Duration(seconds: 15), (t) {
+        Log.verbose('[Video connection] ${DateTime.now()} Check ping');
+        ping();
+      });
+    }
+  }
+
   /// Get a stream of video connections lists that are updated when new camera IDs pop up
   /// or are removed.
   Stream<Map<String, IncomingWebcamVideoConnection>>
@@ -283,4 +376,7 @@ class VideoModule extends Module {
   /// Get the currently listed screenshare connections.
   Map<String, IncomingScreenshareVideoConnection>
       get screenshareVideoConnections => _screenshareVideoConnections;
+
+  Stream<OutgoingWebcamVideoConnection> get myCam =>
+      _webcamShareController.stream;
 }

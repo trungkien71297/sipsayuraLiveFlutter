@@ -61,6 +61,7 @@ class MeetingInfo {
   bool? muteOnStart;
 
   String? userId;
+  String clienSessionID = '';
 
   /// STUN / TURN servers.
   Map<String, dynamic>? iceServers;
